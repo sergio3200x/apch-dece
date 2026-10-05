@@ -1,246 +1,1041 @@
-<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="es">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Panel de control | APCH</title>
+    <title>Panel de control | APCH</title>
 
-<!-- Tailwind CSS -->
+    <style>
+        /* =========================================================
+           CONFIGURACIÓN GENERAL
+        ========================================================= */
 
-<script src="https://cdn.tailwindcss.com"></script>
-
-<script>
-
-    tailwind.config = {
-
-        theme: {
-
-            extend: {
-
-                fontFamily: {
-                    sans: ['Segoe UI', 'Arial', 'sans-serif'],
-                },
-
-                colors: {
-
-                    apch: {
-
-                        50: '#fff5f5',
-                        100: '#ffe7e7',
-                        200: '#ffcfcf',
-                        300: '#f5a5a5',
-                        400: '#e97979',
-                        500: '#d95555',
-                        600: '#c83d3d',
-                        700: '#ad2d2d',
-                        800: '#922626',
-                        900: '#782020',
-
-                    }
-
-                },
-
-                animation: {
-
-                    'fade-up': 'fadeUp 0.6s ease-out forwards',
-
-                    'fade-in': 'fadeIn 0.7s ease-out forwards',
-
-                    'float': 'float 5s ease-in-out infinite',
-
-                },
-
-                keyframes: {
-
-                    fadeUp: {
-
-                        '0%': {
-                            opacity: '0',
-                            transform: 'translateY(18px)'
-                        },
-
-                        '100%': {
-                            opacity: '1',
-                            transform: 'translateY(0)'
-                        }
-
-                    },
-
-                    fadeIn: {
-
-                        '0%': {
-                            opacity: '0'
-                        },
-
-                        '100%': {
-                            opacity: '1'
-                        }
-
-                    },
-
-                    float: {
-
-                        '0%, 100%': {
-                            transform: 'translateY(0)'
-                        },
-
-                        '50%': {
-                            transform: 'translateY(-5px)'
-                        }
-
-                    }
-
-                }
-
-            }
-
+        * {
+            box-sizing: border-box;
         }
 
-    }
+        html {
+            scroll-behavior: smooth;
+        }
 
-</script>
+        body {
+            margin: 0;
+            background: #f7f7f8;
+            color: #1e293b;
+            font-family: "Segoe UI", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
 
-<style>
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-    html {
-        scroll-behavior: smooth;
-    }
+        button {
+            font-family: inherit;
+        }
 
-    body {
-        -webkit-font-smoothing: antialiased;
-        text-rendering: optimizeLegibility;
-        background: #f7f7f8;
-    }
+        /* =========================================================
+           ANIMACIONES
+        ========================================================= */
 
-    .dashboard-card {
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(18px);
+            }
 
-        transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease,
-            border-color 0.3s ease;
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
 
-    .dashboard-card:hover {
+            100% {
+                opacity: 1;
+            }
+        }
 
-        transform: translateY(-6px);
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
 
-    }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
 
-</style>
+        .animate-fade-up {
+            animation: fadeUp 0.6s ease-out forwards;
+        }
 
-<div class="min-h-screen flex flex-col bg-slate-50">
+        .animate-fade-in {
+            animation: fadeIn 0.7s ease-out forwards;
+        }
+
+        .animate-float {
+            animation: float 5s ease-in-out infinite;
+        }
+
+        /* =========================================================
+           CONTENEDOR GENERAL
+        ========================================================= */
+
+        .dashboard-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #f8fafc;
+        }
+
+        /* =========================================================
+           CABECERA
+        ========================================================= */
+
+        .dashboard-header {
+            margin: 1rem 0.25rem 0;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #e2e8f0;
+            border: 2px solid #000000;
+        }
+
+        .header-container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-inner {
+            min-height: 88px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.25rem;
+        }
+
+        /* =========================================================
+           IDENTIDAD
+        ========================================================= */
+
+        .identity {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 0;
+        }
+
+        .header-logo {
+            width: 64px;
+            height: 64px;
+            flex-shrink: 0;
+            padding: 0.5rem;
+            border-radius: 16px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .identity-info {
+            min-width: 0;
+        }
+
+        .identity-label {
+            margin: 0;
+            color: #c54848;
+            font-size: 0.75rem;
+            line-height: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+        }
+
+        .identity-title {
+            margin: 0;
+            color: #0f172a;
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .identity-subtitle {
+            margin: 0.25rem 0 0;
+            color: #64748b;
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+
+        /* =========================================================
+           PERFIL
+        ========================================================= */
+
+        .header-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .profile-text {
+            text-align: right;
+        }
+
+        .profile-name {
+            margin: 0;
+            color: #1e293b;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            font-weight: 700;
+        }
+
+        .profile-role {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+
+        .profile-avatar {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: #ffe7e7;
+            color: #ad2d2d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ffcfcf;
+            font-weight: 700;
+        }
+
+        /* =========================================================
+           BOTONES DE CABECERA
+        ========================================================= */
+
+        .header-action {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            padding: 0;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition:
+                background-color 0.3s ease,
+                color 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+        .header-action:hover {
+            background: #c83d3d;
+            color: #ffffff;
+            border-color: #c83d3d;
+        }
+
+        .header-action svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .header-action span {
+            display: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .logout-form {
+            margin: 0;
+        }
+
+        /* =========================================================
+           CONTENIDO PRINCIPAL
+        ========================================================= */
+
+        .dashboard-main {
+            flex: 1;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem 3.5rem;
+        }
+
+        /* =========================================================
+           BIENVENIDA
+        ========================================================= */
+
+        .welcome-section {
+            position: relative;
+            overflow: hidden;
+            border-radius: 30px;
+            background: #c83d3d;
+            color: #ffffff;
+            box-shadow: 0 20px 35px rgba(120, 32, 32, 0.15);
+        }
+
+        .welcome-decoration-one {
+            position: absolute;
+            top: -6rem;
+            right: -5rem;
+            width: 20rem;
+            height: 20rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.10);
+        }
+
+        .welcome-decoration-two {
+            position: absolute;
+            right: 8rem;
+            bottom: -7rem;
+            width: 16rem;
+            height: 16rem;
+            border-radius: 50%;
+            background: rgba(146, 38, 38, 0.20);
+        }
+
+        .welcome-decoration-three {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 1px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 10;
+            padding: 3rem;
+        }
+
+        .welcome-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .welcome-text {
+            max-width: 48rem;
+        }
+
+        .welcome-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.20);
+        }
+
+        .welcome-badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ffffff;
+        }
+
+        .welcome-badge-text {
+            color: #ffffff;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            font-weight: 600;
+        }
+
+        .welcome-title {
+            margin: 1.5rem 0 0;
+            color: #ffffff;
+            font-size: 3rem;
+            line-height: 1;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .welcome-description {
+            max-width: 42rem;
+            margin: 1rem 0 0;
+            color: #fef2f2;
+            font-size: 1.125rem;
+            line-height: 2rem;
+        }
+
+        /* =========================================================
+           ICONO DE BIENVENIDA
+        ========================================================= */
+
+        .welcome-icon-outer {
+            width: 144px;
+            height: 144px;
+            flex-shrink: 0;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.20);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .welcome-icon-inner {
+            width: 96px;
+            height: 96px;
+            border-radius: 24px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.10);
+        }
+
+        .welcome-icon-inner svg {
+            width: 48px;
+            height: 48px;
+            color: #c83d3d;
+        }
+
+        /* =========================================================
+           ENCABEZADO DE FUNCIONES
+        ========================================================= */
+
+        .functions-header {
+            margin-top: 3rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .functions-label {
+            margin: 0;
+            color: #c54848;
+            font-size: 0.75rem;
+            line-height: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+        }
+
+        .functions-title {
+            margin: 0.5rem 0 0;
+            color: #0f172a;
+            font-size: 1.875rem;
+            line-height: 2.25rem;
+            font-weight: 700;
+        }
+
+        .functions-description {
+            margin: 0.5rem 0 0;
+            color: #64748b;
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
+
+        /* =========================================================
+           TARJETAS
+        ========================================================= */
+
+        .functions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+
+        .dashboard-card {
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+            border-radius: 26px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-6px);
+            border-color: #f5a5a5;
+            box-shadow: 0 20px 30px rgba(120, 32, 32, 0.10);
+        }
+
+        .card-top-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #c83d3d;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .card-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: #ffe7e7;
+            color: #ad2d2d;
+            border: 1px solid #ffcfcf;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition:
+                background-color 0.3s ease,
+                color 0.3s ease;
+        }
+
+        .dashboard-card:hover .card-icon {
+            background: #c83d3d;
+            color: #ffffff;
+        }
+
+        .card-icon svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .card-arrow-top {
+            color: #cbd5e1;
+            transition: color 0.3s ease;
+        }
+
+        .dashboard-card:hover .card-arrow-top {
+            color: #c54848;
+        }
+
+        .card-arrow-top svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .card-category {
+            margin: 1.75rem 0 0;
+            color: #c54848;
+            font-size: 0.75rem;
+            line-height: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .card-title {
+            margin: 0.5rem 0 0;
+            color: #0f172a;
+            font-size: 1.5rem;
+            line-height: 2rem;
+            font-weight: 700;
+        }
+
+        .card-description {
+            margin: 0.75rem 0 0;
+            color: #64748b;
+            font-size: 1rem;
+            line-height: 1.75rem;
+        }
+
+        .card-footer {
+            margin-top: 1.75rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-footer-text {
+            color: #1e293b;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            font-weight: 700;
+        }
+
+        .card-footer-arrow {
+            color: #c54848;
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+            transition: transform 0.3s ease;
+        }
+
+        .dashboard-card:hover .card-footer-arrow {
+            transform: translateX(8px);
+        }
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        .dashboard-footer {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .footer-container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .footer-main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .footer-institution {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-align: left;
+        }
+
+        .footer-logo {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            padding: 6px;
+            border-radius: 12px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .footer-system-name {
+            margin: 0;
+            color: #ffffff;
+            font-size: 1rem;
+            line-height: 1.5rem;
+            font-weight: 700;
+        }
+
+        .footer-institution-name {
+            margin: 0.25rem 0 0;
+            color: #94a3b8;
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+
+        .footer-developer {
+            text-align: right;
+        }
+
+        .footer-developer-label {
+            margin: 0;
+            color: #e97979;
+            font-size: 0.625rem;
+            line-height: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+        }
+
+        .footer-developer-name {
+            margin: 0.25rem 0 0;
+            color: #ffffff;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            font-weight: 600;
+        }
+
+        .footer-developer-email {
+            margin: 0.25rem 0 0;
+            color: #94a3b8;
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+
+        .footer-bottom {
+            margin-top: 1.75rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.10);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .footer-bottom p {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 1023px) {
+
+            .header-container,
+            .main-container,
+            .footer-container {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+
+            .functions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 767px) {
+
+            .header-container,
+            .main-container,
+            .footer-container {
+                padding-left: 1.25rem;
+                padding-right: 1.25rem;
+            }
+
+            .header-inner {
+                min-height: 78px;
+            }
+
+            .header-logo {
+                width: 56px;
+                height: 56px;
+            }
+
+            .identity-title {
+                font-size: 1rem;
+                line-height: 1.5rem;
+            }
+
+            .identity-label {
+                font-size: 0.625rem;
+            }
+
+            .profile-info {
+                display: none;
+            }
+
+            .header-action {
+                width: 44px;
+                height: 44px;
+            }
+
+            .welcome-content {
+                padding: 2.5rem;
+            }
+
+            .welcome-row {
+                align-items: flex-start;
+            }
+
+            .welcome-title {
+                font-size: 2.25rem;
+            }
+
+            .welcome-description {
+                font-size: 1rem;
+                line-height: 1.75rem;
+            }
+
+            .welcome-icon-outer {
+                display: none;
+            }
+
+            .footer-main {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-institution {
+                text-align: center;
+            }
+
+            .footer-developer {
+                text-align: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 639px) {
+
+            .dashboard-header {
+                margin-top: 0.5rem;
+            }
+
+            .header-container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .header-inner {
+                gap: 0.5rem;
+            }
+
+            .identity {
+                gap: 0.625rem;
+            }
+
+            .header-logo {
+                width: 50px;
+                height: 50px;
+                border-radius: 12px;
+                padding: 0.375rem;
+            }
+
+            .identity-subtitle {
+                display: none;
+            }
+
+            .identity-title {
+                font-size: 0.9rem;
+            }
+
+            .identity-label {
+                font-size: 0.55rem;
+            }
+
+            .main-container {
+                padding-top: 2rem;
+                padding-bottom: 2.5rem;
+            }
+
+            .welcome-content {
+                padding: 2rem;
+            }
+
+            .welcome-title {
+                margin-top: 1.25rem;
+                font-size: 2rem;
+                line-height: 1.15;
+            }
+
+            .welcome-description {
+                margin-top: 0.875rem;
+                font-size: 0.95rem;
+                line-height: 1.6;
+            }
+
+            .welcome-badge-text {
+                font-size: 0.75rem;
+            }
+
+            .functions-header {
+                margin-top: 2.5rem;
+            }
+
+            .functions-title {
+                font-size: 1.625rem;
+                line-height: 2rem;
+            }
+
+            .dashboard-card {
+                padding: 1.75rem;
+            }
+
+            .card-title {
+                font-size: 1.375rem;
+            }
+
+            .footer-container {
+                padding-top: 1.75rem;
+                padding-bottom: 1.75rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+
+            .header-profile {
+                gap: 0.4rem;
+            }
+
+            .header-action {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+            }
+
+            .header-action svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .welcome-content {
+                padding: 1.5rem;
+            }
+
+            .welcome-title {
+                font-size: 1.75rem;
+            }
+
+            .dashboard-card {
+                padding: 1.5rem;
+            }
+
+            .card-icon {
+                width: 56px;
+                height: 56px;
+            }
+
+            .card-icon svg {
+                width: 28px;
+                height: 28px;
+            }
+        }
+
+        /* =========================================================
+           PANTALLAS PEQUEÑAS
+           Mantener los textos de botones ocultos como en Tailwind
+        ========================================================= */
+
+        @media (min-width: 640px) {
+
+            .header-action {
+                width: auto;
+                padding: 0 1rem;
+            }
+
+            .header-action span {
+                display: inline;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="dashboard-page">
+
+    <!-- =====================================================
+         CABECERA
+    ====================================================== -->
+
+    <header class="dashboard-header">
+
+        <div class="header-container">
+
+            <div class="header-inner">
 
 
-<!-- =====================================================
-     CABECERA
-====================================================== -->
+                <!-- IDENTIDAD -->
 
-<header class="mx-2 sm:mx-3 lg:mx-4 mt-4 rounded-[12px] bg-slate-200 border-2 border-black overflow-hidden">
+                <div class="identity">
 
-    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+                    <!-- LOGO -->
 
-        <div class="min-h-[88px] flex items-center justify-between gap-5">
+                    <div class="header-logo">
 
-
-            <!-- IDENTIDAD -->
-
-            <div class="flex items-center gap-4">
-
-
-                <!-- LOGO -->
-
-                <div
-                    class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white border border-slate-200 p-2 flex items-center justify-center shadow-sm"
-                >
-
-                    <img
-                        src="{{ asset('images/logo-apch.png') }}"
-                        alt="Logo APCH"
-                        class="w-full h-full object-contain"
-                    >
-
-                </div>
-
-
-                <!-- INFORMACIÓN -->
-
-                <div>
-
-                    <p class="text-[10px] sm:text-xs uppercase tracking-[0.18em] text-apch-600 font-bold">
-
-                        APCH · DECE
-
-                    </p>
-
-
-                    <h1 class="text-base sm:text-xl font-bold text-slate-900 tracking-tight">
-
-                        Sistema de Formularios Digitales
-
-                    </h1>
-
-
-                    <p class="hidden sm:block text-xs text-slate-500 mt-1">
-
-                        Unidad Educativa "Ángel Polibio Chaves"
-
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- PERFIL -->
-
-            <div class="flex items-center gap-3">
-
-
-                <div class="hidden sm:flex items-center gap-3">
-
-
-                    <div class="text-right">
-
-                        <p class="text-sm font-bold text-slate-800">
-
-                            {{ auth()->user()->name }}
-
-                        </p>
-
-                        <p class="text-xs text-slate-500">
-
-                            Administrador
-
-                        </p>
+                        <img
+                            src="{{ asset('images/logo-apch.png') }}"
+                            alt="Logo APCH"
+                        >
 
                     </div>
 
 
-                    <div
-                        class="w-11 h-11 rounded-xl bg-apch-100 text-apch-700 flex items-center justify-center font-bold border border-apch-200"
-                    >
+                    <!-- INFORMACIÓN -->
 
-                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    <div class="identity-info">
+
+                        <p class="identity-label">
+                            APCH · DECE
+                        </p>
+
+                        <h1 class="identity-title">
+                            Sistema de Formularios Digitales
+                        </h1>
+
+                        <p class="identity-subtitle">
+                            Unidad Educativa "Ángel Polibio Chaves"
+                        </p>
 
                     </div>
 
                 </div>
 
 
+                <!-- PERFIL -->
 
-                <!-- CERRAR SESIÓN -->
+                <div class="header-profile">
 
-                <form
-                    method="POST"
-                    action="{{ route('logout') }}"
-                >
+                    <div class="profile-info">
 
-                    @csrf
+                        <div class="profile-text">
 
-                    <button
-                        type="submit"
-                        class="flex items-center justify-center gap-2 w-11 h-11 sm:w-auto sm:h-11 sm:px-4 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-apch-600 hover:text-white hover:border-apch-600 transition-all duration-300"
+                            <p class="profile-name">
+                                {{ auth()->user()->name }}
+                            </p>
+
+                            <p class="profile-role">
+                                Administrador
+                            </p>
+
+                        </div>
+
+                        <div class="profile-avatar">
+
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CAMBIAR CONTRASEÑA -->
+
+                    <a
+                        href="{{ route('password.edit') }}"
+                        title="Cambiar contraseña"
+                        class="header-action"
                     >
 
                         <svg
@@ -249,153 +1044,175 @@
                             viewBox="0 0 24 24"
                             stroke-width="1.8"
                             stroke="currentColor"
-                            class="w-5 h-5"
                         >
 
                             <path
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
-                                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3-3h-9m0 0l3-3m3 3l-3 3"
+                                d="M16.5 10.5V6.75a4.5 4.5 0 00-9 0v3.75"
+                            />
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M5.25 10.5h13.5v9H5.25v-9z"
+                            />
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 14.25v1.5"
                             />
 
                         </svg>
 
-
-                        <span class="hidden sm:inline text-sm font-semibold">
-
-                            Cerrar sesión
-
+                        <span>
+                            Cambiar contraseña
                         </span>
 
-                    </button>
-
-                </form>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</header>
+                    </a>
 
 
+                    <!-- CERRAR SESIÓN -->
 
-<!-- =====================================================
-     CONTENIDO
-====================================================== -->
-
-<main class="flex-1">
-
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-10 lg:py-14">
-
-
-        <!-- =================================================
-             BIENVENIDA
-        ================================================== -->
-
-        <section
-            class="relative overflow-hidden rounded-[30px] bg-apch-600 text-white shadow-xl shadow-apch-900/15 animate-fade-up"
-        >
-
-            <!-- Decoración -->
-
-            <div
-                class="absolute -right-20 -top-24 w-80 h-80 rounded-full bg-white/10"
-            ></div>
-
-            <div
-                class="absolute right-32 -bottom-28 w-64 h-64 rounded-full bg-apch-800/20"
-            ></div>
-
-            <div
-                class="absolute left-1/2 top-0 w-px h-full bg-white/5"
-            ></div>
-
-
-            <div class="relative z-10 p-8 sm:p-10 lg:p-12">
-
-
-                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-
-
-                    <!-- TEXTO -->
-
-                    <div class="max-w-3xl">
-
-
-                        <div
-                            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20"
-                        >
-
-                            <span
-                                class="w-2 h-2 rounded-full bg-white"
-                            ></span>
-
-                            <span class="text-xs sm:text-sm font-semibold">
-
-                                Panel de administración
-
-                            </span>
-
-                        </div>
-
-
-                        <h2
-                            class="mt-6 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight"
-                        >
-
-                            Bienvenido,
-                            {{ auth()->user()->name }}
-
-                        </h2>
-
-
-                        <p
-                            class="mt-4 text-base sm:text-lg leading-8 text-red-50 max-w-2xl"
-                        >
-
-                            Administra de manera centralizada los usuarios,
-                            formularios y registros del Sistema de
-                            Formularios Digitales del DECE.
-
-                        </p>
-
-                    </div>
-
-
-                    <!-- ICONO -->
-
-                    <div
-                        class="hidden sm:flex flex-shrink-0 w-28 h-28 lg:w-36 lg:h-36 rounded-[30px] bg-white/15 border border-white/20 items-center justify-center animate-float"
+                    <form
+                        method="POST"
+                        action="{{ route('logout') }}"
+                        class="logout-form"
                     >
 
-                        <div
-                            class="w-20 h-20 lg:w-24 lg:h-24 rounded-[24px] bg-white flex items-center justify-center shadow-lg"
+                        @csrf
+
+                        <button
+                            type="submit"
+                            class="header-action"
                         >
 
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
-                                stroke-width="1.5"
+                                stroke-width="1.8"
                                 stroke="currentColor"
-                                class="w-10 h-10 lg:w-12 lg:h-12 text-apch-600"
                             >
 
                                 <path
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
-                                    d="M3.75 6.75A2.25 2.25 0 016 4.5h12a2.25 2.25 0 012.25 2.25v10.5A2.25 2.25 0 0118 19.5H6a2.25 2.25 0 01-2.25-2.25V6.75z"
-                                />
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M8.25 9.75h7.5M8.25 13.5h4.5"
+                                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3-3h-9m0 0l3-3m3 3l-3 3"
                                 />
 
                             </svg>
+
+                            <span>
+                                Cerrar sesión
+                            </span>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         CONTENIDO
+    ====================================================== -->
+
+    <main class="dashboard-main">
+
+        <div class="main-container">
+
+
+            <!-- =================================================
+                 BIENVENIDA
+            ================================================== -->
+
+            <section class="welcome-section animate-fade-up">
+
+                <!-- Decoración -->
+
+                <div class="welcome-decoration-one"></div>
+
+                <div class="welcome-decoration-two"></div>
+
+                <div class="welcome-decoration-three"></div>
+
+
+                <div class="welcome-content">
+
+                    <div class="welcome-row">
+
+
+                        <!-- TEXTO -->
+
+                        <div class="welcome-text">
+
+                            <div class="welcome-badge">
+
+                                <span class="welcome-badge-dot"></span>
+
+                                <span class="welcome-badge-text">
+                                    Panel de administración
+                                </span>
+
+                            </div>
+
+
+                            <h2 class="welcome-title">
+
+                                Bienvenido,
+                                {{ auth()->user()->name }}
+
+                            </h2>
+
+
+                            <p class="welcome-description">
+
+                                Administra de manera centralizada los usuarios,
+                                formularios y registros del Sistema de
+                                Formularios Digitales del DECE.
+
+                            </p>
+
+                        </div>
+
+
+                        <!-- ICONO -->
+
+                        <div class="welcome-icon-outer animate-float">
+
+                            <div class="welcome-icon-inner">
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                >
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M3.75 6.75A2.25 2.25 0 016 4.5h12a2.25 2.25 0 012.25 2.25v10.5A2.25 2.25 0 0118 19.5H6a2.25 2.25 0 01-2.25-2.25V6.75z"
+                                    />
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M8.25 9.75h7.5M8.25 13.5h4.5"
+                                    />
+
+                                </svg>
+
+                            </div>
 
                         </div>
 
@@ -403,477 +1220,403 @@
 
                 </div>
 
+            </section>
+
+
+            <!-- =================================================
+                 ENCABEZADO FUNCIONES
+            ================================================== -->
+
+            <div class="functions-header">
+
+                <p class="functions-label">
+                    Administración del sistema
+                </p>
+
+                <h3 class="functions-title">
+                    Funciones principales
+                </h3>
+
+                <p class="functions-description">
+                    Seleccione una de las opciones disponibles.
+                </p>
+
             </div>
 
-        </section>
-
-
-
-        <!-- =================================================
-             ENCABEZADO FUNCIONES
-        ================================================== -->
-
-        <div class="mt-12 mb-7">
-
-            <p class="text-xs uppercase tracking-[0.18em] font-bold text-apch-600">
-
-                Administración del sistema
-
-            </p>
-
-
-            <h3 class="mt-2 text-2xl sm:text-3xl font-bold text-slate-900">
-
-                Funciones principales
-
-            </h3>
-
-
-            <p class="mt-2 text-base text-slate-500">
-
-                Seleccione una de las opciones disponibles.
-
-            </p>
-
-        </div>
-
-
-
-        <!-- =================================================
-             FUNCIONES
-        ================================================== -->
-
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
 
             <!-- =================================================
-                 USUARIOS
+                 FUNCIONES
             ================================================== -->
 
-            <a
-                href="{{ route('usuarios.index') }}"
-                class="dashboard-card group relative overflow-hidden rounded-[26px] bg-white border border-slate-200 p-7 sm:p-8 shadow-sm hover:border-apch-300 hover:shadow-xl hover:shadow-apch-900/10 animate-fade-up"
-                style="animation-delay:0.10s"
-            >
-
-                <!-- Línea superior -->
-
-                <div
-                    class="absolute top-0 left-0 right-0 h-1 bg-apch-600"
-                ></div>
+            <section class="functions-grid">
 
 
-                <div class="flex items-start justify-between">
+                <!-- =================================================
+                     USUARIOS
+                ================================================== -->
+
+                <a
+                    href="{{ route('usuarios.index') }}"
+                    class="dashboard-card animate-fade-up"
+                    style="animation-delay: 0.10s"
+                >
+
+                    <div class="card-top-line"></div>
 
 
-                    <div
-                        class="w-16 h-16 rounded-2xl bg-apch-100 text-apch-700 border border-apch-200 flex items-center justify-center group-hover:bg-apch-600 group-hover:text-white transition-all duration-300"
-                    >
+                    <div class="card-header">
 
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.7"
-                            stroke="currentColor"
-                            class="w-8 h-8"
-                        >
+                        <div class="card-icon">
 
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M15 19.128a9.38 9.38 0 002.625.372 9.375 9.375 0 10-18.75 0A9.38 9.38 0 011.5 19.5"
-                            />
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.7"
+                                stroke="currentColor"
+                            >
 
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-                            />
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M15 19.128a9.38 9.38 0 002.625.372 9.375 9.375 0 10-18.75 0A9.38 9.38 0 011.5 19.5"
+                                />
 
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M19.5 8.25v3m1.5-1.5h-3"
-                            />
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+                                />
 
-                        </svg>
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M19.5 8.25v3m1.5-1.5h-3"
+                                />
+
+                            </svg>
+
+                        </div>
+
+
+                        <span class="card-arrow-top">
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                            >
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                                />
+
+                            </svg>
+
+                        </span>
 
                     </div>
 
 
-                    <span
-                        class="text-slate-300 group-hover:text-apch-600 transition-colors"
-                    >
+                    <p class="card-category">
+                        Gestión
+                    </p>
 
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="2"
-                            stroke="currentColor"
-                            class="w-6 h-6"
-                        >
 
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                            />
+                    <h4 class="card-title">
+                        Gestionar usuarios
+                    </h4>
 
-                        </svg>
 
-                    </span>
+                    <p class="card-description">
 
-                </div>
-
-
-                <p class="mt-7 text-xs uppercase tracking-[0.15em] font-bold text-apch-600">
-
-                    Gestión
-
-                </p>
-
-
-                <h4 class="mt-2 text-2xl font-bold text-slate-900">
-
-                    Gestionar usuarios
-
-                </h4>
-
-
-                <p class="mt-3 text-base leading-7 text-slate-500">
-
-                    Crear, desactivar y reactivar las cuentas
-                    de los usuarios del sistema.
-
-                </p>
-
-
-                <div
-                    class="mt-7 pt-5 border-t border-slate-100 flex items-center justify-between"
-                >
-
-                    <span class="text-sm font-bold text-slate-800">
-
-                        Administrar usuarios
-
-                    </span>
-
-
-                    <span
-                        class="text-apch-600 text-xl transition-transform duration-300 group-hover:translate-x-2"
-                    >
-
-                        →
-
-                    </span>
-
-                </div>
-
-            </a>
-
-
-
-            <!-- =================================================
-                 FORMULARIOS
-            ================================================== -->
-
-            <a
-                href="{{ route('formularios.index') }}"
-                class="dashboard-card group relative overflow-hidden rounded-[26px] bg-white border border-slate-200 p-7 sm:p-8 shadow-sm hover:border-apch-300 hover:shadow-xl hover:shadow-apch-900/10 animate-fade-up"
-                style="animation-delay:0.18s"
-            >
-
-                <div
-                    class="absolute top-0 left-0 right-0 h-1 bg-apch-600"
-                ></div>
-
-
-                <div class="flex items-start justify-between">
-
-
-                    <div
-                        class="w-16 h-16 rounded-2xl bg-apch-100 text-apch-700 border border-apch-200 flex items-center justify-center group-hover:bg-apch-600 group-hover:text-white transition-all duration-300"
-                    >
-
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.7"
-                            stroke="currentColor"
-                            class="w-8 h-8"
-                        >
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-3.75a3.375 3.375 0 01-3.375-3.375V3.75"
-                            />
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M8.25 3.75H6.375A2.625 2.625 0 003.75 6.375v11.25a2.625 2.625 0 002.625 2.625h12.75a2.625 2.625 0 002.625-2.625V9.75"
-                            />
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M9 13.5h6M9 16.5h4.5"
-                            />
-
-                        </svg>
-
-                    </div>
-
-
-                    <span
-                        class="text-slate-300 group-hover:text-apch-600 transition-colors"
-                    >
-
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="2"
-                            stroke="currentColor"
-                            class="w-6 h-6"
-                        >
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                            />
-
-                        </svg>
-
-                    </span>
-
-                </div>
-
-
-                <p class="mt-7 text-xs uppercase tracking-[0.15em] font-bold text-apch-600">
-
-                    Documentos
-
-                </p>
-
-
-                <h4 class="mt-2 text-2xl font-bold text-slate-900">
-
-                    Formularios DECE
-
-                </h4>
-
-
-                <p class="mt-3 text-base leading-7 text-slate-500">
-
-                    Acceder a los formularios disponibles
-                    del Departamento de Consejería Estudiantil.
-
-                </p>
-
-
-                <div
-                    class="mt-7 pt-5 border-t border-slate-100 flex items-center justify-between"
-                >
-
-                    <span class="text-sm font-bold text-slate-800">
-
-                        Ver formularios
-
-                    </span>
-
-
-                    <span
-                        class="text-apch-600 text-xl transition-transform duration-300 group-hover:translate-x-2"
-                    >
-
-                        →
-
-                    </span>
-
-                </div>
-
-            </a>
-
-
-
-            <!-- =================================================
-                 REGISTROS
-            ================================================== -->
-
-            <a
-                href="{{ route('formularios.registros') }}"
-                class="dashboard-card group relative overflow-hidden rounded-[26px] bg-white border border-slate-200 p-7 sm:p-8 shadow-sm hover:border-apch-300 hover:shadow-xl hover:shadow-apch-900/10 animate-fade-up"
-                style="animation-delay:0.26s"
-            >
-
-                <div
-                    class="absolute top-0 left-0 right-0 h-1 bg-apch-600"
-                ></div>
-
-
-                <div class="flex items-start justify-between">
-
-
-                    <div
-                        class="w-16 h-16 rounded-2xl bg-apch-100 text-apch-700 border border-apch-200 flex items-center justify-center group-hover:bg-apch-600 group-hover:text-white transition-all duration-300"
-                    >
-
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.7"
-                            stroke="currentColor"
-                            class="w-8 h-8"
-                        >
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M3 13.125l6-6 4.5 4.5L21 4.125"
-                            />
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M3 19.875h18"
-                            />
-
-                        </svg>
-
-                    </div>
-
-
-                    <span
-                        class="text-slate-300 group-hover:text-apch-600 transition-colors"
-                    >
-
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="2"
-                            stroke="currentColor"
-                            class="w-6 h-6"
-                        >
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                            />
-
-                        </svg>
-
-                    </span>
-
-                </div>
-
-
-                <p class="mt-7 text-xs uppercase tracking-[0.15em] font-bold text-apch-600">
-
-                    Control
-
-                </p>
-
-
-                <h4 class="mt-2 text-2xl font-bold text-slate-900">
-
-                    Registros de formularios
-
-                </h4>
-
-
-                <p class="mt-3 text-base leading-7 text-slate-500">
-
-                    Consultar los registros generados
-                    por los usuarios del sistema.
-
-                </p>
-
-
-                <div
-                    class="mt-7 pt-5 border-t border-slate-100 flex items-center justify-between"
-                >
-
-                    <span class="text-sm font-bold text-slate-800">
-
-                        Consultar registros
-
-                    </span>
-
-
-                    <span
-                        class="text-apch-600 text-xl transition-transform duration-300 group-hover:translate-x-2"
-                    >
-
-                        →
-
-                    </span>
-
-                </div>
-
-            </a>
-
-
-        </section>
-
-
-    </div>
-
-</main>
-
-
-
-<!-- =====================================================
-     FOOTER
-====================================================== -->
-
-<footer class="bg-black text-white">
-
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-8">
-
-
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-
-
-            <!-- INSTITUCIÓN -->
-
-            <div class="flex items-center gap-4 text-center md:text-left">
-
-
-                <div
-                    class="w-12 h-12 rounded-xl bg-white p-1.5 flex items-center justify-center"
-                >
-
-                    <img
-                        src="{{ asset('images/logo-apch.png') }}"
-                        alt="Logo APCH"
-                        class="w-full h-full object-contain"
-                    >
-
-                </div>
-
-
-                <div>
-
-                    <p class="font-bold text-base">
-
-                        Sistema de Formularios Digitales
+                        Crear, desactivar y reactivar las cuentas
+                        de los usuarios del sistema.
 
                     </p>
 
 
-                    <p class="text-xs text-slate-400 mt-1">
+                    <div class="card-footer">
 
-                        Unidad Educativa "Ángel Polibio Chaves" · DECE
+                        <span class="card-footer-text">
+                            Administrar usuarios
+                        </span>
 
+                        <span class="card-footer-arrow">
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+                <!-- =================================================
+                     FORMULARIOS
+                ================================================== -->
+
+                <a
+                    href="{{ route('formularios.index') }}"
+                    class="dashboard-card animate-fade-up"
+                    style="animation-delay: 0.18s"
+                >
+
+                    <div class="card-top-line"></div>
+
+
+                    <div class="card-header">
+
+                        <div class="card-icon">
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.7"
+                                stroke="currentColor"
+                            >
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-3.75a3.375 3.375 0 01-3.375-3.375V3.75"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M8.25 3.75H6.375A2.625 2.625 0 003.75 6.375v11.25a2.625 2.625 0 002.625 2.625h12.75a2.625 2.625 0 002.625-2.625V9.75"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M9 13.5h6M9 16.5h4.5"
+                                />
+
+                            </svg>
+
+                        </div>
+
+
+                        <span class="card-arrow-top">
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                            >
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                                />
+
+                            </svg>
+
+                        </span>
+
+                    </div>
+
+
+                    <p class="card-category">
+                        Documentos
+                    </p>
+
+
+                    <h4 class="card-title">
+                        Formularios DECE
+                    </h4>
+
+
+                    <p class="card-description">
+
+                        Acceder a los formularios disponibles
+                        del Departamento de Consejería Estudiantil.
+
+                    </p>
+
+
+                    <div class="card-footer">
+
+                        <span class="card-footer-text">
+                            Ver formularios
+                        </span>
+
+                        <span class="card-footer-arrow">
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+                <!-- =================================================
+                     REGISTROS
+                ================================================== -->
+
+                <a
+                    href="{{ route('formularios.registros') }}"
+                    class="dashboard-card animate-fade-up"
+                    style="animation-delay: 0.26s"
+                >
+
+                    <div class="card-top-line"></div>
+
+
+                    <div class="card-header">
+
+                        <div class="card-icon">
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.7"
+                                stroke="currentColor"
+                            >
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M3 13.125l6-6 4.5 4.5L21 4.125"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M3 19.875h18"
+                                />
+
+                            </svg>
+
+                        </div>
+
+
+                        <span class="card-arrow-top">
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                            >
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                                />
+
+                            </svg>
+
+                        </span>
+
+                    </div>
+
+
+                    <p class="card-category">
+                        Control
+                    </p>
+
+
+                    <h4 class="card-title">
+                        Registros de formularios
+                    </h4>
+
+
+                    <p class="card-description">
+
+                        Consultar los registros generados
+                        por los usuarios del sistema.
+
+                    </p>
+
+
+                    <div class="card-footer">
+
+                        <span class="card-footer-text">
+                            Consultar registros
+                        </span>
+
+                        <span class="card-footer-arrow">
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="dashboard-footer">
+
+        <div class="footer-container">
+
+            <div class="footer-main">
+
+
+                <!-- INSTITUCIÓN -->
+
+                <div class="footer-institution">
+
+                    <div class="footer-logo">
+
+                        <img
+                            src="{{ asset('images/logo-apch.png') }}"
+                            alt="Logo APCH"
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <p class="footer-system-name">
+                            Sistema de Formularios Digitales
+                        </p>
+
+                        <p class="footer-institution-name">
+                            Unidad Educativa "Ángel Polibio Chaves" · DECE
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DESARROLLADOR -->
+
+                <div class="footer-developer">
+
+                    <p class="footer-developer-label">
+                        Desarrollo
+                    </p>
+
+                    <p class="footer-developer-name">
+                        Stalyn Alvarado
+                    </p>
+
+                    <p class="footer-developer-email">
+                        tu-correo@ejemplo.com
                     </p>
 
                 </div>
@@ -881,61 +1624,26 @@
             </div>
 
 
+            <!-- SEPARADOR -->
 
-            <!-- DESARROLLADOR -->
+            <div class="footer-bottom">
 
-            <div class="text-center md:text-right">
-
-                <p class="text-[10px] uppercase tracking-[0.18em] text-apch-400 font-bold">
-
-                    Desarrollo
-
+                <p>
+                    Plataforma institucional del Departamento de Consejería Estudiantil
                 </p>
 
-
-                <p class="mt-1 text-sm font-semibold">
-
-                    Stalyn Alvarado
-
-                </p>
-
-
-                <p class="text-xs text-slate-400 mt-1">
-
-                    tu-correo@ejemplo.com
-
+                <p>
+                    2026–2027 · APCH
                 </p>
 
             </div>
 
         </div>
 
-
-
-        <!-- SEPARADOR -->
-
-        <div class="mt-7 pt-5 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
-
-
-            <p class="text-xs text-slate-500">
-
-                Plataforma institucional del Departamento de Consejería Estudiantil
-
-            </p>
-
-
-            <p class="text-xs text-slate-500">
-
-                2026–2027 · APCH
-
-            </p>
-
-        </div>
-
-
-    </div>
-
-</footer>
-
+    </footer>
 
 </div>
+
+</body>
+
+</html>

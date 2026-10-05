@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FormularioController;
+use App\Http\Controllers\PasswordController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -95,3 +96,7 @@ Route::get('/formularios/ficha-alerta-dece', function () {
 Route::get('/formularios/plan-atencion-psicosocial', function () {
     return view('formularios.plan-atencion-psicosocial');
 })->middleware(['auth', 'active'])->name('formularios.plan-atencion-psicosocial');
+
+Route::get('/cambiar-contrasena', [PasswordController::class, 'edit'])->name('password.edit');
+
+Route::put('/cambiar-contrasena', [PasswordController::class, 'update'])->name('password.update');

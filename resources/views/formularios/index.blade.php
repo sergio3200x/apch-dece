@@ -1,103 +1,717 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
-
-
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Formularios DECE | APCH</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
+<style>
 
-<script>
-    tailwind.config = {
-        theme: {
-            extend: {
+    :root {
+        --apch-50: #fff5f5;
+        --apch-100: #fee2e2;
+        --apch-200: #fecaca;
+        --apch-300: #fca5a5;
+        --apch-400: #f87171;
+        --apch-500: #ef4444;
+        --apch-600: #dc2626;
+        --apch-700: #b30000;
+        --apch-800: #8f0000;
+        --apch-900: #650000;
 
-                fontFamily: {
-                    sans: ['Segoe UI', 'Arial', 'sans-serif'],
-                },
+        --slate-50: #f8fafc;
+        --slate-100: #f1f5f9;
+        --slate-200: #e2e8f0;
+        --slate-300: #cbd5e1;
+        --slate-400: #94a3b8;
+        --slate-500: #64748b;
+        --slate-600: #475569;
+        --slate-700: #334155;
+        --slate-800: #1e293b;
+        --slate-900: #0f172a;
 
-                colors: {
-                    apch: {
-                        50: '#fff5f5',
-                        100: '#fee2e2',
-                        200: '#fecaca',
-                        300: '#fca5a5',
-                        400: '#f87171',
-                        500: '#ef4444',
-                        600: '#dc2626',
-                        700: '#b30000',
-                        800: '#8f0000',
-                        900: '#650000',
-                    }
-                },
+        --green-50: #f0fdf4;
+        --green-200: #bbf7d0;
+        --green-400: #4ade80;
+        --green-500: #22c55e;
+        --green-700: #15803d;
+    }
 
-                animation: {
-                    'fade-up': 'fadeUp 0.55s ease-out forwards',
-                },
+    * {
+        box-sizing: border-box;
+    }
 
-                keyframes: {
-                    fadeUp: {
-                        '0%': {
-                            opacity: '0',
-                            transform: 'translateY(14px)'
-                        },
-                        '100%': {
-                            opacity: '1',
-                            transform: 'translateY(0)'
-                        }
-                    }
-                }
+    html {
+        scroll-behavior: smooth;
+    }
 
-            }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--slate-100);
+        color: var(--slate-800);
+        font-family: "Segoe UI", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+        font-family: inherit;
+    }
+
+    a {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* =========================================================
+       ANIMACIONES
+       ========================================================= */
+
+    @keyframes fadeUp {
+        0% {
+            opacity: 0;
+            transform: translateY(14px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
         }
     }
-</script>
 
+    @keyframes ping {
+        75%,
+        100% {
+            transform: scale(2);
+            opacity: 0;
+        }
+    }
 
+    .animate-fade-up {
+        animation: fadeUp 0.55s ease-out forwards;
+    }
+
+    /* =========================================================
+       ENCABEZADO
+       ========================================================= */
+
+    .site-header {
+        margin: 16px 4px 0;
+        border: 2px solid #000;
+        border-radius: 12px;
+        background: #e2e8f0;
+        overflow: hidden;
+    }
+
+    .header-inner {
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px 24px;
+    }
+
+    .institution-brand {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        min-width: 0;
+    }
+
+    .institution-logo {
+        width: 64px;
+        height: 64px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .institution-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .institution-info {
+        min-width: 0;
+    }
+
+    .institution-label {
+        margin: 0;
+        color: var(--apch-700);
+        font-size: 14px;
+        line-height: 1.5;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+    }
+
+    .institution-name {
+        margin: 2px 0 0;
+        color: var(--slate-900);
+        font-size: 20px;
+        line-height: 1.3;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+    }
+
+    .system-name {
+        margin: 4px 0 0;
+        color: var(--slate-500);
+        font-size: 14px;
+        line-height: 1.5;
+        font-weight: 500;
+    }
+
+    /* =========================================================
+       ACCIONES DEL ENCABEZADO
+       ========================================================= */
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .system-status {
+        display: none;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border: 1px solid var(--green-200);
+        border-radius: 999px;
+        background: var(--green-50);
+        color: var(--green-700);
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .status-indicator {
+        position: relative;
+        display: flex;
+        width: 10px;
+        height: 10px;
+    }
+
+    .status-ping {
+        position: absolute;
+        display: inline-flex;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: var(--green-400);
+        opacity: 0.6;
+        animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    .status-dot {
+        position: relative;
+        display: inline-flex;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--green-500);
+    }
+
+    .logout-form {
+        margin: 0;
+    }
+
+    .logout-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        border: 2px solid var(--slate-200);
+        border-radius: 12px;
+        background: #fff;
+        color: var(--slate-700);
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+            border-color 0.2s ease,
+            background-color 0.2s ease,
+            color 0.2s ease;
+    }
+
+    .logout-button svg {
+        width: 20px;
+        height: 20px;
+        transition: transform 0.2s ease;
+    }
+
+    .logout-button:hover {
+        border-color: var(--apch-700);
+        background: var(--apch-700);
+        color: #fff;
+    }
+
+    .logout-button:hover svg {
+        transform: translateX(2px);
+    }
+
+    /* =========================================================
+       CONTENIDO PRINCIPAL
+       ========================================================= */
+
+    .main-container {
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 40px 24px;
+    }
+
+    /* =========================================================
+       CABECERA DE LA PÁGINA
+       ========================================================= */
+
+    .page-heading {
+        margin-bottom: 32px;
+    }
+
+    .heading-card {
+        padding: 28px;
+        border: 1px solid var(--slate-200);
+        border-radius: 24px;
+        background: #fff;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+    }
+
+    .heading-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .heading-text {
+        min-width: 0;
+    }
+
+    .department-label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .department-bar {
+        width: 6px;
+        height: 40px;
+        flex-shrink: 0;
+        border-radius: 999px;
+        background: var(--apch-700);
+    }
+
+    .department-text {
+        margin: 0;
+        color: var(--apch-700);
+        font-size: 14px;
+        line-height: 1.5;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+    }
+
+    .page-title {
+        margin: 0;
+        color: var(--slate-900);
+        font-size: 30px;
+        line-height: 1.2;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+    }
+
+    .page-description {
+        max-width: 768px;
+        margin: 12px 0 0;
+        color: var(--slate-500);
+        font-size: 16px;
+        line-height: 1.75;
+    }
+
+    /* =========================================================
+       CONTADOR
+       ========================================================= */
+
+    .forms-counter {
+        flex-shrink: 0;
+        padding: 16px 24px;
+        border: 1px solid var(--apch-100);
+        border-radius: 16px;
+        background: var(--apch-50);
+        text-align: center;
+    }
+
+    .counter-number {
+        margin: 0;
+        color: var(--apch-700);
+        font-size: 30px;
+        line-height: 1.2;
+        font-weight: 700;
+    }
+
+    .counter-label {
+        margin: 4px 0 0;
+        color: var(--slate-600);
+        font-size: 14px;
+        line-height: 1.5;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+       GRID DE FORMULARIOS
+       ========================================================= */
+
+    .forms-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    /* =========================================================
+       TARJETAS DE FORMULARIOS
+       ========================================================= */
+
+    .form-card {
+        min-width: 0;
+        padding: 28px;
+        border: 1px solid var(--slate-200);
+        border-radius: 24px;
+        background: #fff;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+        transition:
+            transform 0.3s ease,
+            border-color 0.3s ease,
+            box-shadow 0.3s ease;
+    }
+
+    .form-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--apch-200);
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+    }
+
+    .form-card-content {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .form-icon {
+        width: 64px;
+        height: 64px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: var(--apch-50);
+        color: var(--apch-700);
+        transition:
+            background-color 0.3s ease,
+            color 0.3s ease;
+    }
+
+    .form-icon svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    .form-card:hover .form-icon {
+        background: var(--apch-700);
+        color: #fff;
+    }
+
+    .form-information {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .form-number {
+        display: block;
+        color: var(--apch-700);
+        font-size: 12px;
+        line-height: 1.5;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    .form-title {
+        margin: 4px 0 0;
+        color: var(--slate-900);
+        font-size: 18px;
+        line-height: 1.55;
+        font-weight: 700;
+    }
+
+    .form-description {
+        margin: 8px 0 0;
+        color: var(--slate-500);
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    /* =========================================================
+       BOTÓN ABRIR FORMULARIO
+       ========================================================= */
+
+    .open-form-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 20px;
+        padding: 12px 20px;
+        border-radius: 12px;
+        background: var(--apch-700);
+        color: #fff;
+        font-size: 14px;
+        line-height: 1.5;
+        font-weight: 700;
+        text-decoration: none;
+        transition:
+            background-color 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .open-form-button:hover {
+        background: var(--apch-800);
+        box-shadow: 0 4px 10px rgba(101, 0, 0, 0.2);
+    }
+
+    .open-form-arrow {
+        display: inline-block;
+        font-size: 18px;
+        line-height: 1;
+        transition: transform 0.2s ease;
+    }
+
+    .form-card:hover .open-form-arrow {
+        transform: translateX(4px);
+    }
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .site-footer {
+        margin-top: 40px;
+        background: #000;
+        color: #fff;
+    }
+
+    .footer-inner {
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 28px 24px;
+    }
+
+    .footer-main {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .footer-block {
+        min-width: 0;
+    }
+
+    .footer-title {
+        margin: 0;
+        color: #fff;
+        font-size: 16px;
+        line-height: 1.5;
+        font-weight: 700;
+    }
+
+    .footer-subtitle {
+        margin: 4px 0 0;
+        color: var(--slate-400);
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .footer-developer {
+        text-align: left;
+    }
+
+    .footer-divider {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 16px;
+    }
+
+    .footer-description {
+        margin: 0;
+        color: var(--slate-500);
+        font-size: 12px;
+        line-height: 1.5;
+        text-align: left;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @media (min-width: 640px) {
+
+        .header-inner {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .institution-name {
+            font-size: 24px;
+        }
+
+        .system-status {
+            display: flex;
+        }
+
+        .heading-content {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .page-title {
+            font-size: 36px;
+        }
+
+        .footer-main {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-developer {
+            text-align: right;
+        }
+
+        .footer-description {
+            text-align: left;
+        }
+    }
+
+    @media (min-width: 768px) {
+
+        .forms-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (min-width: 1024px) {
+
+        .header-inner {
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+
+        .main-container {
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+    }
+
+    @media (max-width: 639px) {
+
+        .header-actions {
+            width: 100%;
+            justify-content: flex-end;
+        }
+
+        .logout-form {
+            width: 100%;
+        }
+
+        .logout-button {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .page-title {
+            font-size: 30px;
+        }
+
+        .heading-card {
+            padding: 24px;
+        }
+
+        .form-card {
+            padding: 24px;
+        }
+
+        .form-card-content {
+            gap: 16px;
+        }
+
+        .form-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+        }
+
+        .form-icon svg {
+            width: 28px;
+            height: 28px;
+        }
+    }
+
+</style>
 </head>
 
-<body class="min-h-screen bg-slate-100 text-slate-800 font-sans">
+<body>
+    <!-- =========================================================
+     ENCABEZADO
+     ========================================================= -->
 
+<header class="site-header">
 
-<!-- ENCABEZADO -->
-
-<header class="mx-4 mt-4 overflow-hidden rounded-[24px] border-2 border-black bg-white shadow-sm sm:mx-6 lg:mx-8">
-
-    <div class="mx-auto flex max-w-7xl flex-col gap-5 px-6 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-10">
-
+    <div class="header-inner">
 
         <!-- IDENTIDAD INSTITUCIONAL -->
 
-        <div class="flex items-center gap-4">
+        <div class="institution-brand">
 
-            <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-white p-1.5 shadow-sm">
+            <div class="institution-logo">
 
                 <img
                     src="{{ asset('images/logo-apch.png') }}"
                     alt="Logo APCH"
-                    class="h-full w-full object-contain"
                 >
 
             </div>
 
+            <div class="institution-info">
 
-            <div>
-
-                <p class="text-sm font-bold uppercase tracking-wide text-apch-700">
+                <p class="institution-label">
                     Unidad Educativa
                 </p>
 
-                <h1 class="mt-0.5 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+                <h1 class="institution-name">
                     "Ángel Polibio Chaves"
                 </h1>
 
-                <p class="mt-1 text-sm font-medium text-slate-500">
+                <p class="system-name">
                     Sistema de Formularios Digitales
                 </p>
 
@@ -108,18 +722,17 @@
 
         <!-- ACCIONES -->
 
-        <div class="flex items-center gap-3">
-
+        <div class="header-actions">
 
             <!-- ESTADO -->
 
-            <div class="hidden items-center gap-2 rounded-full border border-green-200 bg-green-50 px-4 py-2.5 text-sm font-semibold text-green-700 sm:flex">
+            <div class="system-status">
 
-                <span class="relative flex h-2.5 w-2.5">
+                <span class="status-indicator">
 
-                    <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-60"></span>
+                    <span class="status-ping"></span>
 
-                    <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500"></span>
+                    <span class="status-dot"></span>
 
                 </span>
 
@@ -133,18 +746,18 @@
             <form
                 method="POST"
                 action="{{ route('logout') }}"
+                class="logout-form"
             >
 
                 @csrf
 
                 <button
                     type="submit"
-                    class="group flex items-center gap-2 rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition duration-200 hover:border-apch-700 hover:bg-apch-700 hover:text-white"
+                    class="logout-button"
                 >
 
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -172,37 +785,40 @@
 </header>
 
 
+<!-- =========================================================
+     CONTENIDO
+     ========================================================= -->
 
-<!-- CONTENIDO -->
-
-<main class="mx-auto max-w-7xl px-6 py-10 lg:px-10">
+<main class="main-container">
 
 
-    <!-- TÍTULO -->
+    <!-- =====================================================
+         TÍTULO
+         ===================================================== -->
 
-    <section class="mb-8 animate-fade-up">
+    <section class="page-heading animate-fade-up">
 
-        <div class="rounded-[24px] border border-slate-200 bg-white p-7 shadow-sm sm:p-8">
+        <div class="heading-card">
 
-            <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div class="heading-content">
 
-                <div>
+                <div class="heading-text">
 
-                    <div class="mb-3 flex items-center gap-3">
+                    <div class="department-label">
 
-                        <div class="h-10 w-1.5 rounded-full bg-apch-700"></div>
+                        <div class="department-bar"></div>
 
-                        <p class="text-sm font-bold uppercase tracking-[0.18em] text-apch-700">
+                        <p class="department-text">
                             Departamento de Consejería Estudiantil
                         </p>
 
                     </div>
 
-                    <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                    <h2 class="page-title">
                         Formularios DECE
                     </h2>
 
-                    <p class="mt-3 max-w-3xl text-base leading-7 text-slate-500 sm:text-lg">
+                    <p class="page-description">
                         Seleccione el formulario que desea utilizar para iniciar su llenado e impresión.
                     </p>
 
@@ -211,13 +827,13 @@
 
                 <!-- CONTADOR -->
 
-                <div class="shrink-0 rounded-2xl border border-red-100 bg-apch-50 px-6 py-4 text-center">
+                <div class="forms-counter">
 
-                    <p class="text-3xl font-bold text-apch-700">
+                    <p class="counter-number">
                         8
                     </p>
 
-                    <p class="mt-1 text-sm font-semibold text-slate-600">
+                    <p class="counter-label">
                         Formularios disponibles
                     </p>
 
@@ -230,23 +846,25 @@
     </section>
 
 
+    <!-- =====================================================
+         FORMULARIOS
+         ===================================================== -->
 
-    <!-- FORMULARIOS -->
-
-    <section class="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <section class="forms-grid">
 
 
-        <!-- 1. ENTREVISTA ESTUDIANTES -->
+        <!-- =================================================
+             1. ENTREVISTA ESTUDIANTES
+             ================================================= -->
 
-        <div class="group animate-fade-up rounded-[24px] border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-200 hover:shadow-lg">
+        <div class="form-card animate-fade-up">
 
-            <div class="flex items-start gap-5">
+            <div class="form-card-content">
 
-                <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-apch-50 text-apch-700 transition-all duration-300 group-hover:bg-apch-700 group-hover:text-white">
+                <div class="form-icon">
 
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-8 w-8"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -263,29 +881,28 @@
 
                 </div>
 
+                <div class="form-information">
 
-                <div class="min-w-0 flex-1">
-
-                    <span class="text-xs font-bold uppercase tracking-wider text-apch-700">
+                    <span class="form-number">
                         Formulario 01
                     </span>
 
-                    <h3 class="mt-1 text-lg font-bold leading-7 text-slate-900">
+                    <h3 class="form-title">
                         Entrevista estudiantes
                     </h3>
 
-                    <p class="mt-2 text-sm leading-6 text-slate-500">
+                    <p class="form-description">
                         Formulario para la entrevista y atención de estudiantes.
                     </p>
 
                     <a
                         href="{{ route('formularios.entrevista-estudiantes') }}"
-                        class="mt-5 inline-flex items-center gap-2 rounded-xl bg-apch-700 px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:bg-apch-800 hover:shadow-md"
+                        class="open-form-button"
                     >
 
                         Abrir formulario
 
-                        <span class="text-lg leading-none transition-transform duration-200 group-hover:translate-x-1">
+                        <span class="open-form-arrow">
                             →
                         </span>
 
@@ -298,18 +915,18 @@
         </div>
 
 
+        <!-- =================================================
+             2. FICHA DE OBSERVACIÓN
+             ================================================= -->
 
-        <!-- 2. FICHA DE OBSERVACIÓN -->
+        <div class="form-card animate-fade-up">
 
-        <div class="group animate-fade-up rounded-[24px] border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-200 hover:shadow-lg">
+            <div class="form-card-content">
 
-            <div class="flex items-start gap-5">
-
-                <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-apch-50 text-apch-700 transition-all duration-300 group-hover:bg-apch-700 group-hover:text-white">
+                <div class="form-icon">
 
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-8 w-8"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -332,29 +949,28 @@
 
                 </div>
 
+                <div class="form-information">
 
-                <div class="min-w-0 flex-1">
-
-                    <span class="text-xs font-bold uppercase tracking-wider text-apch-700">
+                    <span class="form-number">
                         Formulario 02
                     </span>
 
-                    <h3 class="mt-1 text-lg font-bold leading-7 text-slate-900">
+                    <h3 class="form-title">
                         Ficha de observación
                     </h3>
 
-                    <p class="mt-2 text-sm leading-6 text-slate-500">
+                    <p class="form-description">
                         Registro correspondiente al proceso de observación del estudiante.
                     </p>
 
                     <a
                         href="{{ route('formularios.ficha-observacion') }}"
-                        class="mt-5 inline-flex items-center gap-2 rounded-xl bg-apch-700 px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:bg-apch-800 hover:shadow-md"
+                        class="open-form-button"
                     >
 
                         Abrir formulario
 
-                        <span class="text-lg leading-none transition-transform duration-200 group-hover:translate-x-1">
+                        <span class="open-form-arrow">
                             →
                         </span>
 
@@ -367,18 +983,18 @@
         </div>
 
 
+        <!-- =================================================
+             3. FICHA DE DERIVACIÓN
+             ================================================= -->
 
-        <!-- 3. FICHA DE DERIVACIÓN -->
+        <div class="form-card animate-fade-up">
 
-        <div class="group animate-fade-up rounded-[24px] border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-200 hover:shadow-lg">
+            <div class="form-card-content">
 
-            <div class="flex items-start gap-5">
-
-                <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-apch-50 text-apch-700 transition-all duration-300 group-hover:bg-apch-700 group-hover:text-white">
+                <div class="form-icon">
 
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-8 w-8"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -395,29 +1011,28 @@
 
                 </div>
 
+                <div class="form-information">
 
-                <div class="min-w-0 flex-1">
-
-                    <span class="text-xs font-bold uppercase tracking-wider text-apch-700">
+                    <span class="form-number">
                         Formulario 03
                     </span>
 
-                    <h3 class="mt-1 text-lg font-bold leading-7 text-slate-900">
+                    <h3 class="form-title">
                         Ficha de derivación
                     </h3>
 
-                    <p class="mt-2 text-sm leading-6 text-slate-500">
+                    <p class="form-description">
                         Formulario utilizado para realizar una derivación dentro del proceso DECE.
                     </p>
 
                     <a
                         href="{{ route('formularios.ficha-derivacion') }}"
-                        class="mt-5 inline-flex items-center gap-2 rounded-xl bg-apch-700 px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:bg-apch-800 hover:shadow-md"
+                        class="open-form-button"
                     >
 
                         Abrir formulario
 
-                        <span class="text-lg leading-none transition-transform duration-200 group-hover:translate-x-1">
+                        <span class="open-form-arrow">
                             →
                         </span>
 
@@ -430,18 +1045,18 @@
         </div>
 
 
+        <!-- =================================================
+             4. ENTREVISTA REPRESENTANTES
+             ================================================= -->
 
-        <!-- 4. ENTREVISTA REPRESENTANTES -->
+        <div class="form-card animate-fade-up">
 
-        <div class="group animate-fade-up rounded-[24px] border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-200 hover:shadow-lg">
+            <div class="form-card-content">
 
-            <div class="flex items-start gap-5">
-
-                <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-apch-50 text-apch-700 transition-all duration-300 group-hover:bg-apch-700 group-hover:text-white">
+                <div class="form-icon">
 
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-8 w-8"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -458,29 +1073,28 @@
 
                 </div>
 
+                <div class="form-information">
 
-                <div class="min-w-0 flex-1">
-
-                    <span class="text-xs font-bold uppercase tracking-wider text-apch-700">
+                    <span class="form-number">
                         Formulario 04
                     </span>
 
-                    <h3 class="mt-1 text-lg font-bold leading-7 text-slate-900">
+                    <h3 class="form-title">
                         Entrevista representantes
                     </h3>
 
-                    <p class="mt-2 text-sm leading-6 text-slate-500">
+                    <p class="form-description">
                         Formulario destinado a la entrevista con representantes del estudiante.
                     </p>
 
                     <a
                         href="{{ route('formularios.entrevista-representantes') }}"
-                        class="mt-5 inline-flex items-center gap-2 rounded-xl bg-apch-700 px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:bg-apch-800 hover:shadow-md"
+                        class="open-form-button"
                     >
 
                         Abrir formulario
 
-                        <span class="text-lg leading-none transition-transform duration-200 group-hover:translate-x-1">
+                        <span class="open-form-arrow">
                             →
                         </span>
 
@@ -493,18 +1107,18 @@
         </div>
 
 
+        <!-- =================================================
+             5. ENTREVISTA DOCENTES
+             ================================================= -->
 
-        <!-- 5. ENTREVISTA DOCENTES -->
+        <div class="form-card animate-fade-up">
 
-        <div class="group animate-fade-up rounded-[24px] border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-200 hover:shadow-lg">
+            <div class="form-card-content">
 
-            <div class="flex items-start gap-5">
-
-                <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-apch-50 text-apch-700 transition-all duration-300 group-hover:bg-apch-700 group-hover:text-white">
+                <div class="form-icon">
 
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-8 w-8"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -521,29 +1135,28 @@
 
                 </div>
 
+                <div class="form-information">
 
-                <div class="min-w-0 flex-1">
-
-                    <span class="text-xs font-bold uppercase tracking-wider text-apch-700">
+                    <span class="form-number">
                         Formulario 05
                     </span>
 
-                    <h3 class="mt-1 text-lg font-bold leading-7 text-slate-900">
+                    <h3 class="form-title">
                         Entrevista docentes
                     </h3>
 
-                    <p class="mt-2 text-sm leading-6 text-slate-500">
+                    <p class="form-description">
                         Formulario destinado a la entrevista y recopilación de información docente.
                     </p>
 
                     <a
                         href="{{ route('formularios.entrevista-docentes') }}"
-                        class="mt-5 inline-flex items-center gap-2 rounded-xl bg-apch-700 px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:bg-apch-800 hover:shadow-md"
+                        class="open-form-button"
                     >
 
                         Abrir formulario
 
-                        <span class="text-lg leading-none transition-transform duration-200 group-hover:translate-x-1">
+                        <span class="open-form-arrow">
                             →
                         </span>
 
@@ -556,18 +1169,18 @@
         </div>
 
 
+        <!-- =================================================
+             6. CONSENTIMIENTO INFORMADO
+             ================================================= -->
 
-        <!-- 6. CONSENTIMIENTO INFORMADO -->
+        <div class="form-card animate-fade-up">
 
-        <div class="group animate-fade-up rounded-[24px] border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-200 hover:shadow-lg">
+            <div class="form-card-content">
 
-            <div class="flex items-start gap-5">
-
-                <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-apch-50 text-apch-700 transition-all duration-300 group-hover:bg-apch-700 group-hover:text-white">
+                <div class="form-icon">
 
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-8 w-8"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -584,29 +1197,28 @@
 
                 </div>
 
+                <div class="form-information">
 
-                <div class="min-w-0 flex-1">
-
-                    <span class="text-xs font-bold uppercase tracking-wider text-apch-700">
+                    <span class="form-number">
                         Formulario 06
                     </span>
 
-                    <h3 class="mt-1 text-lg font-bold leading-7 text-slate-900">
+                    <h3 class="form-title">
                         Consentimiento informado
                     </h3>
 
-                    <p class="mt-2 text-sm leading-6 text-slate-500">
+                    <p class="form-description">
                         Documento institucional para el consentimiento correspondiente.
                     </p>
 
                     <a
                         href="{{ route('formularios.consentimiento-informado') }}"
-                        class="mt-5 inline-flex items-center gap-2 rounded-xl bg-apch-700 px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:bg-apch-800 hover:shadow-md"
+                        class="open-form-button"
                     >
 
                         Abrir formulario
 
-                        <span class="text-lg leading-none transition-transform duration-200 group-hover:translate-x-1">
+                        <span class="open-form-arrow">
                             →
                         </span>
 
@@ -619,18 +1231,18 @@
         </div>
 
 
+        <!-- =================================================
+             7. FICHA DE ALERTA
+             ================================================= -->
 
-        <!-- 7. FICHA DE ALERTA -->
+        <div class="form-card animate-fade-up">
 
-        <div class="group animate-fade-up rounded-[24px] border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-200 hover:shadow-lg">
+            <div class="form-card-content">
 
-            <div class="flex h-full items-start gap-5">
-
-                <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-apch-50 text-apch-700 transition-all duration-300 group-hover:bg-apch-700 group-hover:text-white">
+                <div class="form-icon">
 
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-8 w-8"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -653,29 +1265,28 @@
 
                 </div>
 
+                <div class="form-information">
 
-                <div class="min-w-0 flex-1">
-
-                    <span class="text-xs font-bold uppercase tracking-wider text-apch-700">
+                    <span class="form-number">
                         Formulario 07
                     </span>
 
-                    <h3 class="mt-1 text-lg font-bold leading-7 text-slate-900">
+                    <h3 class="form-title">
                         Ficha de notificación de alerta DECE
                     </h3>
 
-                    <p class="mt-2 text-sm leading-6 text-slate-500">
+                    <p class="form-description">
                         Formulario correspondiente a la notificación de alertas al DECE.
                     </p>
 
                     <a
                         href="{{ route('formularios.ficha-alerta-dece') }}"
-                        class="mt-5 inline-flex items-center gap-2 rounded-xl bg-apch-700 px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:bg-apch-800 hover:shadow-md"
+                        class="open-form-button"
                     >
 
                         Abrir formulario
 
-                        <span class="text-lg leading-none transition-transform duration-200 group-hover:translate-x-1">
+                        <span class="open-form-arrow">
                             →
                         </span>
 
@@ -688,18 +1299,18 @@
         </div>
 
 
+        <!-- =================================================
+             8. PLAN DE ATENCIÓN PSICOSOCIAL
+             ================================================= -->
 
-        <!-- 8. PLAN DE ATENCIÓN PSICOSOCIAL -->
+        <div class="form-card animate-fade-up">
 
-        <div class="group animate-fade-up rounded-[24px] border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-200 hover:shadow-lg">
+            <div class="form-card-content">
 
-            <div class="flex h-full items-start gap-5">
-
-                <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-apch-50 text-apch-700 transition-all duration-300 group-hover:bg-apch-700 group-hover:text-white">
+                <div class="form-icon">
 
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-8 w-8"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -722,29 +1333,28 @@
 
                 </div>
 
+                <div class="form-information">
 
-                <div class="min-w-0 flex-1">
-
-                    <span class="text-xs font-bold uppercase tracking-wider text-apch-700">
+                    <span class="form-number">
                         Formulario 08
                     </span>
 
-                    <h3 class="mt-1 text-lg font-bold leading-7 text-slate-900">
+                    <h3 class="form-title">
                         Plan de atención psicosocial y seguimiento
                     </h3>
 
-                    <p class="mt-2 text-sm leading-6 text-slate-500">
+                    <p class="form-description">
                         Formulario correspondiente al plan de atención y seguimiento.
                     </p>
 
                     <a
                         href="{{ route('formularios.plan-atencion-psicosocial') }}"
-                        class="mt-5 inline-flex items-center gap-2 rounded-xl bg-apch-700 px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:bg-apch-800 hover:shadow-md"
+                        class="open-form-button"
                     >
 
                         Abrir formulario
 
-                        <span class="text-lg leading-none transition-transform duration-200 group-hover:translate-x-1">
+                        <span class="open-form-arrow">
                             →
                         </span>
 
@@ -762,37 +1372,35 @@
 </main>
 
 
+<!-- =========================================================
+     PIE DE PÁGINA
+     ========================================================= -->
 
-<!-- PIE DE PÁGINA -->
+<footer class="site-footer">
 
-<footer class="mt-10 bg-black text-white">
+    <div class="footer-inner">
 
-    <div class="mx-auto flex max-w-7xl flex-col gap-5 px-6 py-7 lg:px-10">
+        <div class="footer-main">
 
+            <div class="footer-block">
 
-        <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-
-
-            <div>
-
-                <p class="text-base font-bold">
+                <p class="footer-title">
                     Sistema de Formularios Digitales
                 </p>
 
-                <p class="mt-1 text-sm text-slate-400">
+                <p class="footer-subtitle">
                     Unidad Educativa "Ángel Polibio Chaves"
                 </p>
 
             </div>
 
+            <div class="footer-block footer-developer">
 
-            <div class="text-left sm:text-right">
-
-                <p class="text-sm font-semibold text-white">
+                <p class="footer-title">
                     Desarrollado por Stalyn Alvarado
                 </p>
 
-                <p class="mt-1 text-sm text-slate-400">
+                <p class="footer-subtitle">
                     tu-correo@ejemplo.com
                 </p>
 
@@ -800,10 +1408,9 @@
 
         </div>
 
+        <div class="footer-divider">
 
-        <div class="border-t border-white/10 pt-4 text-center sm:text-left">
-
-            <p class="text-xs text-slate-500">
+            <p class="footer-description">
                 Departamento de Consejería Estudiantil · Sistema institucional de formularios digitales
             </p>
 
@@ -812,8 +1419,6 @@
     </div>
 
 </footer>
-
-
 </body>
 
 </html>

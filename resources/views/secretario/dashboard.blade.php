@@ -1,136 +1,939 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio | APCH</title>
 
+<style>
+    :root {
+        --apch-50: #fef2f2;
+        --apch-100: #fee2e2;
+        --apch-200: #fecaca;
+        --apch-300: #fca5a5;
+        --apch-400: #f87171;
+        --apch-500: #ef4444;
+        --apch-600: #dc2626;
+        --apch-700: #b30000;
+        --apch-800: #8f0000;
+        --apch-900: #650000;
+    }
 
-<title>Inicio | APCH</title>
+    * {
+        box-sizing: border-box;
+    }
 
-<script src="https://cdn.tailwindcss.com"></script>
+    html {
+        scroll-behavior: smooth;
+    }
 
-<script>
-    tailwind.config = {
-        theme: {
-            extend: {
-                fontFamily: {
-                    sans: ['Segoe UI', 'Arial', 'sans-serif'],
-                },
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background: #f1f5f9;
+        color: #1e293b;
+        font-family: "Segoe UI", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+    }
 
-                colors: {
-                    apch: {
-                        50: '#fef2f2',
-                        100: '#fee2e2',
-                        200: '#fecaca',
-                        300: '#fca5a5',
-                        400: '#f87171',
-                        500: '#ef4444',
-                        600: '#dc2626',
-                        700: '#b30000',
-                        800: '#8f0000',
-                        900: '#650000',
-                    }
-                },
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
 
-                animation: {
-                    'fade-up': 'fadeUp 0.6s ease-out forwards',
-                    'fade-in': 'fadeIn 0.7s ease-out forwards',
-                    'float': 'float 5s ease-in-out infinite',
-                    'pulse-soft': 'pulseSoft 3s ease-in-out infinite',
-                },
+    button,
+    input,
+    select,
+    textarea {
+        font: inherit;
+    }
 
-                keyframes: {
-                    fadeUp: {
-                        '0%': {
-                            opacity: '0',
-                            transform: 'translateY(18px)'
-                        },
-                        '100%': {
-                            opacity: '1',
-                            transform: 'translateY(0)'
-                        }
-                    },
+    /* =========================================
+       ANIMACIONES
+    ========================================== */
 
-                    fadeIn: {
-                        '0%': {
-                            opacity: '0'
-                        },
-                        '100%': {
-                            opacity: '1'
-                        }
-                    },
+    @keyframes fadeUp {
+        0% {
+            opacity: 0;
+            transform: translateY(18px);
+        }
 
-                    float: {
-                        '0%, 100%': {
-                            transform: 'translateY(0)'
-                        },
-                        '50%': {
-                            transform: 'translateY(-5px)'
-                        }
-                    },
-
-                    pulseSoft: {
-                        '0%, 100%': {
-                            opacity: '0.5'
-                        },
-                        '50%': {
-                            opacity: '1'
-                        }
-                    }
-                }
-            }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
         }
     }
-</script>
 
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
 
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes float {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-5px);
+        }
+    }
+
+    @keyframes pulseSoft {
+        0%,
+        100% {
+            opacity: 0.5;
+        }
+
+        50% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes ping {
+        75%,
+        100% {
+            transform: scale(2);
+            opacity: 0;
+        }
+    }
+
+    .animate-fade-up {
+        animation: fadeUp 0.6s ease-out forwards;
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.7s ease-out forwards;
+    }
+
+    .animate-float {
+        animation: float 5s ease-in-out infinite;
+    }
+
+    .animate-pulse-soft {
+        animation: pulseSoft 3s ease-in-out infinite;
+    }
+
+    .animate-ping {
+        animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    /* =========================================
+       ENCABEZADO
+    ========================================== */
+
+    .page-header {
+        margin: 16px 4px 0;
+        border-radius: 12px;
+        background: #e2e8f0;
+        border: 2px solid #000;
+        overflow: hidden;
+    }
+
+    .header-container {
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 20px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+    }
+
+    .brand-section {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        min-width: 0;
+    }
+
+    .brand-logo {
+        width: 56px;
+        height: 56px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        padding: 6px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+    }
+
+    .brand-logo:hover {
+        transform: scale(1.05);
+    }
+
+    .brand-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .brand-text {
+        min-width: 0;
+    }
+
+    .brand-title {
+        margin: 0;
+        color: #0f172a;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        line-height: 1.3;
+    }
+
+    .brand-subtitle {
+        margin: 4px 0 0;
+        color: #64748b;
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-shrink: 0;
+    }
+
+    .system-status {
+        display: none;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .status-indicator {
+        position: relative;
+        display: flex;
+        width: 10px;
+        height: 10px;
+    }
+
+    .status-ping {
+        position: absolute;
+        display: inline-flex;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: #22c55e;
+        opacity: 0.6;
+    }
+
+    .status-dot {
+        position: relative;
+        display: inline-flex;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #22c55e;
+    }
+
+    .status-text {
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .user-info {
+        display: none;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+    }
+
+    .user-info svg {
+        width: 16px;
+        height: 16px;
+        color: var(--apch-700);
+        flex-shrink: 0;
+    }
+
+    .user-name {
+        color: #334155;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .header-action,
+    .logout-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .header-action {
+        border: 1px solid #e2e8f0;
+        color: #475569;
+    }
+
+    .header-action:hover {
+        background: var(--apch-700);
+        border-color: var(--apch-700);
+        color: #fff;
+        box-shadow: 0 4px 10px rgba(179, 0, 0, 0.15);
+    }
+
+    .logout-form {
+        margin: 0;
+    }
+
+    .logout-button {
+        border: 1px solid var(--apch-700);
+        color: var(--apch-700);
+    }
+
+    .logout-button:hover {
+        background: var(--apch-700);
+        color: #fff;
+        box-shadow: 0 4px 10px rgba(179, 0, 0, 0.15);
+    }
+
+    .header-action svg,
+    .logout-button svg {
+        width: 16px;
+        height: 16px;
+        transition: transform 0.3s ease;
+    }
+
+    .header-action:hover svg {
+        transform: scale(1.05);
+    }
+
+    .logout-button:hover svg {
+        transform: translateX(2px);
+    }
+
+    /* =========================================
+       CONTENIDO
+    ========================================== */
+
+    .main-content {
+        flex: 1;
+    }
+
+    .main-container {
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 32px 20px;
+    }
+
+    /* =========================================
+       PANEL DE BIENVENIDA
+    ========================================== */
+
+    .welcome-panel {
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 32px;
+        border-radius: 16px;
+        background: var(--apch-700);
+        color: #fff;
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+        animation: fadeUp 0.6s ease-out forwards;
+    }
+
+    .welcome-decoration-1 {
+        position: absolute;
+        right: -80px;
+        top: -96px;
+        width: 288px;
+        height: 288px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .welcome-decoration-2 {
+        position: absolute;
+        right: -40px;
+        bottom: -112px;
+        width: 256px;
+        height: 256px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    .welcome-decoration-3 {
+        position: absolute;
+        left: 50%;
+        bottom: -96px;
+        width: 192px;
+        height: 192px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .welcome-content {
+        position: relative;
+        padding: 24px;
+    }
+
+    .welcome-row {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .welcome-badges {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .welcome-badge {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .welcome-panel-label {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 12px;
+    }
+
+    .welcome-title {
+        margin: 0;
+        color: #fff;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.025em;
+    }
+
+    .welcome-description {
+        max-width: 672px;
+        margin: 12px 0 0;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 14px;
+        line-height: 1.5rem;
+    }
+
+    .welcome-icon {
+        display: none;
+        width: 64px;
+        height: 64px;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        animation: float 5s ease-in-out infinite;
+    }
+
+    .welcome-icon svg {
+        width: 32px;
+        height: 32px;
+        color: #fff;
+    }
+
+    /* =========================================
+       SECCIÓN FORMULARIOS
+    ========================================== */
+
+    .section-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .section-heading-content {
+        min-width: 0;
+    }
+
+    .section-title {
+        margin: 0;
+        color: #0f172a;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    .section-description {
+        margin: 4px 0 0;
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .section-line {
+        display: none;
+        height: 1px;
+        flex: 1;
+        margin-left: 24px;
+        background: #e2e8f0;
+    }
+
+    /* =========================================
+       TARJETA PRINCIPAL
+    ========================================== */
+
+    .forms-card {
+        position: relative;
+        display: block;
+        overflow: hidden;
+        border-radius: 16px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        animation: fadeUp 0.6s ease-out forwards;
+    }
+
+    .forms-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--apch-200);
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.1);
+    }
+
+    .forms-card-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--apch-700);
+    }
+
+    .forms-card-decoration {
+        position: absolute;
+        right: -64px;
+        top: -80px;
+        width: 256px;
+        height: 256px;
+        border-radius: 50%;
+        border: 1px solid var(--apch-100);
+        transition: transform 0.7s ease;
+    }
+
+    .forms-card:hover .forms-card-decoration {
+        transform: scale(1.1);
+    }
+
+    .forms-card-content {
+        position: relative;
+        padding: 28px;
+    }
+
+    .forms-card-row {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    .forms-card-information {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .forms-card-icon {
+        width: 56px;
+        height: 56px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: var(--apch-50);
+        border: 1px solid var(--apch-100);
+        color: var(--apch-700);
+        transition: all 0.3s ease;
+    }
+
+    .forms-card:hover .forms-card-icon {
+        background: var(--apch-700);
+        color: #fff;
+        transform: scale(1.05);
+    }
+
+    .forms-card-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .forms-card-title {
+        margin: 0;
+        color: #0f172a;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    .forms-card-description {
+        max-width: 672px;
+        margin: 8px 0 0;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.5rem;
+    }
+
+    .open-forms {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 20px;
+        color: var(--apch-700);
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .open-forms-arrow {
+        transition: transform 0.3s ease;
+    }
+
+    .forms-card:hover .open-forms-arrow {
+        transform: translateX(4px);
+    }
+
+    .forms-card-arrow {
+        display: none;
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: 1px solid #e2e8f0;
+        color: #94a3b8;
+        transition: all 0.3s ease;
+    }
+
+    .forms-card:hover .forms-card-arrow {
+        background: var(--apch-700);
+        border-color: var(--apch-700);
+        color: #fff;
+    }
+
+    .forms-card-arrow svg {
+        width: 20px;
+        height: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .forms-card:hover .forms-card-arrow svg {
+        transform: translateX(4px);
+    }
+
+    /* =========================================
+       PIE DE PÁGINA
+    ========================================== */
+
+    .site-footer {
+        margin-top: auto;
+        background: #000;
+        color: #fff;
+    }
+
+    .footer-container {
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 28px 20px;
+    }
+
+    .footer-main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .footer-brand,
+    .footer-author {
+        text-align: center;
+    }
+
+    .footer-title {
+        margin: 0;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .footer-institution {
+        margin: 4px 0 0;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 12px;
+    }
+
+    .footer-author-label {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .footer-author-name {
+        margin: 4px 0 0;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .footer-email {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 12px;
+    }
+
+    .footer-bottom {
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+    }
+
+    .footer-bottom-text {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 11px;
+    }
+
+    /* =========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (min-width: 640px) {
+        .header-container {
+            padding-left: 32px;
+            padding-right: 32px;
+        }
+
+        .brand-logo {
+            width: 64px;
+            height: 64px;
+        }
+
+        .brand-title {
+            font-size: 18px;
+        }
+
+        .brand-subtitle {
+            font-size: 12px;
+        }
+
+        .header-action,
+        .logout-button {
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        .user-info {
+            display: flex;
+        }
+
+        .header-action span,
+        .logout-button span {
+            display: inline;
+        }
+
+        .main-container {
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        .welcome-content {
+            padding: 32px;
+        }
+
+        .welcome-row {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .welcome-icon {
+            display: flex;
+            width: 64px;
+            height: 64px;
+        }
+
+        .welcome-title {
+            font-size: 30px;
+        }
+
+        .welcome-description {
+            font-size: 16px;
+        }
+
+        .section-title {
+            font-size: 24px;
+        }
+
+        .forms-card-content {
+            padding: 36px;
+        }
+
+        .forms-card-row {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .forms-card-title {
+            font-size: 24px;
+        }
+
+        .forms-card-description {
+            font-size: 16px;
+        }
+
+        .forms-card-arrow {
+            display: flex;
+        }
+
+        .footer-main {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .footer-brand {
+            text-align: left;
+        }
+
+        .footer-author {
+            text-align: right;
+        }
+
+        .footer-bottom {
+            text-align: center;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .system-status {
+            display: flex;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .header-container {
+            padding-left: 32px;
+            padding-right: 32px;
+        }
+
+        .main-container {
+            padding-left: 32px;
+            padding-right: 32px;
+        }
+
+        .welcome-content {
+            padding: 36px;
+        }
+
+        .welcome-icon {
+            width: 80px;
+            height: 80px;
+        }
+
+        .welcome-icon svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .welcome-title {
+            font-size: 36px;
+        }
+
+        .section-line {
+            display: block;
+        }
+
+        .forms-card-content {
+            padding: 36px;
+        }
+
+        .footer-container {
+            padding-left: 32px;
+            padding-right: 32px;
+        }
+    }
+
+    @media (max-width: 639px) {
+        .header-container {
+            overflow-x: auto;
+        }
+
+        .brand-section {
+            min-width: max-content;
+        }
+
+        .header-actions {
+            min-width: max-content;
+        }
+
+        .header-action span {
+            display: none;
+        }
+
+        .logout-button span {
+            display: none;
+        }
+    }
+</style>
 </head>
 
-<body class="min-h-screen bg-slate-100 text-slate-800 font-sans flex flex-col">
-
-
-<!-- =========================================
+<body>
+    <!-- =========================================
      ENCABEZADO
 ========================================== -->
 
-<header
-    class="mx-4 sm:mx-3 lg:mx-4 mt-4 rounded-[12px] bg-slate-200 border-2 border-black overflow-hidden"
->
+<header class="page-header">
 
-    <div
-        class="max-w-7xl mx-auto px-5 sm:px-8 py-5 flex items-center justify-between gap-6"
-    >
+    <div class="header-container">
 
         <!-- IDENTIDAD -->
 
-        <div class="flex items-center gap-4">
+        <div class="brand-section">
 
-            <div
-                class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-white border border-slate-200 p-1.5 shadow-sm flex items-center justify-center transition-transform duration-300 hover:scale-105"
-            >
+            <div class="brand-logo">
 
                 <img
                     src="{{ asset('images/logo-apch.png') }}"
                     alt="Logo APCH"
-                    class="w-full h-full object-contain"
                 >
 
             </div>
 
+            <div class="brand-text">
 
-            <div>
-
-                <h1
-                    class="text-base sm:text-lg lg:text-xl font-bold tracking-tight text-slate-900"
-                >
+                <h1 class="brand-title">
                     Sistema de Formularios Digitales
                 </h1>
 
-                <p
-                    class="text-[11px] sm:text-xs text-slate-500 mt-1 font-medium"
-                >
+                <p class="brand-subtitle">
                     UNIDAD EDUCATIVA "ÁNGEL POLIBIO CHAVES"
                 </p>
 
@@ -138,40 +941,31 @@
 
         </div>
 
-
         <!-- USUARIO + LOGOUT -->
 
-        <div class="flex items-center gap-3 sm:gap-5">
-
+        <div class="header-actions">
 
             <!-- ESTADO -->
 
-            <div class="hidden md:flex items-center gap-2">
+            <div class="system-status">
 
-                <span class="relative flex h-2.5 w-2.5">
+                <span class="status-indicator">
 
-                    <span
-                        class="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-60 animate-ping"
-                    ></span>
+                    <span class="status-ping animate-ping"></span>
 
-                    <span
-                        class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"
-                    ></span>
+                    <span class="status-dot"></span>
 
                 </span>
 
-                <span class="text-xs font-medium text-slate-500">
+                <span class="status-text">
                     Sistema activo
                 </span>
 
             </div>
 
-
             <!-- USUARIO -->
 
-            <div
-                class="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-slate-200"
-            >
+            <div class="user-info">
 
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -179,7 +973,6 @@
                     viewBox="0 0 24 24"
                     stroke-width="1.8"
                     stroke="currentColor"
-                    class="w-4 h-4 text-apch-700"
                 >
 
                     <path
@@ -190,25 +983,67 @@
 
                 </svg>
 
-                <span class="text-xs font-semibold text-slate-700">
+                <span class="user-name">
                     {{ auth()->user()->name }}
                 </span>
 
             </div>
 
+            <!-- CAMBIAR CONTRASEÑA -->
+
+            <a
+                href="{{ route('password.edit') }}"
+                title="Cambiar contraseña"
+                class="header-action"
+            >
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.8"
+                    stroke="currentColor"
+                >
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M16.5 10.5V6.75a4.5 4.5 0 00-9 0v3.75"
+                    />
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M5.25 10.5h13.5v9H5.25v-9z"
+                    />
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 14.25v1.5"
+                    />
+
+                </svg>
+
+                <span>
+                    Cambiar contraseña
+                </span>
+
+            </a>
 
             <!-- CERRAR SESIÓN -->
 
             <form
                 method="POST"
                 action="{{ route('logout') }}"
+                class="logout-form"
             >
 
                 @csrf
 
                 <button
                     type="submit"
-                    class="group flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-lg border border-apch-700 bg-white text-xs font-semibold text-apch-700 transition-all duration-300 hover:bg-apch-700 hover:text-white hover:shadow-md"
+                    class="logout-button"
                 >
 
                     <svg
@@ -217,7 +1052,6 @@
                         viewBox="0 0 24 24"
                         stroke-width="1.8"
                         stroke="currentColor"
-                        class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5"
                     >
 
                         <path
@@ -228,7 +1062,7 @@
 
                     </svg>
 
-                    <span class="hidden sm:inline">
+                    <span>
                         Cerrar sesión
                     </span>
 
@@ -242,74 +1076,51 @@
 
 </header>
 
-
 <!-- =========================================
      CONTENIDO
 ========================================== -->
 
-<main class="flex-1">
+<main class="main-content">
 
-    <div
-        class="max-w-7xl mx-auto px-5 sm:px-8 py-8 sm:py-10"
-    >
-
+    <div class="main-container">
 
         <!-- =================================
              PANEL DE BIENVENIDA
         ================================== -->
 
-        <section
-            class="relative overflow-hidden rounded-2xl bg-apch-700 text-white shadow-lg mb-8 animate-fade-up"
-        >
+        <section class="welcome-panel">
 
             <!-- Decoraciones -->
 
-            <div
-                class="absolute -right-20 -top-24 w-72 h-72 rounded-full border border-white/10"
-            ></div>
+            <div class="welcome-decoration-1"></div>
 
-            <div
-                class="absolute -right-10 -bottom-28 w-64 h-64 rounded-full bg-black/10"
-            ></div>
+            <div class="welcome-decoration-2"></div>
 
-            <div
-                class="absolute left-1/2 -bottom-24 w-48 h-48 rounded-full border border-white/5"
-            ></div>
+            <div class="welcome-decoration-3"></div>
 
+            <div class="welcome-content">
 
-            <div class="relative p-6 sm:p-8 lg:p-9">
-
-                <div
-                    class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6"
-                >
+                <div class="welcome-row">
 
                     <div>
 
-                        <div class="flex items-center gap-2 mb-3">
+                        <div class="welcome-badges">
 
-                            <span
-                                class="px-3 py-1.5 rounded-full bg-white/15 border border-white/20 text-white text-[11px] font-bold uppercase tracking-wider"
-                            >
+                            <span class="welcome-badge">
                                 Secretaría DECE
                             </span>
 
-                            <span class="text-xs text-white/60">
+                            <span class="welcome-panel-label">
                                 Panel principal
                             </span>
 
                         </div>
 
-
-                        <h2
-                            class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight"
-                        >
+                        <h2 class="welcome-title">
                             Bienvenido, {{ auth()->user()->name }}
                         </h2>
 
-
-                        <p
-                            class="mt-3 text-sm sm:text-base text-white/75 max-w-2xl leading-6"
-                        >
+                        <p class="welcome-description">
                             Acceda a los formularios institucionales
                             del Departamento de Consejería Estudiantil
                             para su llenado e impresión.
@@ -317,12 +1128,9 @@
 
                     </div>
 
-
                     <!-- ICONO -->
 
-                    <div
-                        class="hidden sm:flex w-16 h-16 lg:w-20 lg:h-20 rounded-2xl bg-white/15 border border-white/20 items-center justify-center animate-float"
-                    >
+                    <div class="welcome-icon">
 
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -330,7 +1138,6 @@
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="w-8 h-8 lg:w-10 lg:h-10 text-white"
                         >
 
                             <path
@@ -355,36 +1162,27 @@
 
         </section>
 
-
         <!-- =================================
              SECCIÓN FORMULARIOS
         ================================== -->
 
-        <div class="flex items-center justify-between mb-5">
+        <div class="section-heading">
 
-            <div>
+            <div class="section-heading-content">
 
-                <h3
-                    class="text-xl sm:text-2xl font-bold text-slate-900"
-                >
+                <h3 class="section-title">
                     Formularios DECE
                 </h3>
 
-                <p
-                    class="text-sm text-slate-500 mt-1"
-                >
+                <p class="section-description">
                     Acceda al catálogo de formularios institucionales.
                 </p>
 
             </div>
 
-
-            <div
-                class="hidden sm:block h-px flex-1 bg-slate-200 ml-6"
-            ></div>
+            <div class="section-line"></div>
 
         </div>
-
 
         <!-- =================================
              TARJETA PRINCIPAL
@@ -392,38 +1190,26 @@
 
         <a
             href="{{ route('formularios.index') }}"
-            class="group relative block overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-apch-200 hover:shadow-lg animate-fade-up"
+            class="forms-card"
         >
 
             <!-- Barra roja -->
 
-            <div
-                class="absolute top-0 left-0 right-0 h-1 bg-apch-700"
-            ></div>
-
+            <div class="forms-card-bar"></div>
 
             <!-- Decoración -->
 
-            <div
-                class="absolute -right-16 -top-20 w-64 h-64 rounded-full border border-apch-100 transition-transform duration-700 group-hover:scale-110"
-            ></div>
+            <div class="forms-card-decoration"></div>
 
+            <div class="forms-card-content">
 
-            <div
-                class="relative p-7 sm:p-9"
-            >
-
-                <div
-                    class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8"
-                >
+                <div class="forms-card-row">
 
                     <!-- INFORMACIÓN -->
 
-                    <div class="flex items-start gap-5">
+                    <div class="forms-card-information">
 
-                        <div
-                            class="flex-shrink-0 w-14 h-14 rounded-2xl bg-apch-50 border border-apch-100 text-apch-700 flex items-center justify-center transition-all duration-300 group-hover:bg-apch-700 group-hover:text-white group-hover:scale-105"
-                        >
+                        <div class="forms-card-icon">
 
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -431,7 +1217,6 @@
                                 viewBox="0 0 24 24"
                                 stroke-width="1.7"
                                 stroke="currentColor"
-                                class="w-7 h-7"
                             >
 
                                 <path
@@ -450,34 +1235,23 @@
 
                         </div>
 
-
                         <div>
 
-                            <h4
-                                class="text-xl sm:text-2xl font-bold text-slate-900"
-                            >
+                            <h4 class="forms-card-title">
                                 Formularios disponibles
                             </h4>
 
-
-                            <p
-                                class="mt-2 text-sm sm:text-base leading-6 text-slate-500 max-w-2xl"
-                            >
+                            <p class="forms-card-description">
                                 Acceda a los formularios del Departamento
                                 de Consejería Estudiantil para realizar
                                 su llenado e impresión.
                             </p>
 
-
-                            <div
-                                class="mt-5 flex items-center gap-2 text-sm font-bold text-apch-700"
-                            >
+                            <div class="open-forms">
 
                                 Abrir formularios
 
-                                <span
-                                    class="transition-transform duration-300 group-hover:translate-x-1"
-                                >
+                                <span class="open-forms-arrow">
                                     →
                                 </span>
 
@@ -487,12 +1261,9 @@
 
                     </div>
 
-
                     <!-- FLECHA -->
 
-                    <div
-                        class="hidden sm:flex w-12 h-12 rounded-full border border-slate-200 items-center justify-center text-slate-400 transition-all duration-300 group-hover:bg-apch-700 group-hover:border-apch-700 group-hover:text-white"
-                    >
+                    <div class="forms-card-arrow">
 
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -500,7 +1271,6 @@
                             viewBox="0 0 24 24"
                             stroke-width="1.8"
                             stroke="currentColor"
-                            class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
                         >
 
                             <path
@@ -523,57 +1293,39 @@
 
 </main>
 
-
 <!-- =========================================
      PIE DE PÁGINA
 ========================================== -->
 
-<footer
-    class="bg-black text-white mt-auto"
->
+<footer class="site-footer">
 
-    <div
-        class="max-w-7xl mx-auto px-5 sm:px-8 py-7"
-    >
+    <div class="footer-container">
 
-        <div
-            class="flex flex-col md:flex-row items-center justify-between gap-5"
-        >
+        <div class="footer-main">
 
-            <div class="text-center md:text-left">
+            <div class="footer-brand">
 
-                <p
-                    class="text-sm font-bold text-white"
-                >
+                <p class="footer-title">
                     Sistema de Formularios Digitales del DECE
                 </p>
 
-                <p
-                    class="mt-1 text-xs text-white/50"
-                >
+                <p class="footer-institution">
                     Unidad Educativa "Ángel Polibio Chaves"
                 </p>
 
             </div>
 
+            <div class="footer-author">
 
-            <div class="text-center md:text-right">
-
-                <p
-                    class="text-xs font-semibold text-white/80"
-                >
+                <p class="footer-author-label">
                     Desarrollado por
                 </p>
 
-                <p
-                    class="mt-1 text-sm font-bold text-white"
-                >
+                <p class="footer-author-name">
                     Stalyn Alvarado
                 </p>
 
-                <p
-                    class="text-xs text-white/40"
-                >
+                <p class="footer-email">
                     tu-correo@ejemplo.com
                 </p>
 
@@ -581,14 +1333,9 @@
 
         </div>
 
+        <div class="footer-bottom">
 
-        <div
-            class="mt-5 pt-4 border-t border-white/10 text-center"
-        >
-
-            <p
-                class="text-[11px] text-white/40"
-            >
+            <p class="footer-bottom-text">
                 Departamento de Consejería Estudiantil · APCH · 2026-2027
             </p>
 
@@ -597,10 +1344,6 @@
     </div>
 
 </footer>
-
-
 </body>
 
 </html>
-
-

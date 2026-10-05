@@ -161,11 +161,17 @@
         background: #ffffff;
         padding: 12mm 15mm 10mm 15mm;
         position: relative;
-        font-family: Calibri, Arial, Helvetica, sans-serif;
+        font-family: "Times New Roman", Times, serif;
         color: #000;
         box-shadow: 0 2px 14px rgba(0, 0, 0, 0.18);
         zoom: var(--zoom-documento, 1);
         transform-origin: top center;
+    }
+
+    .page input,
+    .page textarea,
+    .page select {
+        font-family: "Times New Roman", Times, serif;
     }
 
     /* ===== ENCABEZADO ===== */
@@ -257,15 +263,17 @@
     .fill-inline {
         font-family: inherit;
         font-size: 10.5px;
-        border: none;
-        border-bottom: 1px dotted #000;
+        border: none !important;
+        border-bottom: none !important;
         background: transparent;
         outline: none;
         width: 55%;
     }
 
     .fill-inline:focus {
-        border-bottom: 1px solid #000;
+        border: none !important;
+        border-bottom: none !important;
+        outline: none;
     }
 
     .consent-header {
@@ -287,8 +295,8 @@
     .consent-body input[type="text"] {
         font-family: inherit;
         font-size: 10.5px;
-        border: none;
-        border-bottom: 1px dotted #000;
+        border: none !important;
+        border-bottom: none !important;
         background: transparent;
         outline: none;
     }
@@ -325,14 +333,7 @@
         font-family: inherit;
         font-size: 10.5px;
         line-height: 32px;
-        background-image: repeating-linear-gradient(
-            to bottom,
-            transparent,
-            transparent 31px,
-            #000 31px,
-            #000 32px
-        );
-        background-attachment: local;
+        background: transparent;
     }
 
     .consent-body2 {
@@ -474,13 +475,7 @@
         }
 
         .writing-space textarea {
-            background-image: repeating-linear-gradient(
-                to bottom,
-                transparent,
-                transparent 31px,
-                #000 31px,
-                #000 32px
-            );
+            background: transparent;
         }
     }
 </style>
@@ -703,7 +698,7 @@
                     <input
                         type="date"
                         class="fill-inline"
-                        style="width:40%;border-bottom:1px dotted #000;"
+                        style="width:40%;"
                         name="fecha"
                         data-draft="true"
                     >

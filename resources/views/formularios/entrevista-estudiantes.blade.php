@@ -438,6 +438,35 @@
         outline: none;
         background: #fafff0;
     }
+    .radio-x {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin-left: 4px;
+    cursor: pointer;
+}
+.radio-x input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+.radio-box {
+    width: 14px;
+    height: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #000;
+    border-radius: 0;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+}
+.radio-x input:checked + .radio-box::after {
+    content: "x";
+    color: #000;
+}
 
     /* ===== IMPRESION ===== */
 
@@ -622,47 +651,56 @@
     <!-- ===== OPCIONES ===== -->
 
     <p class="plainline">
-        Identificación de la problemática:&nbsp;
+    Identificación de la problemática:&nbsp;
+    Iniciativa del representante
+<label class="radio-x">
+    <input
+        type="radio"
+        name="identificacion_problematica"
+        value="iniciativa_representante"
+    >
+    <span class="radio-box"></span>
+</label>
 
-        Iniciativa del representante
-        <input
-            type="radio"
-            name="identificacion_problematica"
-            value="iniciativa_representante"
-        >
+&nbsp;&nbsp;&nbsp;&nbsp;
 
-        &nbsp;&nbsp;&nbsp;&nbsp;
-
-        Alerta de otro miembro de la comunidad educativa
-        <input
-            type="radio"
-            name="identificacion_problematica"
-            value="alerta_comunidad"
-        >
-    </p>
+Alerta de otro miembro de la comunidad educativa
+<label class="radio-x">
+    <input
+        type="radio"
+        name="identificacion_problematica"
+        value="alerta_comunidad"
+    >
+    <span class="radio-box"></span>
+</label>
+</p>
 
 
-    <p class="plainline">
-        Consentimiento informado del representante
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<p class="plainline">
+    Consentimiento informado del representante
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Si
+<label class="radio-x">
+    <input
+        type="radio"
+        name="consentimiento_representante"
+        value="si"
+    >
+    <span class="radio-box"></span>
+</label>
 
-        Si
-        <input
-            type="radio"
-            name="consentimiento_representante"
-            value="si"
-        >
+&nbsp;&nbsp;
 
-        &nbsp;&nbsp;
-
-        No
-        <input
-            type="radio"
-            name="consentimiento_representante"
-            value="no"
-        >
-    </p>
-
+No
+<label class="radio-x">
+    <input
+        type="radio"
+        name="consentimiento_representante"
+        value="no"
+    >
+    <span class="radio-box"></span>
+</label>
+</p>
 
     <!-- ==================== A ==================== -->
 

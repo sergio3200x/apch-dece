@@ -1,4 +1,3 @@
-
 <html>
 <head>
 <meta charset="UTF-8">
@@ -180,6 +179,14 @@
 
         zoom: var(--zoom-documento, 1);
         transform-origin: top center;
+
+        font-family: "Times New Roman", Times, serif;
+    }
+
+    .page input,
+    .page textarea,
+    .page select {
+        font-family: "Times New Roman", Times, serif;
     }
 
     /* ===== HEADER ===== */
@@ -222,6 +229,11 @@
     }
 
     .header-text .line3 {
+        font-size: 12px;
+        line-height: 1.3;
+    }
+
+    .header-text .line4 {
         font-size: 12px;
         line-height: 1.3;
     }
@@ -310,18 +322,9 @@
         font-size: 12px;
         line-height: 20px;
 
-        background-image:
-            linear-gradient(
-                to bottom,
-                transparent 19px,
-                #999 19px,
-                #999 20px,
-                transparent 20px
-            );
-
-        background-size: 100% 20px;
-        background-repeat: repeat-y;
-        background-attachment: local;
+        /* Se eliminan las líneas para escribir */
+        background: transparent;
+        background-image: none;
     }
 
     textarea.description:focus {
@@ -393,6 +396,14 @@
             zoom: 1 !important;
 
             page-break-after: always;
+
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        .page input,
+        .page textarea,
+        .page select {
+            font-family: "Times New Roman", Times, serif;
         }
 
         .page:last-child {
@@ -400,17 +411,8 @@
         }
 
         textarea.description {
-            background-image:
-                linear-gradient(
-                    to bottom,
-                    transparent 19px,
-                    #999 19px,
-                    #999 20px,
-                    transparent 20px
-                );
-
-            background-size: 100% 20px;
-            background-repeat: repeat-y;
+            background: transparent !important;
+            background-image: none !important;
         }
     }
 </style>
@@ -529,6 +531,10 @@
 
             <div class="line3">
                 San Miguel - Provincia Bolívar - Ecuador
+            </div>
+
+            <div class="line4">
+                DEPARTAMENTO DE CONSEJERIA ESTUDIANTIL
             </div>
 
         </div>

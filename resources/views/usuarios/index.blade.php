@@ -1,956 +1,1962 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Usuarios | APCH</title>
+    <title>Usuarios | APCH</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
+    <style>
 
-<script>
+        /* =========================================================
+           VARIABLES
+        ========================================================= */
 
-    tailwind.config = {
+        :root {
+            --apch-50: #fff5f5;
+            --apch-100: #fee2e2;
+            --apch-200: #fecaca;
+            --apch-300: #fca5a5;
+            --apch-400: #f87171;
+            --apch-500: #ef4444;
+            --apch-600: #dc2626;
+            --apch-700: #b30000;
+            --apch-800: #8f0000;
+            --apch-900: #650000;
 
-        theme: {
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
 
-            extend: {
+            --green-50: #f0fdf4;
+            --green-100: #dcfce7;
+            --green-200: #bbf7d0;
+            --green-400: #4ade80;
+            --green-500: #22c55e;
+            --green-600: #16a34a;
+            --green-700: #15803d;
+            --green-800: #166534;
+        }
 
-                fontFamily: {
 
-                    sans: ['Segoe UI', 'Arial', 'sans-serif'],
+        /* =========================================================
+           RESET GENERAL
+        ========================================================= */
 
-                },
+        * {
+            box-sizing: border-box;
+        }
 
-                colors: {
+        html {
+            scroll-behavior: smooth;
+        }
 
-                    apch: {
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--slate-100);
+            color: var(--slate-800);
+            font-family: "Segoe UI", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
 
-                        50: '#fff5f5',
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-                        100: '#fee2e2',
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
 
-                        200: '#fecaca',
 
-                        300: '#fca5a5',
+        /* =========================================================
+           ANIMACIONES
+        ========================================================= */
 
-                        400: '#f87171',
+        @keyframes fadeUp {
 
-                        500: '#ef4444',
+            0% {
+                opacity: 0;
+                transform: translateY(18px);
+            }
 
-                        600: '#dc2626',
-
-                        700: '#b30000',
-
-                        800: '#8f0000',
-
-                        900: '#650000',
-
-                    }
-
-                },
-
-                animation: {
-
-                    'fade-up': 'fadeUp 0.6s ease-out forwards',
-
-                    'fade-in': 'fadeIn 0.5s ease-out forwards',
-
-                },
-
-                keyframes: {
-
-                    fadeUp: {
-
-                        '0%': {
-
-                            opacity: '0',
-
-                            transform: 'translateY(18px)'
-
-                        },
-
-                        '100%': {
-
-                            opacity: '1',
-
-                            transform: 'translateY(0)'
-
-                        }
-
-                    },
-
-                    fadeIn: {
-
-                        '0%': {
-
-                            opacity: '0'
-
-                        },
-
-                        '100%': {
-
-                            opacity: '1'
-
-                        }
-
-                    }
-
-                }
-
+            100% {
+                opacity: 1;
+                transform: translateY(0);
             }
 
         }
 
-    }
 
-</script>
+        @keyframes fadeIn {
 
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+
+        }
+
+
+        @keyframes ping {
+
+            0% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+
+            75%,
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+
+        }
+
+
+        .animate-fade-up {
+            animation: fadeUp 0.6s ease-out forwards;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+
+        /* =========================================================
+           CABECERA
+        ========================================================= */
+
+        .site-header {
+            margin: 16px 4px 0;
+            border: 2px solid #000;
+            border-radius: 12px;
+            background: #e2e8f0;
+            overflow: hidden;
+        }
+
+
+        .header-container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-width: 0;
+        }
+
+
+        .logo-container {
+            width: 64px;
+            height: 64px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+            border: 1px solid var(--slate-200);
+        }
+
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+
+        .header-title {
+            margin: 0;
+            color: var(--slate-900);
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.25;
+            letter-spacing: -0.025em;
+        }
+
+
+        .header-subtitle {
+            margin: 4px 0 0;
+            color: var(--slate-500);
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+
+        /* =========================================================
+           ESTADO DEL SISTEMA
+        ========================================================= */
+
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: 1px solid #bbf7d0;
+            border-radius: 999px;
+            background: var(--green-50);
+            color: var(--green-700);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        .status-dot-container {
+            position: relative;
+            display: flex;
+            width: 10px;
+            height: 10px;
+        }
+
+
+        .status-dot-ping {
+            position: absolute;
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--green-400);
+            opacity: 0.6;
+            animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+
+        .status-dot {
+            position: relative;
+            display: block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--green-500);
+        }
+
+
+        /* =========================================================
+           BOTÓN CERRAR SESIÓN
+        ========================================================= */
+
+        .logout-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: 2px solid var(--slate-200);
+            border-radius: 12px;
+            background: #fff;
+            color: var(--slate-700);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition:
+                border-color 0.3s ease,
+                background 0.3s ease,
+                color 0.3s ease;
+        }
+
+
+        .logout-button svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+        }
+
+
+        .logout-button:hover {
+            border-color: var(--apch-700);
+            background: var(--apch-700);
+            color: #fff;
+        }
+
+
+        .logout-button:hover svg {
+            transform: translateX(2px);
+        }
+
+
+        /* =========================================================
+           CONTENIDO PRINCIPAL
+        ========================================================= */
+
+        main {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+
+        /* =========================================================
+           TÍTULO
+        ========================================================= */
+
+        .page-heading {
+            margin-bottom: 32px;
+        }
+
+
+        .page-heading-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+
+        .section-label-dot {
+            width: 10px;
+            height: 10px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: var(--apch-700);
+        }
+
+
+        .section-label-text {
+            margin: 0;
+            color: var(--apch-700);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+
+        .page-title {
+            margin: 0;
+            color: var(--slate-900);
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.025em;
+        }
+
+
+        .page-description {
+            max-width: 672px;
+            margin: 12px 0 0;
+            color: var(--slate-500);
+            font-size: 18px;
+            line-height: 1.75;
+        }
+
+
+        /* =========================================================
+           BOTÓN CREAR USUARIO
+        ========================================================= */
+
+        .create-user-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 24px;
+            border-radius: 16px;
+            background: var(--apch-700);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            box-shadow: 0 10px 15px -3px rgba(127, 29, 29, 0.10);
+            transition:
+                transform 0.3s ease,
+                background 0.3s ease,
+                box-shadow 0.3s ease;
+            white-space: nowrap;
+        }
+
+
+        .create-user-button:hover {
+            transform: translateY(-4px);
+            background: var(--apch-800);
+            box-shadow: 0 20px 25px -5px rgba(127, 29, 29, 0.12);
+        }
+
+
+        .create-user-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.20);
+        }
+
+
+        .create-user-icon svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+        }
+
+
+        .create-user-button:hover .create-user-icon svg {
+            transform: rotate(90deg);
+        }
+
+
+        /* =========================================================
+           MENSAJE DE ÉXITO
+        ========================================================= */
+
+        .success-message {
+            margin-bottom: 32px;
+            padding: 20px 24px;
+            border: 2px solid var(--green-200);
+            border-radius: 16px;
+            background: var(--green-50);
+        }
+
+
+        .success-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+
+        .success-icon {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--green-100);
+            color: var(--green-700);
+        }
+
+
+        .success-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+
+        .success-title {
+            margin: 0;
+            color: var(--green-800);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+
+        .success-text {
+            margin: 4px 0 0;
+            color: var(--green-700);
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+           RESUMEN
+        ========================================================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+
+        .summary-card {
+            padding: 24px;
+            border: 2px solid var(--slate-200);
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+
+        .summary-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.10);
+        }
+
+
+        .summary-card-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+
+        .summary-label {
+            margin: 0;
+            color: var(--slate-500);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+
+        .summary-number {
+            margin: 8px 0 0;
+            color: var(--slate-900);
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+
+        .summary-icon {
+            width: 56px;
+            height: 56px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: var(--apch-50);
+            color: var(--apch-700);
+        }
+
+
+        .summary-icon svg {
+            width: 28px;
+            height: 28px;
+        }
+
+
+        /* =========================================================
+           TABLA
+        ========================================================= */
+
+        .users-section {
+            overflow: hidden;
+            border: 2px solid var(--slate-200);
+            border-radius: 24px;
+            background: #fff;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+        }
+
+
+        .table-header {
+            padding: 24px 32px;
+            border-bottom: 2px solid var(--slate-100);
+        }
+
+
+        .table-header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+
+        .table-title {
+            margin: 0;
+            color: var(--slate-900);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+
+        .table-description {
+            margin: 4px 0 0;
+            color: var(--slate-500);
+            font-size: 14px;
+        }
+
+
+        .access-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border: 1px solid var(--apch-200);
+            border-radius: 999px;
+            background: var(--apch-50);
+            color: var(--apch-700);
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+
+        .access-badge svg {
+            width: 20px;
+            height: 20px;
+        }
+
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+
+        .users-table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+        }
+
+
+        .users-table thead tr {
+            background: var(--slate-50);
+        }
+
+
+        .users-table th {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--slate-200);
+            color: var(--slate-500);
+            font-size: 14px;
+            font-weight: 700;
+            text-align: left;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+
+        .users-table td {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--slate-100);
+        }
+
+
+        .users-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+
+        .users-table tbody tr:hover {
+            background: rgba(254, 242, 242, 0.40);
+        }
+
+
+        /* =========================================================
+           INFORMACIÓN DEL USUARIO
+        ========================================================= */
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--apch-50);
+            color: var(--apch-700);
+            font-size: 16px;
+            font-weight: 700;
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+
+        .users-table tbody tr:hover .user-avatar {
+            background: var(--apch-700);
+            color: #fff;
+        }
+
+
+        .user-name {
+            margin: 0;
+            color: var(--slate-800);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+
+        .user-account {
+            margin: 4px 0 0;
+            color: var(--slate-400);
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+           NOMBRE DE USUARIO
+        ========================================================= */
+
+        .username-badge {
+            display: inline-flex;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: var(--slate-100);
+            color: var(--slate-600);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        /* =========================================================
+           ROLES
+        ========================================================= */
+
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: var(--apch-50);
+            color: var(--apch-700);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+        .role-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--apch-700);
+        }
+
+
+        /* =========================================================
+           ESTADOS
+        ========================================================= */
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+        .status-active {
+            background: var(--green-50);
+            color: var(--green-700);
+        }
+
+
+        .status-inactive {
+            background: var(--slate-100);
+            color: var(--slate-500);
+        }
+
+
+        .status-dot-wrapper {
+            position: relative;
+            display: flex;
+            width: 10px;
+            height: 10px;
+        }
+
+
+        .status-active .status-dot-wrapper::before {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--green-400);
+            opacity: 0.5;
+            animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+
+        .status-active .status-dot-wrapper::after {
+            content: "";
+            position: relative;
+            display: block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--green-500);
+        }
+
+
+        .status-inactive .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--slate-400);
+        }
+
+
+        /* =========================================================
+           BOTONES DE ACCIÓN
+        ========================================================= */
+
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+
+        .action-button svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.2s ease;
+        }
+
+
+        .action-button:hover svg {
+            transform: scale(1.1);
+        }
+
+
+        .deactivate-button {
+            border: 1px solid var(--apch-200);
+            background: var(--apch-50);
+            color: var(--apch-700);
+        }
+
+
+        .deactivate-button:hover {
+            border-color: var(--apch-700);
+            background: var(--apch-700);
+            color: #fff;
+        }
+
+
+        .reactivate-button {
+            border: 1px solid var(--green-200);
+            background: var(--green-50);
+            color: var(--green-700);
+        }
+
+
+        .reactivate-button:hover {
+            border-color: var(--green-600);
+            background: var(--green-600);
+            color: #fff;
+        }
+
+
+        /* =========================================================
+           TABLA VACÍA
+        ========================================================= */
+
+        .empty-cell {
+            padding: 80px 24px !important;
+            text-align: center !important;
+        }
+
+
+        .empty-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .empty-icon {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: var(--apch-50);
+            color: var(--apch-700);
+        }
+
+
+        .empty-icon svg {
+            width: 32px;
+            height: 32px;
+        }
+
+
+        .empty-title {
+            margin: 20px 0 0;
+            color: var(--slate-700);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+
+        .empty-description {
+            margin: 4px 0 0;
+            color: var(--slate-400);
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+           PIE DE PÁGINA
+        ========================================================= */
+
+        .site-footer {
+            margin-top: 32px;
+            background: #000;
+            color: #fff;
+        }
+
+
+        .footer-container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            text-align: center;
+        }
+
+
+        .footer-title {
+            margin: 0;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+        .footer-subtitle {
+            margin: 4px 0 0;
+            color: rgba(255, 255, 255, 0.60);
+            font-size: 12px;
+        }
+
+
+        .footer-developer {
+            margin: 0;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        .footer-email {
+            margin: 4px 0 0;
+            color: rgba(255, 255, 255, 0.60);
+            font-size: 12px;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (min-width: 640px) {
+
+            .header-title {
+                font-size: 24px;
+            }
+
+            .header-subtitle {
+                font-size: 16px;
+            }
+
+            .page-heading-content {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .table-header-content {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .footer-container {
+                flex-direction: row;
+                text-align: left;
+            }
+
+        }
+
+
+        @media (min-width: 768px) {
+
+            main {
+                padding-top: 48px;
+                padding-bottom: 48px;
+            }
+
+        }
+
+
+        @media (min-width: 1024px) {
+
+            .header-container {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+
+            main {
+                padding-left: 40px;
+                padding-right: 40px;
+                padding-top: 40px;
+                padding-bottom: 40px;
+            }
+
+            .footer-container {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+
+        }
+
+
+        @media (max-width: 639px) {
+
+            .header-container {
+                padding: 16px;
+                gap: 12px;
+            }
+
+            .logo-container {
+                width: 52px;
+                height: 52px;
+                border-radius: 13px;
+            }
+
+            .header-title {
+                font-size: 17px;
+            }
+
+            .header-subtitle {
+                display: none;
+            }
+
+            .system-status {
+                display: none;
+            }
+
+            .logout-button {
+                padding: 9px 11px;
+                font-size: 0;
+            }
+
+            .logout-button svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            main {
+                padding: 32px 16px;
+            }
+
+            .page-title {
+                font-size: 36px;
+            }
+
+            .page-description {
+                font-size: 16px;
+                line-height: 1.6;
+            }
+
+            .create-user-button {
+                width: 100%;
+            }
+
+            .table-header {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
-<body class="min-h-screen bg-slate-100 text-slate-800 font-sans">
 
-<!-- ========================================================= -->
+<body>
 
-<!-- CABECERA -->
+    <!-- =========================================================
+         CABECERA
+    ========================================================== -->
 
-<!-- ========================================================= -->
+    <header class="site-header">
 
-<header class="mx-4 mt-4 overflow-hidden rounded-[24px] border-2 border-black bg-white shadow-sm sm:mx-6 lg:mx-8">
+        <div class="header-container">
 
+            <!-- IZQUIERDA -->
 
-<div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-5 lg:px-10">
+            <div class="header-left">
 
-    <!-- IZQUIERDA -->
+                <div class="logo-container">
 
-    <div class="flex items-center gap-4">
+                    <img
+                        src="{{ asset('images/logo-apch.png') }}"
+                        alt="Logo APCH"
+                    >
 
-        <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white p-1.5 shadow-sm ring-1 ring-slate-200">
-
-            <img
-                src="{{ asset('images/logo-apch.png') }}"
-                alt="Logo APCH"
-                class="h-full w-full object-contain"
-            >
-
-        </div>
+                </div>
 
 
-        <div>
+                <div>
 
-            <h1 class="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+                    <h1 class="header-title">
 
-                Sistema de Formularios Digitales
+                        Sistema de Formularios Digitales
 
-            </h1>
-
-            <p class="mt-1 text-sm font-medium text-slate-500 sm:text-base">
-
-                UNIDAD EDUCATIVA "ÁNGEL POLIBIO CHAVES"
-
-            </p>
-
-        </div>
-
-    </div>
+                    </h1>
 
 
-    <!-- DERECHA -->
+                    <p class="header-subtitle">
 
-    <div class="flex items-center gap-3">
+                        UNIDAD EDUCATIVA "ÁNGEL POLIBIO CHAVES"
 
-        <!-- SISTEMA ACTIVO -->
+                    </p>
 
-        <div class="hidden items-center gap-2 rounded-full border border-green-200 bg-green-50 px-4 py-2.5 text-sm font-semibold text-green-700 sm:flex">
+                </div>
 
-            <span class="relative flex h-2.5 w-2.5">
-
-                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-60"></span>
-
-                <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500"></span>
-
-            </span>
-
-            Sistema activo
-
-        </div>
+            </div>
 
 
-        <!-- CERRAR SESIÓN -->
+            <!-- DERECHA -->
 
-        <form
-            method="POST"
-            action="{{ route('logout') }}"
-        >
+            <div class="header-right">
 
-            @csrf
+                <!-- SISTEMA ACTIVO -->
 
-            <button
-                type="submit"
-                class="group flex items-center gap-2 rounded-xl border-2 border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 transition-all duration-300 hover:border-apch-700 hover:bg-apch-700 hover:text-white"
-            >
+                <div class="system-status">
 
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
+                    <span class="status-dot-container">
+
+                        <span class="status-dot-ping"></span>
+
+                        <span class="status-dot"></span>
+
+                    </span>
+
+                    Sistema activo
+
+                </div>
+
+
+                <!-- CERRAR SESIÓN -->
+
+                <form
+                    method="POST"
+                    action="{{ route('logout') }}"
                 >
 
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"
-                    />
+                    @csrf
 
-                </svg>
+                    <button
+                        type="submit"
+                        class="logout-button"
+                    >
 
-                Cerrar sesión
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
 
-            </button>
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"
+                            />
 
-        </form>
+                        </svg>
 
-    </div>
+                        Cerrar sesión
 
-</div>
+                    </button>
 
-
-</header>
-
-<!-- ========================================================= -->
-
-<!-- CONTENIDO -->
-
-<!-- ========================================================= -->
-
-<main class="mx-auto max-w-7xl px-6 py-10 lg:px-10">
-
-
-<!-- ===================================================== -->
-<!-- TÍTULO -->
-<!-- ===================================================== -->
-
-<section class="mb-8 animate-fade-up">
-
-    <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-
-        <div>
-
-            <div class="mb-2 flex items-center gap-2">
-
-                <span class="h-2.5 w-2.5 rounded-full bg-apch-700"></span>
-
-                <p class="text-sm font-bold uppercase tracking-[0.2em] text-apch-700">
-
-                    Administración
-
-                </p>
-
-            </div>
-
-
-            <h2 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-
-                Gestión de usuarios
-
-            </h2>
-
-
-            <p class="mt-3 max-w-2xl text-base leading-7 text-slate-500 sm:text-lg">
-
-                Administre las cuentas, roles y estados de acceso
-                de los usuarios del sistema institucional.
-
-            </p>
-
-        </div>
-
-
-        <!-- CREAR USUARIO -->
-
-        <a
-            href="{{ route('usuarios.create') }}"
-            class="group inline-flex items-center justify-center gap-3 rounded-2xl bg-apch-700 px-6 py-4 text-base font-bold text-white shadow-lg shadow-red-900/10 transition-all duration-300 hover:-translate-y-1 hover:bg-apch-800 hover:shadow-xl"
-        >
-
-            <span class="flex h-7 w-7 items-center justify-center rounded-full bg-white/20">
-
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5 transition-transform duration-300 group-hover:rotate-90"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                >
-
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 4v16m8-8H4"
-                    />
-
-                </svg>
-
-            </span>
-
-            Crear usuario
-
-        </a>
-
-    </div>
-
-</section>
-
-
-<!-- ===================================================== -->
-<!-- MENSAJE DE ÉXITO -->
-<!-- ===================================================== -->
-
-@if (session('success'))
-
-    <div class="mb-8 animate-fade-in rounded-2xl border-2 border-green-200 bg-green-50 px-6 py-5">
-
-        <div class="flex items-center gap-4">
-
-            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-green-100 text-green-700">
-
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                >
-
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M5 13l4 4L19 7"
-                    />
-
-                </svg>
-
-            </div>
-
-
-            <div>
-
-                <p class="text-base font-bold text-green-800">
-
-                    Operación realizada correctamente
-
-                </p>
-
-                <p class="mt-1 text-sm text-green-700">
-
-                    {{ session('success') }}
-
-                </p>
+                </form>
 
             </div>
 
         </div>
 
-    </div>
-
-@endif
+    </header>
 
 
-<!-- ===================================================== -->
-<!-- RESUMEN -->
-<!-- ===================================================== -->
+    <!-- =========================================================
+         CONTENIDO
+    ========================================================== -->
 
-@php
+    <main>
 
-    $totalUsuarios = $usuarios->count();
+        <!-- =====================================================
+             TÍTULO
+        ====================================================== -->
 
-    $usuariosActivos = $usuarios->where('status', true)->count();
+        <section class="page-heading animate-fade-up">
 
-    $usuariosInactivos = $usuarios->where('status', false)->count();
+            <div class="page-heading-content">
 
-@endphp
+                <div>
 
+                    <div class="section-label">
 
-<section class="mb-8 grid gap-5 sm:grid-cols-3 animate-fade-up">
+                        <span class="section-label-dot"></span>
 
+                        <p class="section-label-text">
 
-    <!-- TOTAL -->
+                            Administración
 
-    <div class="rounded-2xl border-2 border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+                        </p>
 
-        <div class="flex items-center justify-between">
-
-            <div>
-
-                <p class="text-sm font-bold uppercase tracking-wide text-slate-500">
-
-                    Total de usuarios
-
-                </p>
-
-                <p class="mt-2 text-4xl font-bold text-slate-900">
-
-                    {{ $totalUsuarios }}
-
-                </p>
-
-            </div>
+                    </div>
 
 
-            <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 text-apch-700">
+                    <h2 class="page-title">
 
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-7 w-7"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="1.8"
+                        Gestión de usuarios
+
+                    </h2>
+
+
+                    <p class="page-description">
+
+                        Administre las cuentas, roles y estados de acceso
+                        de los usuarios del sistema institucional.
+
+                    </p>
+
+                </div>
+
+
+                <!-- CREAR USUARIO -->
+
+                <a
+                    href="{{ route('usuarios.create') }}"
+                    class="create-user-button"
                 >
 
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.003a9.365 9.365 0 01-3.75.772 9.36 9.36 0 01-3.75-.772m0 0a9.35 9.35 0 01-3.75.772M12 12a3 3 0 100-6 3 3 0 000 6z"
-                    />
+                    <span class="create-user-icon">
 
-                </svg>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
 
-            </div>
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 4v16m8-8H4"
+                            />
 
-        </div>
+                        </svg>
 
-    </div>
+                    </span>
 
+                    Crear usuario
 
-    <!-- ACTIVOS -->
-
-    <div class="rounded-2xl border-2 border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
-
-        <div class="flex items-center justify-between">
-
-            <div>
-
-                <p class="text-sm font-bold uppercase tracking-wide text-slate-500">
-
-                    Usuarios activos
-
-                </p>
-
-                <p class="mt-2 text-4xl font-bold text-slate-900">
-
-                    {{ $usuariosActivos }}
-
-                </p>
+                </a>
 
             </div>
 
-
-            <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 text-apch-700">
-
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-7 w-7"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                >
-
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-
-                </svg>
-
-            </div>
-
-        </div>
-
-    </div>
+        </section>
 
 
-    <!-- INACTIVOS -->
+        <!-- =====================================================
+             MENSAJE DE ÉXITO
+        ====================================================== -->
 
-    <div class="rounded-2xl border-2 border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+        @if (session('success'))
 
-        <div class="flex items-center justify-between">
+            <div class="success-message animate-fade-in">
 
-            <div>
+                <div class="success-content">
 
-                <p class="text-sm font-bold uppercase tracking-wide text-slate-500">
+                    <div class="success-icon">
 
-                    Usuarios inactivos
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
 
-                </p>
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M5 13l4 4L19 7"
+                            />
 
-                <p class="mt-2 text-4xl font-bold text-slate-900">
+                        </svg>
 
-                    {{ $usuariosInactivos }}
-
-                </p>
-
-            </div>
+                    </div>
 
 
-            <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 text-apch-700">
+                    <div>
 
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-7 w-7"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                >
+                        <p class="success-title">
 
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636"
-                    />
+                            Operación realizada correctamente
 
-                </svg>
+                        </p>
+
+
+                        <p class="success-text">
+
+                            {{ session('success') }}
+
+                        </p>
+
+                    </div>
+
+                </div>
 
             </div>
 
-        </div>
-
-    </div>
-
-</section>
+        @endif
 
 
-<!-- ===================================================== -->
-<!-- TABLA -->
-<!-- ===================================================== -->
+        <!-- =====================================================
+             RESUMEN
+        ====================================================== -->
 
-<section class="animate-fade-up overflow-hidden rounded-[24px] border-2 border-slate-200 bg-white shadow-sm">
+        @php
+
+            $totalUsuarios = $usuarios->count();
+
+            $usuariosActivos = $usuarios->where('status', true)->count();
+
+            $usuariosInactivos = $usuarios->where('status', false)->count();
+
+        @endphp
 
 
-    <!-- CABECERA TABLA -->
+        <section class="summary-grid animate-fade-up">
 
-    <div class="border-b-2 border-slate-100 px-6 py-6 sm:px-8">
 
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <!-- TOTAL -->
 
-            <div>
+            <div class="summary-card">
 
-                <h3 class="text-xl font-bold text-slate-900">
+                <div class="summary-card-content">
 
-                    Usuarios registrados
+                    <div>
 
-                </h3>
+                        <p class="summary-label">
 
-                <p class="mt-1 text-sm text-slate-500">
+                            Total de usuarios
 
-                    Cuentas con acceso al sistema institucional.
+                        </p>
 
-                </p>
+
+                        <p class="summary-number">
+
+                            {{ $totalUsuarios }}
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="summary-icon">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                        >
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.003a9.365 9.365 0 01-3.75.772 9.36 9.36 0 01-3.75-.772m0 0a9.35 9.35 0 01-3.75.772M12 12a3 3 0 100-6 3 3 0 000 6z"
+                            />
+
+                        </svg>
+
+                    </div>
+
+                </div>
 
             </div>
 
 
-            <div class="inline-flex w-fit items-center gap-2 rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-bold text-apch-700">
+            <!-- ACTIVOS -->
 
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                >
+            <div class="summary-card">
 
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 4.5a3 3 0 110 6 3 3 0 010-6zm-6 14.25a6 6 0 1112 0H6z"
-                    />
+                <div class="summary-card-content">
 
-                </svg>
+                    <div>
 
-                Gestión de acceso
+                        <p class="summary-label">
+
+                            Usuarios activos
+
+                        </p>
+
+
+                        <p class="summary-number">
+
+                            {{ $usuariosActivos }}
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="summary-icon">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                        >
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+
+                        </svg>
+
+                    </div>
+
+                </div>
 
             </div>
 
-        </div>
 
-    </div>
+            <!-- INACTIVOS -->
 
+            <div class="summary-card">
 
-    <!-- TABLA RESPONSIVE -->
+                <div class="summary-card-content">
 
-    <div class="overflow-x-auto">
+                    <div>
 
-        <table class="w-full min-w-[800px] border-collapse">
+                        <p class="summary-label">
 
+                            Usuarios inactivos
 
-            <thead>
+                        </p>
 
-                <tr class="bg-slate-50">
 
-                    <th class="border-b border-slate-200 px-6 py-5 text-left text-sm font-bold uppercase tracking-wide text-slate-500">
+                        <p class="summary-number">
 
-                        Nombre
+                            {{ $usuariosInactivos }}
 
-                    </th>
+                        </p>
 
-                    <th class="border-b border-slate-200 px-6 py-5 text-left text-sm font-bold uppercase tracking-wide text-slate-500">
+                    </div>
 
-                        Usuario
 
-                    </th>
+                    <div class="summary-icon">
 
-                    <th class="border-b border-slate-200 px-6 py-5 text-left text-sm font-bold uppercase tracking-wide text-slate-500">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                        >
 
-                        Rol
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636"
+                            />
 
-                    </th>
+                        </svg>
 
-                    <th class="border-b border-slate-200 px-6 py-5 text-left text-sm font-bold uppercase tracking-wide text-slate-500">
+                    </div>
 
-                        Estado
+                </div>
 
-                    </th>
+            </div>
 
-                    <th class="border-b border-slate-200 px-6 py-5 text-left text-sm font-bold uppercase tracking-wide text-slate-500">
+        </section>
 
-                        Acción
 
-                    </th>
+        <!-- =====================================================
+             TABLA
+        ====================================================== -->
 
-                </tr>
+        <section class="users-section animate-fade-up">
 
-            </thead>
 
+            <!-- CABECERA TABLA -->
 
-            <tbody>
+            <div class="table-header">
 
-                @forelse ($usuarios as $usuario)
+                <div class="table-header-content">
 
-                    <tr class="group transition-all duration-200 hover:bg-red-50/40">
+                    <div>
 
+                        <h3 class="table-title">
 
-                        <!-- NOMBRE -->
+                            Usuarios registrados
 
-                        <td class="border-b border-slate-100 px-6 py-5">
+                        </h3>
 
-                            <div class="flex items-center gap-4">
 
-                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-red-50 text-base font-bold text-apch-700 transition-all duration-200 group-hover:bg-apch-700 group-hover:text-white">
+                        <p class="table-description">
 
-                                    {{ strtoupper(substr($usuario->name, 0, 1)) }}
+                            Cuentas con acceso al sistema institucional.
 
-                                </div>
+                        </p>
 
+                    </div>
 
-                                <div>
 
-                                    <p class="text-base font-bold text-slate-800">
+                    <div class="access-badge">
 
-                                        {{ $usuario->name }}
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
 
-                                    </p>
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 4.5a3 3 0 110 6 3 3 0 010-6zm-6 14.25a6 6 0 1112 0H6z"
+                            />
 
-                                    <p class="mt-1 text-sm text-slate-400">
+                        </svg>
 
-                                        Cuenta institucional
+                        Gestión de acceso
 
-                                    </p>
+                    </div>
 
-                                </div>
+                </div>
 
-                            </div>
+            </div>
 
-                        </td>
 
+            <!-- TABLA RESPONSIVE -->
 
-                        <!-- USUARIO -->
+            <div class="table-wrapper">
 
-                        <td class="border-b border-slate-100 px-6 py-5">
+                <table class="users-table">
 
-                            <span class="inline-flex rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-600">
 
-                                {{ $usuario->username }}
+                    <thead>
 
-                            </span>
+                        <tr>
 
-                        </td>
+                            <th>
 
+                                Nombre
 
-                        <!-- ROL -->
+                            </th>
 
-                        <td class="border-b border-slate-100 px-6 py-5">
+                            <th>
 
-                            @if ($usuario->role === 'admin')
+                                Usuario
 
-                                <span class="inline-flex items-center gap-2 rounded-full bg-red-50 px-4 py-2 text-sm font-bold text-apch-700">
+                            </th>
 
-                                    <span class="h-2 w-2 rounded-full bg-apch-700"></span>
+                            <th>
 
-                                    Administrador
+                                Rol
 
-                                </span>
+                            </th>
 
-                            @else
+                            <th>
 
-                                <span class="inline-flex items-center gap-2 rounded-full bg-red-50 px-4 py-2 text-sm font-bold text-apch-700">
+                                Estado
 
-                                    <span class="h-2 w-2 rounded-full bg-apch-700"></span>
+                            </th>
 
-                                    Secretario/a
+                            <th>
 
-                                </span>
+                                Acción
 
-                            @endif
+                            </th>
 
-                        </td>
+                        </tr>
 
+                    </thead>
 
-                        <!-- ESTADO -->
 
-                        <td class="border-b border-slate-100 px-6 py-5">
+                    <tbody>
 
-                            @if ($usuario->status)
+                        @forelse ($usuarios as $usuario)
 
-                                <span class="inline-flex items-center gap-2 rounded-full bg-green-50 px-4 py-2 text-sm font-bold text-green-700">
+                            <tr>
 
-                                    <span class="relative flex h-2.5 w-2.5">
 
-                                        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-50"></span>
+                                <!-- NOMBRE -->
 
-                                        <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500"></span>
+                                <td>
+
+                                    <div class="user-info">
+
+                                        <div class="user-avatar">
+
+                                            {{ strtoupper(substr($usuario->name, 0, 1)) }}
+
+                                        </div>
+
+
+                                        <div>
+
+                                            <p class="user-name">
+
+                                                {{ $usuario->name }}
+
+                                            </p>
+
+
+                                            <p class="user-account">
+
+                                                Cuenta institucional
+
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- USUARIO -->
+
+                                <td>
+
+                                    <span class="username-badge">
+
+                                        {{ $usuario->username }}
 
                                     </span>
 
-                                    Activo
-
-                                </span>
-
-                            @else
-
-                                <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm font-bold text-slate-500">
-
-                                    <span class="h-2.5 w-2.5 rounded-full bg-slate-400"></span>
-
-                                    Inactivo
-
-                                </span>
-
-                            @endif
-
-                        </td>
+                                </td>
 
 
-                        <!-- ACCIÓN -->
+                                <!-- ROL -->
 
-                        <td class="border-b border-slate-100 px-6 py-5">
+                                <td>
 
-                            @if ($usuario->status)
+                                    @if ($usuario->role === 'admin')
 
-                                <form
-                                    method="POST"
-                                    action="{{ route('usuarios.desactivar', $usuario) }}"
-                                >
+                                        <span class="role-badge">
 
-                                    @csrf
+                                            <span class="role-dot"></span>
 
-                                    <button
-                                        type="submit"
-                                        class="group/button inline-flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-bold text-apch-700 transition-all duration-200 hover:border-apch-700 hover:bg-apch-700 hover:text-white"
-                                    >
+                                            Administrador
 
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            class="h-4 w-4 transition-transform duration-200 group-hover/button:scale-110"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                            stroke-width="2"
+                                        </span>
+
+                                    @else
+
+                                        <span class="role-badge">
+
+                                            <span class="role-dot"></span>
+
+                                            Secretario/a
+
+                                        </span>
+
+                                    @endif
+
+                                </td>
+
+
+                                <!-- ESTADO -->
+
+                                <td>
+
+                                    @if ($usuario->status)
+
+                                        <span class="status-badge status-active">
+
+                                            <span class="status-dot-wrapper"></span>
+
+                                            Activo
+
+                                        </span>
+
+                                    @else
+
+                                        <span class="status-badge status-inactive">
+
+                                            <span class="status-dot"></span>
+
+                                            Inactivo
+
+                                        </span>
+
+                                    @endif
+
+                                </td>
+
+
+                                <!-- ACCIÓN -->
+
+                                <td>
+
+                                    @if ($usuario->status)
+
+                                        <form
+                                            method="POST"
+                                            action="{{ route('usuarios.desactivar', $usuario) }}"
                                         >
 
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636"
-                                            />
+                                            @csrf
 
-                                        </svg>
+                                            <button
+                                                type="submit"
+                                                class="action-button deactivate-button"
+                                            >
 
-                                        Desactivar
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                                >
 
-                                    </button>
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636"
+                                                    />
 
-                                </form>
+                                                </svg>
 
-                            @else
+                                                Desactivar
 
-                                <form
-                                    method="POST"
-                                    action="{{ route('usuarios.reactivar', $usuario) }}"
-                                >
+                                            </button>
 
-                                    @csrf
+                                        </form>
 
-                                    <button
-                                        type="submit"
-                                        class="group/button inline-flex items-center gap-2 rounded-xl border border-green-200 bg-green-50 px-4 py-2.5 text-sm font-bold text-green-700 transition-all duration-200 hover:border-green-600 hover:bg-green-600 hover:text-white"
-                                    >
+                                    @else
 
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            class="h-4 w-4 transition-transform duration-200 group-hover/button:scale-110"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                            stroke-width="2"
+                                        <form
+                                            method="POST"
+                                            action="{{ route('usuarios.reactivar', $usuario) }}"
                                         >
 
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                            />
+                                            @csrf
 
-                                        </svg>
+                                            <button
+                                                type="submit"
+                                                class="action-button reactivate-button"
+                                            >
 
-                                        Reactivar
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                                >
 
-                                    </button>
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                    />
 
-                                </form>
+                                                </svg>
 
-                            @endif
+                                                Reactivar
 
-                        </td>
+                                            </button>
 
-                    </tr>
+                                        </form>
 
-                @empty
+                                    @endif
 
-                    <tr>
+                                </td>
 
-                        <td
-                            colspan="5"
-                            class="px-6 py-20 text-center"
-                        >
+                            </tr>
 
-                            <div class="flex flex-col items-center justify-center">
+                        @empty
 
-                                <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50 text-apch-700">
+                            <tr>
 
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="h-8 w-8"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        stroke-width="1.7"
-                                    >
+                                <td
+                                    colspan="5"
+                                    class="empty-cell"
+                                >
 
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.003a9.365 9.365 0 01-3.75-.772m0 0a9.35 9.35 0 01-3.75.772m3.75-.772v-.003c0-1.113.285-2.16.786-3.07M12 12a3 3 0 100-6 3 3 0 000 6z"
-                                        />
+                                    <div class="empty-container">
 
-                                    </svg>
+                                        <div class="empty-icon">
 
-                                </div>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                stroke-width="1.7"
+                                            >
 
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.003a9.365 9.365 0 01-3.75-.772m0 0a9.35 9.35 0 01-3.75.772m3.75-.772v-.003c0-1.113.285-2.16.786-3.07M12 12a3 3 0 100-6 3 3 0 000 6z"
+                                                />
 
-                                <p class="mt-5 text-base font-bold text-slate-700">
+                                            </svg>
 
-                                    No existen usuarios registrados.
-
-                                </p>
-
-                                <p class="mt-1 text-sm text-slate-400">
-
-                                    Los usuarios creados aparecerán aquí.
-
-                                </p>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
-                @endforelse
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</section>
-```
-
-</main>
-
-<!-- ========================================================= -->
-
-<!-- PIE DE PÁGINA -->
-
-<!-- ========================================================= -->
-
-<footer class="mt-8 bg-black text-white">
-
-```
-<div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-7 text-center sm:flex-row sm:text-left lg:px-10">
-
-    <div>
-
-        <p class="text-sm font-bold">
-
-            Sistema de Formularios Digitales APCH
-
-        </p>
-
-        <p class="mt-1 text-xs text-white/60">
-
-            Unidad Educativa "Ángel Polibio Chaves"
-
-        </p>
-
-    </div>
+                                        </div>
 
 
-    <div>
+                                        <p class="empty-title">
 
-        <p class="text-sm font-semibold">
+                                            No existen usuarios registrados.
 
-            Desarrollado por Stalyn Alvarado
-
-        </p>
-
-        <p class="mt-1 text-xs text-white/60">
-
-            tu-correo@ejemplo.com
-
-        </p>
-
-    </div>
-
-</div>
+                                        </p>
 
 
-</footer>
+                                        <p class="empty-description">
+
+                                            Los usuarios creados aparecerán aquí.
+
+                                        </p>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         PIE DE PÁGINA
+    ========================================================== -->
+
+    <footer class="site-footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <p class="footer-title">
+
+                    Sistema de Formularios Digitales APCH
+
+                </p>
+
+
+                <p class="footer-subtitle">
+
+                    Unidad Educativa "Ángel Polibio Chaves"
+
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <p class="footer-developer">
+
+                    Desarrollado por Stalyn Alvarado
+
+                </p>
+
+
+                <p class="footer-email">
+
+                    tu-correo@ejemplo.com
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
 
 </body>
 

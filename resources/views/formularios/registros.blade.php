@@ -1,599 +1,1286 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
 
+    <meta charset="UTF-8">
 
-<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros de formularios | APCH</title>
 
-<title>Registros de formularios | APCH</title>
+    <style>
 
-<script src="https://cdn.tailwindcss.com"></script>
+        :root {
+            --apch-50: #fff5f5;
+            --apch-100: #fee2e2;
+            --apch-200: #fecaca;
+            --apch-300: #fca5a5;
+            --apch-400: #f87171;
+            --apch-500: #ef4444;
+            --apch-600: #dc2626;
+            --apch-700: #b30000;
+            --apch-800: #8f0000;
+            --apch-900: #650000;
 
-<script>
-    tailwind.config = {
-        theme: {
-            extend: {
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+        }
 
-                fontFamily: {
-                    sans: ['Segoe UI', 'Arial', 'sans-serif'],
-                },
 
-                colors: {
-                    apch: {
-                        50: '#fff5f5',
-                        100: '#fee2e2',
-                        200: '#fecaca',
-                        300: '#fca5a5',
-                        400: '#f87171',
-                        500: '#ef4444',
-                        600: '#dc2626',
-                        700: '#b30000',
-                        800: '#8f0000',
-                        900: '#650000',
-                    }
-                },
+        /* ==============================
+           CONFIGURACIÓN GENERAL
+           ============================== */
 
-                animation: {
-                    'fade-up': 'fadeUp 0.55s ease-out forwards',
-                    'fade-in': 'fadeIn 0.4s ease-out forwards',
-                },
+        * {
+            box-sizing: border-box;
+        }
 
-                keyframes: {
-                    fadeUp: {
-                        '0%': {
-                            opacity: '0',
-                            transform: 'translateY(14px)'
-                        },
-                        '100%': {
-                            opacity: '1',
-                            transform: 'translateY(0)'
-                        }
-                    },
+        html {
+            scroll-behavior: smooth;
+        }
 
-                    fadeIn: {
-                        '0%': {
-                            opacity: '0'
-                        },
-                        '100%': {
-                            opacity: '1'
-                        }
-                    }
-                }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--slate-100);
+            color: var(--slate-800);
+            font-family: "Segoe UI", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
 
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+
+        /* ==============================
+           ANIMACIONES
+           ============================== */
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
-    }
-</script>
 
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes ping {
+            75%,
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+
+        /* ==============================
+           ENCABEZADO
+           ============================== */
+
+        .page-header {
+            margin: 16px 4px 0;
+            border-radius: 12px;
+            background: #e2e8f0;
+            border: 2px solid #000;
+            overflow: hidden;
+        }
+
+        .header-inner {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px 24px;
+        }
+
+        .institution-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-logo {
+            width: 64px;
+            height: 64px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: #fff;
+            padding: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .brand-label {
+            margin: 0;
+            color: var(--apch-700);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .brand-title {
+            margin: 2px 0 0;
+            color: var(--slate-900);
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .brand-subtitle {
+            margin: 4px 0 0;
+            color: var(--slate-500);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .system-status {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #bbf7d0;
+            border-radius: 999px;
+            background: #f0fdf4;
+            padding: 10px 16px;
+            color: #15803d;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            position: relative;
+            display: flex;
+            width: 10px;
+            height: 10px;
+        }
+
+        .status-dot-ping {
+            position: absolute;
+            display: inline-flex;
+            width: 100%;
+            height: 100%;
+            border-radius: 999px;
+            background: #4ade80;
+            opacity: 0.6;
+            animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        .status-dot-core {
+            position: relative;
+            display: inline-flex;
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: #22c55e;
+        }
+
+        .logout-form {
+            margin: 0;
+        }
+
+        .logout-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid var(--slate-200);
+            border-radius: 12px;
+            background: #fff;
+            padding: 12px 16px;
+            color: var(--slate-700);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .logout-button:hover {
+            border-color: var(--apch-700);
+            background: var(--apch-700);
+            color: #fff;
+        }
+
+        .logout-button svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .logout-button:hover svg {
+            transform: translateX(2px);
+        }
+
+
+        /* ==============================
+           CONTENIDO PRINCIPAL
+           ============================== */
+
+        .main-container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+
+        /* ==============================
+           TÍTULO
+           ============================== */
+
+        .intro-section {
+            margin-bottom: 32px;
+            animation: fadeUp 0.55s ease-out forwards;
+        }
+
+        .intro-card {
+            border-radius: 24px;
+            border: 1px solid var(--slate-200);
+            background: #fff;
+            padding: 28px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .intro-row {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .department-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .department-bar {
+            width: 6px;
+            height: 40px;
+            border-radius: 999px;
+            background: var(--apch-700);
+        }
+
+        .department-label {
+            margin: 0;
+            color: var(--apch-700);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+        }
+
+        .page-title {
+            margin: 0;
+            color: var(--slate-900);
+            font-size: 30px;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.025em;
+        }
+
+        .page-description {
+            max-width: 768px;
+            margin: 12px 0 0;
+            color: var(--slate-500);
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        .records-counter {
+            flex-shrink: 0;
+            border: 1px solid #fee2e2;
+            border-radius: 16px;
+            background: var(--apch-50);
+            padding: 16px 28px;
+            text-align: center;
+        }
+
+        .counter-number {
+            margin: 0;
+            color: var(--apch-700);
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .counter-label {
+            margin: 4px 0 0;
+            color: var(--slate-600);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        /* ==============================
+           MENSAJE DE ÉXITO
+           ============================== */
+
+        .success-message {
+            margin-bottom: 24px;
+            border: 1px solid #bbf7d0;
+            border-radius: 16px;
+            background: #f0fdf4;
+            padding: 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .success-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .success-icon {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .success-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .success-text {
+            margin: 0;
+            color: #166534;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+        /* ==============================
+           FILTROS
+           ============================== */
+
+        .filters-section {
+            margin-bottom: 28px;
+            overflow: hidden;
+            border: 1px solid var(--slate-200);
+            border-radius: 24px;
+            background: #fff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            animation: fadeUp 0.55s ease-out forwards;
+        }
+
+        .filters-header {
+            border-bottom: 1px solid #fee2e2;
+            background: var(--apch-50);
+            padding: 24px 28px;
+        }
+
+        .filters-heading {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .section-icon-red {
+            background: var(--apch-700);
+            color: #fff;
+        }
+
+        .section-icon-light {
+            background: var(--apch-50);
+            color: var(--apch-700);
+        }
+
+        .section-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .section-title {
+            margin: 0;
+            color: var(--slate-900);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            margin: 4px 0 0;
+            color: var(--slate-500);
+            font-size: 14px;
+        }
+
+
+        /* ==============================
+           FORMULARIO DE FILTROS
+           ============================== */
+
+        .filters-form {
+            padding: 28px;
+        }
+
+        .filters-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .filter-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--slate-700);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-icon-left,
+        .select-icon-right {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            color: var(--slate-400);
+            pointer-events: none;
+        }
+
+        .select-icon-left {
+            left: 0;
+            padding-left: 16px;
+        }
+
+        .select-icon-right {
+            right: 0;
+            padding-right: 16px;
+        }
+
+        .select-icon-left svg,
+        .select-icon-right svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .filter-select {
+            width: 100%;
+            height: 56px;
+            appearance: none;
+            border: 1px solid var(--slate-300);
+            border-radius: 12px;
+            background: #fff;
+            padding: 0 40px 0 48px;
+            color: var(--slate-700);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .filter-select:focus {
+            border-color: var(--apch-700);
+            box-shadow: 0 0 0 4px rgba(179, 0, 0, 0.1);
+        }
+
+        .filter-buttons {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .filter-button {
+            height: 56px;
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 0;
+            border-radius: 12px;
+            background: var(--apch-700);
+            padding: 0 20px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-button:hover {
+            background: var(--apch-800);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .filter-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .clear-button {
+            height: 56px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--slate-200);
+            border-radius: 12px;
+            background: #fff;
+            padding: 0 20px;
+            color: var(--slate-600);
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .clear-button:hover {
+            border-color: var(--slate-300);
+            background: var(--slate-50);
+            color: var(--slate-900);
+        }
+
+
+        /* ==============================
+           TABLA
+           ============================== */
+
+        .records-section {
+            overflow: hidden;
+            border: 1px solid var(--slate-200);
+            border-radius: 24px;
+            background: #fff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            animation: fadeUp 0.55s ease-out forwards;
+        }
+
+        .records-header {
+            border-bottom: 1px solid var(--slate-200);
+            background: #fff;
+            padding: 24px 28px;
+        }
+
+        .records-header-row {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .records-heading {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .records-count {
+            border: 1px solid #fee2e2;
+            border-radius: 12px;
+            background: var(--apch-50);
+            padding: 12px 20px;
+            text-align: center;
+        }
+
+        .records-count-number {
+            margin: 0;
+            color: var(--apch-700);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .records-count-label {
+            margin: 0;
+            color: var(--slate-600);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .records-table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: collapse;
+        }
+
+        .records-table thead {
+            background: var(--slate-50);
+        }
+
+        .records-table th {
+            border-bottom: 1px solid var(--slate-200);
+            padding: 16px 24px;
+            color: var(--slate-500);
+            font-size: 12px;
+            font-weight: 700;
+            text-align: left;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .records-table tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        .records-table tbody tr:hover {
+            background: rgba(255, 245, 245, 0.5);
+        }
+
+        .records-table td {
+            border-bottom: 1px solid #f1f5f9;
+            padding: 20px 24px;
+        }
+
+        .record-id {
+            display: inline-flex;
+            border-radius: 8px;
+            background: var(--slate-100);
+            padding: 6px 12px;
+            color: var(--slate-600);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .records-table tbody tr:hover .record-id {
+            background: #fff;
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--apch-700);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .user-name {
+            margin: 0;
+            color: var(--slate-800);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .form-name {
+            color: var(--slate-800);
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .date-cell,
+        .time-cell {
+            white-space: nowrap;
+        }
+
+        .date-content,
+        .time-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--slate-600);
+            font-size: 16px;
+        }
+
+        .date-content svg {
+            width: 20px;
+            height: 20px;
+            color: var(--apch-700);
+        }
+
+        .time-content svg {
+            width: 20px;
+            height: 20px;
+            color: var(--slate-400);
+        }
+
+        .delete-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            background: #fef2f2;
+            padding: 10px 16px;
+            color: #b91c1c;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .delete-button:hover {
+            border-color: #fca5a5;
+            background: #fee2e2;
+        }
+
+        .delete-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+
+        /* ==============================
+           TABLA VACÍA
+           ============================== */
+
+        .empty-cell {
+            padding: 64px 24px !important;
+            text-align: center !important;
+        }
+
+        .empty-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: var(--slate-100);
+            color: var(--slate-400);
+        }
+
+        .empty-icon svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .empty-title {
+            margin: 16px 0 0;
+            color: var(--slate-600);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .empty-description {
+            margin: 4px 0 0;
+            color: var(--slate-400);
+            font-size: 14px;
+        }
+
+
+        /* ==============================
+           INFORMACIÓN INFERIOR
+           ============================== */
+
+        .info-section {
+            margin-top: 24px;
+            border: 1px solid var(--slate-200);
+            border-radius: 20px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .info-main {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--apch-50);
+            color: var(--apch-700);
+        }
+
+        .info-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .info-title {
+            margin: 0;
+            color: var(--slate-800);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .info-description {
+            margin: 4px 0 0;
+            color: var(--slate-500);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .order-info {
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: var(--slate-50);
+            padding: 12px 16px;
+            color: var(--slate-500);
+            font-size: 14px;
+        }
+
+        .order-value {
+            color: var(--slate-700);
+            font-weight: 700;
+        }
+
+
+        /* ==============================
+           PIE DE PÁGINA
+           ============================== */
+
+        .site-footer {
+            margin-top: 40px;
+            background: #000;
+            color: #fff;
+        }
+
+        .footer-container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 28px 24px;
+        }
+
+        .footer-main {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .footer-title {
+            margin: 0;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .footer-subtitle {
+            margin: 4px 0 0;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .footer-author {
+            text-align: left;
+        }
+
+        .footer-author-name {
+            margin: 0;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .footer-author-email {
+            margin: 4px 0 0;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .footer-bottom {
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 16px;
+            text-align: center;
+        }
+
+        .footer-bottom-text {
+            margin: 0;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+
+        /* ==============================
+           RESPONSIVE
+           ============================== */
+
+        @media (min-width: 640px) {
+
+            .header-inner {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .brand-title {
+                font-size: 24px;
+            }
+
+            .system-status {
+                display: flex;
+            }
+
+            .intro-card {
+                padding: 32px;
+            }
+
+            .intro-row {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .page-title {
+                font-size: 36px;
+            }
+
+            .page-description {
+                font-size: 18px;
+            }
+
+            .records-header-row {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .info-content {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .footer-main {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .footer-author {
+                text-align: right;
+            }
+
+            .footer-bottom {
+                text-align: left;
+            }
+        }
+
+
+        @media (min-width: 768px) {
+
+            .filters-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+
+        @media (min-width: 1024px) {
+
+            .header-inner {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+
+            .main-container {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+
+            .filters-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+
+            .footer-container {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+        }
+
+    </style>
 
 </head>
 
-<body class="min-h-screen bg-slate-100 text-slate-800 font-sans">
+
+<body>
 
 
-<!-- ENCABEZADO -->
+    <!-- ENCABEZADO -->
 
-<header class="mx-4 mt-4 overflow-hidden rounded-[24px] border-2 border-black bg-white shadow-sm sm:mx-6 lg:mx-8">
+    <header class="page-header">
 
-    <div class="mx-auto flex max-w-7xl flex-col gap-5 px-6 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-10">
-
-
-        <!-- IDENTIDAD -->
-
-        <div class="flex items-center gap-4">
-
-            <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-white p-1.5 shadow-sm">
-
-                <img
-                    src="{{ asset('images/logo-apch.png') }}"
-                    alt="Logo APCH"
-                    class="h-full w-full object-contain"
-                >
-
-            </div>
+        <div class="header-inner">
 
 
-            <div>
+            <!-- IDENTIDAD -->
 
-                <p class="text-sm font-bold uppercase tracking-wide text-apch-700">
-                    Unidad Educativa
-                </p>
+            <div class="institution-brand">
 
-                <h1 class="mt-0.5 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
-                    "Ángel Polibio Chaves"
-                </h1>
+                <div class="brand-logo">
 
-                <p class="mt-1 text-sm font-medium text-slate-500">
-                    Sistema de Formularios Digitales
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- SESIÓN -->
-
-        <div class="flex items-center gap-3">
-
-
-            <div class="hidden items-center gap-2 rounded-full border border-green-200 bg-green-50 px-4 py-2.5 text-sm font-semibold text-green-700 sm:flex">
-
-                <span class="h-2.5 w-2.5 rounded-full bg-green-500"></span>
-
-                Sesión activa
-
-            </div>
-
-
-            <form
-                method="POST"
-                action="{{ route('logout') }}"
-            >
-
-                @csrf
-
-                <button
-                    type="submit"
-                    class="group flex items-center gap-2 rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition duration-200 hover:border-apch-700 hover:bg-apch-700 hover:text-white"
-                >
-
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="2"
+                    <img
+                        src="{{ asset('images/logo-apch.png') }}"
+                        alt="Logo APCH"
                     >
 
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"
-                        />
+                </div>
 
-                    </svg>
-
-                    Cerrar sesión
-
-                </button>
-
-            </form>
-
-        </div>
-
-    </div>
-
-</header>
-
-
-
-<!-- CONTENIDO -->
-
-<main class="mx-auto max-w-7xl px-6 py-10 lg:px-10">
-
-
-    <!-- TÍTULO -->
-
-    <section class="mb-8 animate-fade-up">
-
-        <div class="rounded-[24px] border border-slate-200 bg-white p-7 shadow-sm sm:p-8">
-
-            <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 
                 <div>
 
-                    <div class="mb-3 flex items-center gap-3">
+                    <p class="brand-label">
+                        Unidad Educativa
+                    </p>
 
-                        <div class="h-10 w-1.5 rounded-full bg-apch-700"></div>
+                    <h1 class="brand-title">
+                        "Ángel Polibio Chaves"
+                    </h1>
 
-                        <p class="text-sm font-bold uppercase tracking-[0.18em] text-apch-700">
-                            Administración
+                    <p class="brand-subtitle">
+                        Sistema de Formularios Digitales
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SESIÓN -->
+
+            <div class="header-actions">
+
+
+                <div class="system-status">
+
+                    <span class="status-dot">
+
+                        <span class="status-dot-ping"></span>
+
+                        <span class="status-dot-core"></span>
+
+                    </span>
+
+                    Sesión activa
+
+                </div>
+
+
+                <form
+                    method="POST"
+                    action="{{ route('logout') }}"
+                    class="logout-form"
+                >
+
+                    @csrf
+
+                    <button
+                        type="submit"
+                        class="logout-button"
+                    >
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"
+                            />
+
+                        </svg>
+
+                        Cerrar sesión
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- CONTENIDO -->
+
+    <main class="main-container">
+
+
+        <!-- TÍTULO -->
+
+        <section class="intro-section">
+
+            <div class="intro-card">
+
+                <div class="intro-row">
+
+                    <div>
+
+                        <div class="department-heading">
+
+                            <div class="department-bar"></div>
+
+                            <p class="department-label">
+                                Administración
+                            </p>
+
+                        </div>
+
+                        <h2 class="page-title">
+                            Registros de formularios
+                        </h2>
+
+                        <p class="page-description">
+                            Consulte y administre los registros generados por los usuarios del sistema.
                         </p>
 
                     </div>
 
-                    <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                        Registros de formularios
-                    </h2>
 
-                    <p class="mt-3 max-w-3xl text-base leading-7 text-slate-500 sm:text-lg">
-                        Consulte y administre los registros generados por los usuarios del sistema.
-                    </p>
+                    <!-- TOTAL -->
 
-                </div>
+                    <div class="records-counter">
 
+                        <p class="counter-number">
+                            {{ $formularios->count() }}
+                        </p>
 
-                <!-- TOTAL -->
-
-                <div class="shrink-0 rounded-2xl border border-red-100 bg-apch-50 px-7 py-4 text-center">
-
-                    <p class="text-3xl font-bold text-apch-700">
-                        {{ $formularios->count() }}
-                    </p>
-
-                    <p class="mt-1 text-sm font-semibold text-slate-600">
-                        {{ $formularios->count() == 1 ? 'Registro encontrado' : 'Registros encontrados' }}
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- MENSAJE DE ÉXITO -->
-
-    @if (session('success'))
-
-        <div class="mb-6 animate-fade-in rounded-2xl border border-green-200 bg-green-50 p-5 shadow-sm">
-
-            <div class="flex items-center gap-4">
-
-                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-green-100 text-green-600">
-
-                    <svg
-                        class="h-6 w-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M5 13l4 4L19 7"
-                        />
-
-                    </svg>
-
-                </div>
-
-                <p class="text-sm font-bold text-green-800">
-                    {{ session('success') }}
-                </p>
-
-            </div>
-
-        </div>
-
-    @endif
-
-
-
-    <!-- FILTROS -->
-
-    <section class="mb-7 overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm animate-fade-up">
-
-
-        <!-- CABECERA -->
-
-        <div class="border-b border-red-100 bg-apch-50 px-7 py-6">
-
-            <div class="flex items-center gap-4">
-
-                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-apch-700 text-white">
-
-                    <svg
-                        class="h-6 w-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414A1 1 0 0014 14.414V19a1 1 0 01-.553.894l-4 2A1 1 0 018 21v-6.586a1 1 0 00-.293-.707L1.293 7.293A1 1 0 011 6.586V4z"
-                        />
-
-                    </svg>
-
-                </div>
-
-
-                <div>
-
-                    <h3 class="text-lg font-bold text-slate-900">
-                        Filtrar registros
-                    </h3>
-
-                    <p class="mt-1 text-sm text-slate-500">
-                        Seleccione los criterios que desea consultar.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- FORMULARIO -->
-
-        <form
-            method="GET"
-            action="{{ route('formularios.registros') }}"
-            class="p-7"
-        >
-
-            <div class="grid gap-5 lg:grid-cols-4">
-
-
-                <!-- USUARIO -->
-
-                <div>
-
-                    <label
-                        for="usuario_id"
-                        class="mb-2 block text-sm font-bold text-slate-700"
-                    >
-                        Usuario
-                    </label>
-
-                    <div class="relative">
-
-                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
-
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                />
-
-                            </svg>
-
-                        </div>
-
-
-                        <select
-                            id="usuario_id"
-                            name="usuario_id"
-                            class="h-14 w-full appearance-none rounded-xl border border-slate-300 bg-white pl-12 pr-10 text-base text-slate-700 outline-none transition duration-200 focus:border-apch-700 focus:ring-4 focus:ring-apch-700/10"
-                        >
-
-                            <option value="">
-                                Todos los usuarios
-                            </option>
-
-                            @foreach ($usuarios as $usuario)
-
-                                <option
-                                    value="{{ $usuario->id }}"
-                                    {{ request('usuario_id') == $usuario->id ? 'selected' : '' }}
-                                >
-                                    {{ $usuario->name }}
-                                </option>
-
-                            @endforeach
-
-                        </select>
-
-
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400">
-
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M19 9l-7 7-7-7"
-                                />
-
-                            </svg>
-
-                        </div>
+                        <p class="counter-label">
+                            {{ $formularios->count() == 1 ? 'Registro encontrado' : 'Registros encontrados' }}
+                        </p>
 
                     </div>
 
                 </div>
 
+            </div>
 
-
-                <!-- FORMULARIO -->
-
-                <div>
-
-                    <label
-                        for="nombre_formulario"
-                        class="mb-2 block text-sm font-bold text-slate-700"
-                    >
-                        Tipo de formulario
-                    </label>
-
-                    <div class="relative">
-
-                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
-
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                />
-
-                            </svg>
-
-                        </div>
-
-
-                        <select
-                            id="nombre_formulario"
-                            name="nombre_formulario"
-                            class="h-14 w-full appearance-none rounded-xl border border-slate-300 bg-white pl-12 pr-10 text-base text-slate-700 outline-none transition duration-200 focus:border-apch-700 focus:ring-4 focus:ring-apch-700/10"
-                        >
-
-                            <option value="">
-                                Todos los formularios
-                            </option>
-
-                            @foreach ($formulariosDisponibles as $formulario)
-
-                                <option
-                                    value="{{ $formulario }}"
-                                    {{ request('nombre_formulario') === $formulario ? 'selected' : '' }}
-                                >
-                                    {{ $formulario }}
-                                </option>
-
-                            @endforeach
-
-                        </select>
-
-
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400">
-
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M19 9l-7 7-7-7"
-                                />
-
-                            </svg>
-
-                        </div>
-
-                    </div>
-
-                </div>
+        </section>
 
 
 
-                <!-- ORDEN -->
+        <!-- MENSAJE DE ÉXITO -->
 
-                <div>
+        @if (session('success'))
 
-                    <label
-                        for="orden"
-                        class="mb-2 block text-sm font-bold text-slate-700"
-                    >
-                        Ordenar por fecha
-                    </label>
+            <div class="success-message">
 
-                    <div class="relative">
+                <div class="success-content">
 
-                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
-
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 7V3m0 4a2 2 0 100 4m0-4a2 2 0 110 4m0 0v10m8-14V3m0 4a2 2 0 100 4m0-4a2 2 0 110 4m0 0v10"
-                                />
-
-                            </svg>
-
-                        </div>
-
-
-                        <select
-                            id="orden"
-                            name="orden"
-                            class="h-14 w-full appearance-none rounded-xl border border-slate-300 bg-white pl-12 pr-10 text-base text-slate-700 outline-none transition duration-200 focus:border-apch-700 focus:ring-4 focus:ring-apch-700/10"
-                        >
-
-                            <option
-                                value="desc"
-                                {{ request('orden', 'desc') === 'desc' ? 'selected' : '' }}
-                            >
-                                Más recientes primero
-                            </option>
-
-                            <option
-                                value="asc"
-                                {{ request('orden') === 'asc' ? 'selected' : '' }}
-                            >
-                                Más antiguos primero
-                            </option>
-
-                        </select>
-
-
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400">
-
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M19 9l-7 7-7-7"
-                                />
-
-                            </svg>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- BOTONES -->
-
-                <div class="flex items-end gap-3">
-
-                    <button
-                        type="submit"
-                        class="inline-flex h-14 flex-1 items-center justify-center gap-2 rounded-xl bg-apch-700 px-5 text-base font-bold text-white transition duration-200 hover:bg-apch-800 hover:shadow-lg"
-                    >
+                    <div class="success-icon">
 
                         <svg
-                            class="h-5 w-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M5 13l4 4L19 7"
+                            />
+
+                        </svg>
+
+                    </div>
+
+                    <p class="success-text">
+                        {{ session('success') }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        @endif
+
+
+
+        <!-- FILTROS -->
+
+        <section class="filters-section">
+
+
+            <!-- CABECERA -->
+
+            <div class="filters-header">
+
+                <div class="filters-heading">
+
+                    <div class="section-icon section-icon-red">
+
+                        <svg
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -608,270 +1295,493 @@
 
                         </svg>
 
-                        Filtrar
-
-                    </button>
-
-
-                    <a
-                        href="{{ route('formularios.registros') }}"
-                        class="inline-flex h-14 items-center justify-center rounded-xl border-2 border-slate-200 bg-white px-5 text-base font-bold text-slate-600 transition duration-200 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
-                    >
-                        Limpiar
-                    </a>
-
-                </div>
-
-            </div>
-
-        </form>
-
-    </section>
-
-
-
-    <!-- TABLA -->
-
-    <section class="overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm animate-fade-up">
-
-
-        <!-- CABECERA TABLA -->
-
-        <div class="border-b border-slate-200 bg-white px-7 py-6">
-
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
-                <div class="flex items-center gap-4">
-
-                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-apch-50 text-apch-700">
-
-                        <svg
-                            class="h-6 w-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M9 17v-2a4 4 0 00-4-4H3m6 6v2a4 4 0 004 4h2m-6-6H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5"
-                            />
-
-                        </svg>
-
                     </div>
 
 
                     <div>
 
-                        <h3 class="text-lg font-bold text-slate-900">
-                            Historial de formularios
+                        <h3 class="section-title">
+                            Filtrar registros
                         </h3>
 
-                        <p class="mt-1 text-sm text-slate-500">
-                            Registros almacenados en el sistema.
+                        <p class="section-subtitle">
+                            Seleccione los criterios que desea consultar.
                         </p>
 
                     </div>
 
                 </div>
 
+            </div>
 
-                <div class="rounded-xl border border-red-100 bg-apch-50 px-5 py-3 text-center">
 
-                    <p class="text-xl font-bold text-apch-700">
-                        {{ $formularios->count() }}
-                    </p>
 
-                    <p class="text-xs font-semibold text-slate-600">
-                        {{ $formularios->count() == 1 ? 'registro' : 'registros' }}
-                    </p>
+            <!-- FORMULARIO -->
+
+            <form
+                method="GET"
+                action="{{ route('formularios.registros') }}"
+                class="filters-form"
+            >
+
+                <div class="filters-grid">
+
+
+                    <!-- USUARIO -->
+
+                    <div>
+
+                        <label
+                            for="usuario_id"
+                            class="filter-label"
+                        >
+                            Usuario
+                        </label>
+
+                        <div class="select-wrapper">
+
+                            <div class="select-icon-left">
+
+                                <svg
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+
+                            <select
+                                id="usuario_id"
+                                name="usuario_id"
+                                class="filter-select"
+                            >
+
+                                <option value="">
+                                    Todos los usuarios
+                                </option>
+
+                                @foreach ($usuarios as $usuario)
+
+                                    <option
+                                        value="{{ $usuario->id }}"
+                                        {{ request('usuario_id') == $usuario->id ? 'selected' : '' }}
+                                    >
+                                        {{ $usuario->name }}
+                                    </option>
+
+                                @endforeach
+
+                            </select>
+
+
+                            <div class="select-icon-right">
+
+                                <svg
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19 9l-7 7-7-7"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- FORMULARIO -->
+
+                    <div>
+
+                        <label
+                            for="nombre_formulario"
+                            class="filter-label"
+                        >
+                            Tipo de formulario
+                        </label>
+
+                        <div class="select-wrapper">
+
+                            <div class="select-icon-left">
+
+                                <svg
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+
+                            <select
+                                id="nombre_formulario"
+                                name="nombre_formulario"
+                                class="filter-select"
+                            >
+
+                                <option value="">
+                                    Todos los formularios
+                                </option>
+
+                                @foreach ($formulariosDisponibles as $formulario)
+
+                                    <option
+                                        value="{{ $formulario }}"
+                                        {{ request('nombre_formulario') === $formulario ? 'selected' : '' }}
+                                    >
+                                        {{ $formulario }}
+                                    </option>
+
+                                @endforeach
+
+                            </select>
+
+
+                            <div class="select-icon-right">
+
+                                <svg
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19 9l-7 7-7-7"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ORDEN -->
+
+                    <div>
+
+                        <label
+                            for="orden"
+                            class="filter-label"
+                        >
+                            Ordenar por fecha
+                        </label>
+
+                        <div class="select-wrapper">
+
+                            <div class="select-icon-left">
+
+                                <svg
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M8 7V3m0 4a2 2 0 100 4m0-4a2 2 0 110 4m0 0v10m8-14V3m0 4a2 2 0 100 4m0-4a2 2 0 110 4m0 0v10"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+
+                            <select
+                                id="orden"
+                                name="orden"
+                                class="filter-select"
+                            >
+
+                                <option
+                                    value="desc"
+                                    {{ request('orden', 'desc') === 'desc' ? 'selected' : '' }}
+                                >
+                                    Más recientes primero
+                                </option>
+
+                                <option
+                                    value="asc"
+                                    {{ request('orden') === 'asc' ? 'selected' : '' }}
+                                >
+                                    Más antiguos primero
+                                </option>
+
+                            </select>
+
+
+                            <div class="select-icon-right">
+
+                                <svg
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19 9l-7 7-7-7"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- BOTONES -->
+
+                    <div class="filter-buttons">
+
+                        <button
+                            type="submit"
+                            class="filter-button"
+                        >
+
+                            <svg
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414A1 1 0 0014 14.414V19a1 1 0 01-.553.894l-4 2A1 1 0 018 21v-6.586a1 1 0 00-.293-.707L1.293 7.293A1 1 0 011 6.586V4z"
+                                />
+
+                            </svg>
+
+                            Filtrar
+
+                        </button>
+
+
+                        <a
+                            href="{{ route('formularios.registros') }}"
+                            class="clear-button"
+                        >
+                            Limpiar
+                        </a>
+
+                    </div>
 
                 </div>
 
-            </div>
+            </form>
 
-        </div>
+        </section>
 
 
 
         <!-- TABLA -->
 
-        <div class="overflow-x-auto">
-
-            <table class="w-full min-w-[900px] border-collapse">
+        <section class="records-section">
 
 
-                <thead class="bg-slate-50">
+            <!-- CABECERA TABLA -->
 
-                    <tr>
+            <div class="records-header">
 
-                        <th class="border-b border-slate-200 px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500">
-                            ID
-                        </th>
+                <div class="records-header-row">
 
-                        <th class="border-b border-slate-200 px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500">
-                            Usuario
-                        </th>
+                    <div class="records-heading">
 
-                        <th class="border-b border-slate-200 px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500">
-                            Formulario
-                        </th>
+                        <div class="section-icon section-icon-light">
 
-                        <th class="border-b border-slate-200 px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500">
-                            Fecha
-                        </th>
+                            <svg
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
 
-                        <th class="border-b border-slate-200 px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500">
-                            Hora
-                        </th>
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M9 17v-2a4 4 0 00-4-4H3m6 6v2a4 4 0 004 4h2m-6-6H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5"
+                                />
 
-                        <th class="border-b border-slate-200 px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500">
-                            Acción
-                        </th>
+                            </svg>
 
-                    </tr>
-
-                </thead>
+                        </div>
 
 
-                <tbody class="divide-y divide-slate-100">
+                        <div>
 
-                    @forelse ($formularios as $formulario)
+                            <h3 class="section-title">
+                                Historial de formularios
+                            </h3>
 
-                        <tr class="group transition duration-200 hover:bg-apch-50/50">
+                            <p class="section-subtitle">
+                                Registros almacenados en el sistema.
+                            </p>
 
+                        </div>
 
-                            <!-- ID -->
-
-                            <td class="px-6 py-5">
-
-                                <span class="inline-flex rounded-lg bg-slate-100 px-3 py-1.5 text-sm font-bold text-slate-600 group-hover:bg-white">
-
-                                    #{{ $formulario->id }}
-
-                                </span>
-
-                            </td>
+                    </div>
 
 
-                            <!-- USUARIO -->
+                    <div class="records-count">
 
-                            <td class="px-6 py-5">
+                        <p class="records-count-number">
+                            {{ $formularios->count() }}
+                        </p>
 
-                                <div class="flex items-center gap-3">
+                        <p class="records-count-label">
+                            {{ $formularios->count() == 1 ? 'registro' : 'registros' }}
+                        </p>
 
-                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-apch-700 text-sm font-bold text-white">
+                    </div>
 
-                                        {{ strtoupper(substr($formulario->usuario->name, 0, 1)) }}
+                </div>
+
+            </div>
+
+
+
+            <!-- TABLA -->
+
+            <div class="table-wrapper">
+
+                <table class="records-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Usuario
+                            </th>
+
+                            <th>
+                                Formulario
+                            </th>
+
+                            <th>
+                                Fecha
+                            </th>
+
+                            <th>
+                                Hora
+                            </th>
+
+                            <th>
+                                Acción
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @forelse ($formularios as $formulario)
+
+                            <tr>
+
+
+                                <!-- ID -->
+
+                                <td>
+
+                                    <span class="record-id">
+                                        #{{ $formulario->id }}
+                                    </span>
+
+                                </td>
+
+
+                                <!-- USUARIO -->
+
+                                <td>
+
+                                    <div class="user-cell">
+
+                                        <div class="user-avatar">
+                                            {{ strtoupper(substr($formulario->usuario->name, 0, 1)) }}
+                                        </div>
+
+                                        <div>
+
+                                            <p class="user-name">
+                                                {{ $formulario->usuario->name }}
+                                            </p>
+
+                                        </div>
 
                                     </div>
 
-
-                                    <div class="min-w-0">
-
-                                        <p class="text-base font-semibold text-slate-800">
-                                            {{ $formulario->usuario->name }}
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
+                                </td>
 
 
-                            <!-- FORMULARIO -->
+                                <!-- FORMULARIO -->
 
-                            <td class="px-6 py-5">
+                                <td>
 
-                                <span class="text-base font-semibold leading-6 text-slate-800">
-                                    {{ $formulario->nombre_formulario }}
-                                </span>
+                                    <span class="form-name">
+                                        {{ $formulario->nombre_formulario }}
+                                    </span>
 
-                            </td>
-
-
-                            <!-- FECHA -->
-
-                            <td class="whitespace-nowrap px-6 py-5">
-
-                                <div class="flex items-center gap-2 text-base text-slate-600">
-
-                                    <svg
-                                        class="h-5 w-5 text-apch-700"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                        />
-
-                                    </svg>
-
-                                    {{ $formulario->created_at->format('d/m/Y') }}
-
-                                </div>
-
-                            </td>
+                                </td>
 
 
-                            <!-- HORA -->
+                                <!-- FECHA -->
 
-                            <td class="whitespace-nowrap px-6 py-5">
+                                <td class="date-cell">
 
-                                <div class="flex items-center gap-2 text-base text-slate-600">
-
-                                    <svg
-                                        class="h-5 w-5 text-slate-400"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        />
-
-                                    </svg>
-
-                                    {{ $formulario->created_at->format('H:i') }}
-
-                                </div>
-
-                            </td>
-
-
-                            <!-- ACCIÓN -->
-
-                            <td class="px-6 py-5">
-
-                                <form
-                                    method="POST"
-                                    action="{{ route('formularios.eliminar', $formulario) }}"
-                                >
-
-                                    @csrf
-
-                                    @method('DELETE')
-
-                                    <button
-                                        type="submit"
-                                        class="inline-flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-bold text-red-700 transition duration-200 hover:border-red-300 hover:bg-red-100"
-                                    >
+                                    <div class="date-content">
 
                                         <svg
-                                            class="h-5 w-5"
                                             fill="none"
                                             stroke="currentColor"
                                             viewBox="0 0 24 24"
@@ -881,111 +1791,231 @@
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
                                                 stroke-width="2"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3m-4 0h14"
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                                             />
 
                                         </svg>
 
-                                        Eliminar
+                                        {{ $formulario->created_at->format('d/m/Y') }}
 
-                                    </button>
+                                    </div>
 
-                                </form>
+                                </td>
 
-                            </td>
 
-                        </tr>
+                                <!-- HORA -->
 
-                    @empty
+                                <td class="time-cell">
 
-                        <tr>
+                                    <div class="time-content">
 
-                            <td
-                                colspan="6"
-                                class="px-6 py-16 text-center"
-                            >
+                                        <svg
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
 
-                                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                            />
 
-                                    <svg
-                                        class="h-8 w-8"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
+                                        </svg>
+
+                                        {{ $formulario->created_at->format('H:i') }}
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- ACCIÓN -->
+
+                                <td>
+
+                                    <form
+                                        method="POST"
+                                        action="{{ route('formularios.eliminar', $formulario) }}"
                                     >
 
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.7"
-                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.707.293V19a2 2 0 01-2 2z"
-                                        />
+                                        @csrf
 
-                                    </svg>
+                                        @method('DELETE')
 
-                                </div>
+                                        <button
+                                            type="submit"
+                                            class="delete-button"
+                                        >
 
-                                <p class="mt-4 text-base font-bold text-slate-600">
-                                    No existen registros para mostrar.
-                                </p>
+                                            <svg
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
 
-                                <p class="mt-1 text-sm text-slate-400">
-                                    Intente cambiar los filtros de búsqueda.
-                                </p>
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3m-4 0h14"
+                                                />
 
-                            </td>
+                                            </svg>
 
-                        </tr>
+                                            Eliminar
 
-                    @endforelse
+                                        </button>
 
-                </tbody>
+                                    </form>
 
-            </table>
+                                </td>
 
-        </div>
+                            </tr>
 
-    </section>
+                        @empty
+
+                            <tr>
+
+                                <td
+                                    colspan="6"
+                                    class="empty-cell"
+                                >
+
+                                    <div class="empty-icon">
+
+                                        <svg
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="1.7"
+                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.707.293V19a2 2 0 01-2 2h-2z"
+                                            />
+
+                                        </svg>
+
+                                    </div>
+
+                                    <p class="empty-title">
+                                        No existen registros para mostrar.
+                                    </p>
+
+                                    <p class="empty-description">
+                                        Intente cambiar los filtros de búsqueda.
+                                    </p>
+
+                                </td>
+
+                            </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
 
 
 
-    <!-- INFORMACIÓN INFERIOR -->
+        <!-- INFORMACIÓN INFERIOR -->
 
-    <section class="mt-6 rounded-[20px] border border-slate-200 bg-white p-5 shadow-sm">
+        <section class="info-section">
 
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="info-content">
 
-            <div class="flex items-start gap-3">
+                <div class="info-main">
 
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-apch-50 text-apch-700">
+                    <div class="info-icon">
 
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
+                        <svg
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
 
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
-                        />
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
+                            />
 
-                    </svg>
+                        </svg>
+
+                    </div>
+
+
+                    <div>
+
+                        <p class="info-title">
+                            Historial institucional
+                        </p>
+
+                        <p class="info-description">
+                            Los registros corresponden a las acciones realizadas por los usuarios en los formularios del sistema.
+                        </p>
+
+                    </div>
 
                 </div>
 
+
+                <div class="order-info">
+
+                    Orden:
+
+                    <span class="order-value">
+                        {{ request('orden', 'desc') === 'asc' ? 'Más antiguos primero' : 'Más recientes primero' }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- PIE DE PÁGINA -->
+
+    <footer class="site-footer">
+
+        <div class="footer-container">
+
+            <div class="footer-main">
 
                 <div>
 
-                    <p class="text-sm font-bold text-slate-800">
-                        Historial institucional
+                    <p class="footer-title">
+                        Sistema de Formularios Digitales
                     </p>
 
-                    <p class="mt-1 text-sm leading-6 text-slate-500">
-                        Los registros corresponden a las acciones realizadas por los usuarios en los formularios del sistema.
+                    <p class="footer-subtitle">
+                        Unidad Educativa "Ángel Polibio Chaves"
+                    </p>
+
+                </div>
+
+
+                <div class="footer-author">
+
+                    <p class="footer-author-name">
+                        Desarrollado por Stalyn Alvarado
+                    </p>
+
+                    <p class="footer-author-email">
+                        tu-correo@ejemplo.com
                     </p>
 
                 </div>
@@ -993,71 +2023,17 @@
             </div>
 
 
-            <div class="shrink-0 rounded-xl bg-slate-50 px-4 py-3 text-sm text-slate-500">
+            <div class="footer-bottom">
 
-                Orden:
-
-                <span class="font-bold text-slate-700">
-                    {{ request('orden', 'desc') === 'asc' ? 'Más antiguos primero' : 'Más recientes primero' }}
-                </span>
-
-            </div>
-
-        </div>
-
-    </section>
-
-</main>
-
-
-
-<!-- PIE DE PÁGINA -->
-
-<footer class="mt-10 bg-black text-white">
-
-    <div class="mx-auto flex max-w-7xl flex-col gap-5 px-6 py-7 lg:px-10">
-
-        <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-
-            <div>
-
-                <p class="text-base font-bold">
-                    Sistema de Formularios Digitales
-                </p>
-
-                <p class="mt-1 text-sm text-slate-400">
-                    Unidad Educativa "Ángel Polibio Chaves"
-                </p>
-
-            </div>
-
-
-            <div class="text-left sm:text-right">
-
-                <p class="text-sm font-semibold text-white">
-                    Desarrollado por Stalyn Alvarado
-                </p>
-
-                <p class="mt-1 text-sm text-slate-400">
-                    tu-correo@ejemplo.com
+                <p class="footer-bottom-text">
+                    Departamento de Consejería Estudiantil · Sistema institucional de formularios digitales
                 </p>
 
             </div>
 
         </div>
 
-
-        <div class="border-t border-white/10 pt-4 text-center sm:text-left">
-
-            <p class="text-xs text-slate-500">
-                Departamento de Consejería Estudiantil · Sistema institucional de formularios digitales
-            </p>
-
-        </div>
-
-    </div>
-
-</footer>
+    </footer>
 
 
 </body>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,6 +6,7 @@
 <title>PLAN DE ATENCIÓN PSICOSOCIAL Y SEGUIMIENTO</title>
 
 <style>
+
     @page {
         size: A4;
         margin: 0;
@@ -29,7 +29,7 @@
 
     body {
         background: #e5e5e5;
-        font-family: Carlito, Arial, Helvetica, sans-serif;
+        font-family: "Times New Roman", Times, serif;
         font-size: 10pt;
         padding: 0;
     }
@@ -42,15 +42,19 @@
         position: sticky;
         top: 0;
         z-index: 1000;
+
         display: flex;
         align-items: center;
         justify-content: center;
         flex-wrap: wrap;
         gap: 8px;
+
         padding: 12px 15px;
+
         background: #ffffff;
         border-bottom: 1px solid #d0d0d0;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+
         font-family: Arial, sans-serif;
     }
 
@@ -60,11 +64,15 @@
         font-weight: 500;
         padding: 8px 15px;
         cursor: pointer;
+
         border: 1px solid #b8b8b8;
         border-radius: 6px;
         background: #f5f5f5;
         color: #222;
-        transition: background 0.15s ease, border-color 0.15s ease;
+
+        transition:
+            background 0.15s ease,
+            border-color 0.15s ease;
     }
 
     .toolbar button:hover {
@@ -107,6 +115,7 @@
         gap: 4px;
         margin-left: 5px;
         padding: 3px;
+
         border: 1px solid #d0d0d0;
         border-radius: 7px;
         background: #f7f7f7;
@@ -116,15 +125,19 @@
         width: 34px;
         height: 32px;
         padding: 0;
+
         font-size: 20px;
         line-height: 1;
+
         border: 1px solid #c5c5c5;
         background: #fff;
     }
 
     .zoom-label {
         min-width: 52px;
+
         text-align: center;
+
         font-size: 13px;
         font-weight: bold;
         color: #333;
@@ -144,19 +157,24 @@
         display: flex;
         align-items: center;
         gap: 7px;
+
         margin-left: 4px;
         padding: 7px 10px;
+
         font-family: Arial, sans-serif;
         font-size: 13px;
         color: #555;
+
         white-space: nowrap;
     }
 
     .estado-punto {
         width: 8px;
         height: 8px;
+
         border-radius: 50%;
         background: #3b8f3b;
+
         display: inline-block;
     }
 
@@ -168,30 +186,50 @@
         width: 100%;
         overflow-x: auto;
         overflow-y: visible;
+
         padding: 25px 20px 40px;
     }
 
     /* =========================
-       HOJA A4
+       HOJA A4 DINÁMICA
        ========================= */
 
     .page {
         width: 210mm;
-        height: 297mm;
+        min-height: 297mm;
+        height: auto;
+
         position: relative;
+
         margin: 0 auto 25px;
-        overflow: hidden;
+
+        overflow: visible;
+
         background: #fff;
+
         box-shadow: 0 2px 12px rgba(0, 0, 0, 0.20);
+
         page-break-after: always;
         break-after: page;
+
         zoom: var(--zoom-documento, 1);
         transform-origin: top center;
+
+        font-family: "Times New Roman", Times, serif;
+
+        padding-top: 32.8mm;
+        padding-bottom: 8mm;
     }
 
     .page:last-of-type {
         page-break-after: auto;
         break-after: auto;
+    }
+
+    .page input,
+    .page textarea,
+    .page select {
+        font-family: "Times New Roman", Times, serif;
     }
 
     /* =========================
@@ -200,29 +238,40 @@
 
     .institution-header {
         position: absolute;
+
         top: 7.5mm;
         left: 31.7mm;
+
         width: 147mm;
         height: 20.5mm;
+
         border-bottom: 1.2mm solid #000;
+
         font-family: "Times New Roman", Times, serif;
     }
 
     .institution-header img {
         position: absolute;
+
         left: 6.5mm;
         top: 0.5mm;
+
         width: 15.4mm;
         height: 17.3mm;
+
         object-fit: contain;
     }
 
     .institution-text {
         position: absolute;
+
         left: 34mm;
         top: -0.3mm;
+
         width: 88mm;
+
         text-align: center;
+
         line-height: 1.05;
         white-space: nowrap;
     }
@@ -240,43 +289,75 @@
         font-size: 11pt;
     }
 
+    .institution-text .line4 {
+        font-size: 9pt;
+        margin-top: 0.5mm;
+    }
+
     /* =========================
        CONTENEDORES PRINCIPALES
        ========================= */
 
     .form-box {
-        position: absolute;
-        left: 15mm;
+        position: relative;
+
+        left: auto;
+        top: auto;
+
         width: 180mm;
+
+        margin-left: auto;
+        margin-right: auto;
+
         border: 0.55mm solid #000;
+
+        height: auto;
+
+        overflow: visible;
     }
 
     .page1-box {
-        top: 32.8mm;
-        height: 212.3mm;
+        min-height: 212.3mm;
     }
 
     .page2-box {
-        top: 32.8mm;
-        height: 259.4mm;
+        min-height: 259.4mm;
     }
+
+    /* =========================
+       TABLAS
+       ========================= */
 
     table {
         width: 100%;
+
         border-collapse: collapse;
         table-layout: fixed;
+
         margin: 0;
     }
 
     td,
     th {
         border: 0.25mm solid #000;
+
         padding: 1.2mm 1.7mm;
+
         vertical-align: top;
     }
 
     .thick {
         border-width: 0.5mm !important;
+    }
+
+    /*
+     * Las filas completas se mantienen juntas
+     * cuando sea posible al imprimir.
+     */
+
+    tr {
+        break-inside: avoid;
+        page-break-inside: avoid;
     }
 
     /* =========================
@@ -285,36 +366,47 @@
 
     .title-cell {
         height: 14.8mm;
+
         text-align: center;
         vertical-align: middle;
+
         font-weight: bold;
         font-size: 12pt;
-        font-family: Carlito, Arial, Helvetica, sans-serif;
+
+        font-family: "Times New Roman", Times, serif;
     }
 
     .section-title {
         height: 4.6mm;
+
         text-align: center;
         vertical-align: middle;
+
         font-weight: bold;
         font-size: 10pt;
+
         padding-top: 0.5mm;
         padding-bottom: 0.5mm;
     }
 
     .data-row {
         height: 5.7mm;
+
         vertical-align: middle;
     }
 
     .data-row td {
         vertical-align: middle;
+
         padding-top: 0.6mm;
         padding-bottom: 0.6mm;
     }
 
     .diagnostic {
-        height: 41.2mm;
+        min-height: 41.2mm;
+
+        height: auto;
+
         font-size: 9pt;
         line-height: 1.55;
     }
@@ -324,31 +416,28 @@
     }
 
     .intervention-row {
-        height: 6mm;
+        min-height: 6mm;
+
+        height: auto;
+
         font-size: 10pt;
         font-weight: bold;
+
         vertical-align: middle;
+
         white-space: nowrap;
     }
 
     .intervention-row .normal {
-        font-weight: normal;
-        position: absolute;
-        top: 0.7mm;
-        height: 4mm;
-        line-height: 4mm;
-    }
+        position: static;
 
-    .intervention-row .opt-individual {
-        left: 78mm;
-    }
+        display: inline-flex;
 
-    .intervention-row .opt-familiar {
-        left: 106mm;
-    }
+        height: auto;
 
-    .intervention-row .opt-grupal {
-        left: 134mm;
+        line-height: normal;
+
+        margin-left: 7mm;
     }
 
     .intervention-row td {
@@ -357,24 +446,79 @@
 
     .actions-title {
         height: 4.5mm;
+
         text-align: center;
         vertical-align: middle;
+
         font-weight: bold;
         font-size: 10pt;
+
         padding-top: 0.4mm;
         padding-bottom: 0.4mm;
     }
 
     .actions-head {
         height: 15.8mm;
+
         font-weight: bold;
         font-size: 10pt;
+
         line-height: 1.25;
+
         vertical-align: top;
     }
 
     .actions-row {
         height: 21.5mm;
+        min-height: 21.5mm;
+    }
+
+    /* =========================
+       BOTÓN AGREGAR FILA
+       ========================= */
+
+    .dynamic-controls {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        gap: 5px;
+
+        margin-top: 2mm;
+
+        padding-bottom: 2mm;
+
+        font-family: Arial, sans-serif;
+    }
+
+    .btn-agregar-fila {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 4px 10px;
+
+        border: 1px solid #999;
+        border-radius: 5px;
+
+        background: #f5f5f5;
+        color: #222;
+
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        font-weight: bold;
+
+        cursor: pointer;
+    }
+
+    .btn-agregar-fila:hover {
+        background: #e8e8e8;
+    }
+
+    .fila-ayuda {
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        color: #666;
     }
 
     /* =========================
@@ -382,48 +526,71 @@
        ========================= */
 
     .signature-box {
-        position: absolute;
-        left: 15mm;
-        top: 247.2mm;
+        position: relative;
+
+        left: auto;
+        top: auto;
+
         width: 180mm;
-        height: 36.2mm;
+        min-height: 36.2mm;
+        height: auto;
+
+        margin: 2mm auto 0;
+
         border: 0.55mm solid #000;
     }
 
     .signature-inner {
         width: 100%;
+
         border-collapse: collapse;
     }
 
     .signature-title {
         height: 12.5mm;
+
         text-align: center;
         vertical-align: bottom;
+
         font-weight: bold;
         font-size: 10pt;
+
         padding-bottom: 1.5mm;
     }
 
     .name-row {
         height: 10mm;
+
         font-weight: bold;
+
         vertical-align: middle;
     }
 
     .confidential {
         height: 11mm;
+
         font-style: italic;
         font-size: 10pt;
+
         line-height: 1.25;
+
         vertical-align: top;
     }
 
     .citation {
-        position: absolute;
-        left: 17mm;
-        top: 284.6mm;
+        position: relative;
+
+        left: auto;
+        top: auto;
+
+        width: 180mm;
+
+        margin: 1mm auto 0;
+
         font-family: "Times New Roman", Times, serif;
+
         font-size: 8pt;
+
         white-space: nowrap;
     }
 
@@ -433,46 +600,60 @@
 
     .page2-blank-header {
         height: 14.7mm;
+
         border-bottom: 0.55mm solid #000;
     }
 
     .follow-title {
         height: 14.5mm;
+
         text-align: center;
         vertical-align: middle;
+
         font-weight: bold;
         font-size: 12pt;
     }
 
     .follow-subtitle {
         height: 4.8mm;
+
         text-align: center;
         vertical-align: middle;
+
         font-weight: bold;
         font-size: 10pt;
+
         padding-top: 0.5mm;
         padding-bottom: 0.5mm;
     }
 
     .follow-head {
         height: 17.8mm;
+
         text-align: center;
         vertical-align: middle;
+
         font-weight: bold;
         font-size: 10pt;
+
         line-height: 1.05;
+
         padding: 1.1mm 1.5mm;
     }
 
     .follow-row {
         height: 21.4mm;
+        min-height: 21.4mm;
     }
 
     .follow-confidential {
         height: 11mm;
+
         font-style: italic;
         font-size: 10pt;
+
         line-height: 1.25;
+
         vertical-align: top;
     }
 
@@ -484,14 +665,20 @@
     input[type="date"],
     textarea {
         width: 100%;
+
         margin: 0;
         padding: 0;
+
         border: 0;
         outline: 0;
         border-radius: 0;
+
         background: transparent;
+
         color: #000;
+
         font: inherit;
+
         resize: none;
     }
 
@@ -507,7 +694,9 @@
 
     .inline-field {
         display: inline-block;
+
         vertical-align: middle;
+
         height: 4.5mm;
     }
 
@@ -533,12 +722,14 @@
 
     .diagnostic-input {
         height: 30mm;
+
         border-bottom: none;
     }
 
     .cell-input,
     .cell-textarea {
         height: 100%;
+
         min-height: 17mm;
     }
 
@@ -548,32 +739,126 @@
 
     .check-wrap {
         display: inline-flex;
+
         align-items: center;
+
         gap: 1mm;
+
         margin-left: 2mm;
+
         font-weight: normal;
+
         white-space: nowrap;
     }
 
     input[type="checkbox"] {
         appearance: none;
         -webkit-appearance: none;
-        width: 3.3mm;
-        height: 3.3mm;
-        border: 0.25mm solid #000;
-        border-radius: 0;
+
+        width: 7mm;
+        height: 4mm;
+
+        border: none;
+
         vertical-align: middle;
+
         margin: 0;
         padding: 0;
-        background: #fff;
+
+        background: transparent;
+
+        position: relative;
+    }
+
+    input[type="checkbox"]::after {
+        content: "( )";
+
+        position: absolute;
+
+        inset: 0;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        font-family: "Times New Roman", Times, serif;
+
+        font-size: 10pt;
+
+        font-weight: normal;
+
+        line-height: 4mm;
+
+        color: #000;
     }
 
     input[type="checkbox"]:checked::after {
-        content: "✓";
-        display: block;
-        font-size: 9pt;
-        line-height: 3mm;
+        content: "(x)";
+        font-weight: bold;
+    }
+
+    /* =========================
+       CONTINUACIÓN
+       ========================= */
+
+    .continuation-page {
+        position: relative;
+    }
+
+    .continuation-page .form-box {
+        top: auto;
+        height: auto;
+        min-height: 40mm;
+    }
+
+    .continuation-page .continuation-table {
+        width: 100%;
+    }
+
+    .continuation-page .continuation-title {
+        height: 9mm;
+
         text-align: center;
+        vertical-align: middle;
+
+        font-weight: bold;
+        font-size: 10pt;
+    }
+
+    .continuation-page .continuation-head {
+        height: 15.8mm;
+
+        text-align: center;
+        vertical-align: middle;
+
+        font-weight: bold;
+        font-size: 10pt;
+
+        line-height: 1.2;
+    }
+
+    .continuation-page .continuation-follow-head {
+        height: 17.8mm;
+
+        text-align: center;
+        vertical-align: middle;
+
+        font-weight: bold;
+        font-size: 10pt;
+
+        line-height: 1.05;
+
+        padding: 1.1mm 1.5mm;
+    }
+
+    .continuation-page .actions-row,
+    .continuation-page .follow-row {
+        height: 21.5mm;
+    }
+
+    .continuation-page .follow-row {
+        height: 21.4mm;
     }
 
     /* =========================
@@ -585,43 +870,75 @@
         html,
         body {
             width: 210mm;
+
             margin: 0;
             padding: 0;
+
             background: #fff;
         }
 
-        .toolbar {
+        .toolbar,
+        .dynamic-controls {
             display: none !important;
         }
 
         .documento {
             width: auto;
+
             overflow: visible;
+
             padding: 0;
         }
 
         .page {
             width: 210mm;
-            height: 297mm;
+
+            min-height: 297mm;
+            height: auto;
+
             margin: 0;
+
+            padding-top: 32.8mm;
+            padding-bottom: 8mm;
+
             box-shadow: none;
-            overflow: hidden;
+
+            overflow: visible;
+
             zoom: 1 !important;
+
+            page-break-after: always;
+            break-after: page;
         }
 
         .page:last-of-type {
             page-break-after: auto;
             break-after: auto;
         }
+
+        .form-box {
+            overflow: visible;
+        }
+
+        .signature-box {
+            overflow: visible;
+        }
+
+        .continuation-page {
+            page-break-after: always;
+            break-after: page;
+        }
+
+        .continuation-page:last-child {
+            page-break-after: auto;
+            break-after: auto;
+        }
     }
+
 </style>
 </head>
 
 <body>
-
-<!-- =========================
-     BARRA DE HERRAMIENTAS
-     ========================= -->
 
 <div class="toolbar">
 
@@ -698,18 +1015,14 @@
 </div>
 
 
-<!-- =========================
-     CONTENEDOR DEL DOCUMENTO
-     ========================= -->
-
-<div class="documento">
+<div class="documento" id="documento">
 
 
 <!-- =========================
      PÁGINA 1
      ========================= -->
 
-<section class="page">
+<section class="page" id="paginaPrincipal">
 
     <header class="institution-header">
 
@@ -719,9 +1032,23 @@
         >
 
         <div class="institution-text">
-            <div class="line1">UNIDAD EDUCATIVA</div>
-            <div class="line2">“ANGEL POLIBIO CHAVES”</div>
-            <div class="line3">San Miguel - Provincia Bolívar - Ecuador</div>
+
+            <div class="line1">
+                UNIDAD EDUCATIVA
+            </div>
+
+            <div class="line2">
+                “ANGEL POLIBIO CHAVES”
+            </div>
+
+            <div class="line3">
+                San Miguel - Provincia Bolívar - Ecuador
+            </div>
+
+            <div class="line4">
+                DEPARTAMENTO DE CONSEJERIA ESTUDIANTIL
+            </div>
+
         </div>
 
     </header>
@@ -738,20 +1065,27 @@
                 <col style="width:25%">
             </colgroup>
 
-
             <tr>
-                <td colspan="4" class="title-cell thick">
+
+                <td
+                    colspan="4"
+                    class="title-cell thick"
+                >
                     PLAN DE ATENCIÓN PSICOSOCIAL Y SEGUIMIENTO
                 </td>
-            </tr>
 
+            </tr>
 
             <tr>
-                <td colspan="4" class="section-title thick">
+
+                <td
+                    colspan="4"
+                    class="section-title thick"
+                >
                     DATOS INFORMATIVOS GENERALES
                 </td>
-            </tr>
 
+            </tr>
 
             <tr class="data-row">
 
@@ -760,16 +1094,17 @@
                     Nombre de estudiante a atender:
 
                     <span class="inline-field student-field">
+
                         <input
                             type="text"
                             aria-label="Nombre de estudiante a atender"
                         >
+
                     </span>
 
                 </td>
 
             </tr>
-
 
             <tr class="data-row">
 
@@ -778,30 +1113,32 @@
                     Curso y paralelo:
 
                     <span class="inline-field course-field">
+
                         <input
                             type="text"
                             aria-label="Curso y paralelo"
                         >
+
                     </span>
 
                 </td>
-
 
                 <td colspan="2">
 
                     Jornada:
 
                     <span class="inline-field day-field">
+
                         <input
                             type="text"
                             aria-label="Jornada"
                         >
+
                     </span>
 
                 </td>
 
             </tr>
-
 
             <tr class="data-row">
 
@@ -810,34 +1147,39 @@
                     Nombre docente tutor/a:
 
                     <span class="inline-field teacher-field">
+
                         <input
                             type="text"
                             aria-label="Nombre docente tutor/a"
                         >
+
                     </span>
 
                 </td>
-
 
                 <td colspan="2">
 
                     Fecha de elaboración del plan:
 
                     <span class="inline-field date-field">
+
                         <input
                             type="date"
                             aria-label="Fecha de elaboración del plan"
                         >
+
                     </span>
 
                 </td>
 
             </tr>
 
-
             <tr>
 
-                <td colspan="4" class="diagnostic thick">
+                <td
+                    colspan="4"
+                    class="diagnostic thick"
+                >
 
                     <strong>
                         Resumen del diagnóstico situacional:
@@ -855,46 +1197,42 @@
 
             </tr>
 
-
             <tr class="intervention-row thick">
 
                 <td colspan="4">
 
                     Tipo o tipos de intervención psicosocial a realizar:
 
-
-                    <span class="normal check-wrap opt-individual">
+                    <span class="normal check-wrap">
 
                         <input
                             type="checkbox"
                             aria-label="Intervención individual"
                         >
 
-                        Individual ( )
+                        Individual
 
                     </span>
 
-
-                    <span class="normal check-wrap opt-familiar">
+                    <span class="normal check-wrap">
 
                         <input
                             type="checkbox"
                             aria-label="Intervención familiar"
                         >
 
-                        Familiar ( )
+                        Familiar
 
                     </span>
 
-
-                    <span class="normal check-wrap opt-grupal">
+                    <span class="normal check-wrap">
 
                         <input
                             type="checkbox"
                             aria-label="Intervención grupal"
                         >
 
-                        Grupal ( )
+                        Grupal
 
                     </span>
 
@@ -902,17 +1240,16 @@
 
             </tr>
 
-
             <tr>
 
-                <td colspan="4" class="actions-title thick">
-
+                <td
+                    colspan="4"
+                    class="actions-title thick"
+                >
                     Acciones para implementar para la atención psicosocial
-
                 </td>
 
             </tr>
-
 
             <tr class="actions-head">
 
@@ -935,172 +1272,193 @@
 
             </tr>
 
+            <tbody id="accionesBody">
 
-            <tr class="actions-row">
+                <tr class="actions-row dynamic-action-row">
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Acción 1"
-                    ></textarea>
-                </td>
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="accion"
+                            aria-label="Acción 1"
+                        ></textarea>
+                    </td>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Profesional acción 1"
-                    ></textarea>
-                </td>
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="profesional"
+                            aria-label="Profesional acción 1"
+                        ></textarea>
+                    </td>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Tiempo acción 1"
-                    ></textarea>
-                </td>
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="tiempo"
+                            aria-label="Tiempo acción 1"
+                        ></textarea>
+                    </td>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Observaciones acción 1"
-                    ></textarea>
-                </td>
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="observaciones"
+                            aria-label="Observaciones acción 1"
+                        ></textarea>
+                    </td>
 
-            </tr>
+                </tr>
 
+                <tr class="actions-row dynamic-action-row">
 
-            <tr class="actions-row">
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="accion"
+                            aria-label="Acción 2"
+                        ></textarea>
+                    </td>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Acción 2"
-                    ></textarea>
-                </td>
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="profesional"
+                            aria-label="Profesional acción 2"
+                        ></textarea>
+                    </td>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Profesional acción 2"
-                    ></textarea>
-                </td>
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="tiempo"
+                            aria-label="Tiempo acción 2"
+                        ></textarea>
+                    </td>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Tiempo acción 2"
-                    ></textarea>
-                </td>
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="observaciones"
+                            aria-label="Observaciones acción 2"
+                        ></textarea>
+                    </td>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Observaciones acción 2"
-                    ></textarea>
-                </td>
+                </tr>
 
-            </tr>
+                <tr class="actions-row dynamic-action-row">
 
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="accion"
+                            aria-label="Acción 3"
+                        ></textarea>
+                    </td>
 
-            <tr class="actions-row">
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="profesional"
+                            aria-label="Profesional acción 3"
+                        ></textarea>
+                    </td>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Acción 3"
-                    ></textarea>
-                </td>
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="tiempo"
+                            aria-label="Tiempo acción 3"
+                        ></textarea>
+                    </td>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Profesional acción 3"
-                    ></textarea>
-                </td>
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="observaciones"
+                            aria-label="Observaciones acción 3"
+                        ></textarea>
+                    </td>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Tiempo acción 3"
-                    ></textarea>
-                </td>
+                </tr>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Observaciones acción 3"
-                    ></textarea>
-                </td>
+                <tr class="actions-row dynamic-action-row">
 
-            </tr>
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="accion"
+                            aria-label="Acción 4"
+                        ></textarea>
+                    </td>
 
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="profesional"
+                            aria-label="Profesional acción 4"
+                        ></textarea>
+                    </td>
 
-            <tr class="actions-row">
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="tiempo"
+                            aria-label="Tiempo acción 4"
+                        ></textarea>
+                    </td>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Acción 4"
-                    ></textarea>
-                </td>
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="observaciones"
+                            aria-label="Observaciones acción 4"
+                        ></textarea>
+                    </td>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Profesional acción 4"
-                    ></textarea>
-                </td>
+                </tr>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Tiempo acción 4"
-                    ></textarea>
-                </td>
+                <tr class="actions-row dynamic-action-row">
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Observaciones acción 4"
-                    ></textarea>
-                </td>
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="accion"
+                            aria-label="Acción 5"
+                        ></textarea>
+                    </td>
 
-            </tr>
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="profesional"
+                            aria-label="Profesional acción 5"
+                        ></textarea>
+                    </td>
 
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="tiempo"
+                            aria-label="Tiempo acción 5"
+                        ></textarea>
+                    </td>
 
-            <tr class="actions-row">
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="observaciones"
+                            aria-label="Observaciones acción 5"
+                        ></textarea>
+                    </td>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Acción 5"
-                    ></textarea>
-                </td>
+                </tr>
 
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Profesional acción 5"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Tiempo acción 5"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Observaciones acción 5"
-                    ></textarea>
-                </td>
-
-            </tr>
+            </tbody>
 
         </table>
+
+
 
     </div>
 
@@ -1119,7 +1477,6 @@
 
             </tr>
 
-
             <tr>
 
                 <td class="name-row">
@@ -1130,16 +1487,17 @@
                         class="inline-field"
                         style="width:105mm;"
                     >
+
                         <input
                             type="text"
                             aria-label="Nombre profesional DECE"
                         >
+
                     </span>
 
                 </td>
 
             </tr>
-
 
             <tr>
 
@@ -1159,10 +1517,12 @@
     <div class="citation">
 
         *Ministerio de Educación (2023).
+
         <i>
             Modelo de Gestión del Departamento de Consejería Estudiantil.
         </i>
-        &nbsp;&nbsp; Quito: Ecuador.
+
+        Quito: Ecuador.
 
     </div>
 
@@ -1173,7 +1533,7 @@
      PÁGINA 2
      ========================= -->
 
-<section class="page">
+<section class="page" id="paginaSeguimiento">
 
     <header class="institution-header">
 
@@ -1183,9 +1543,22 @@
         >
 
         <div class="institution-text">
-            <div class="line1">UNIDAD EDUCATIVA</div>
-            <div class="line2">“ANGEL POLIBIO CHAVES”</div>
-            <div class="line3">San Miguel - Provincia Bolívar - Ecuador</div>
+
+            <div class="line1">
+                UNIDAD EDUCATIVA
+            </div>
+
+            <div class="line2">
+                “ANGEL POLIBIO CHAVES”
+            </div>
+
+            <div class="line3">
+                San Miguel - Provincia Bolívar - Ecuador
+            </div>
+            <div class="line4">
+                DEPARTAMENTO DE CONSEJERIA ESTUDIANTIL
+            </div>
+
         </div>
 
     </header>
@@ -1196,13 +1569,14 @@
         <table>
 
             <colgroup>
+
                 <col style="width:21.5%">
                 <col style="width:30.0%">
                 <col style="width:12.0%">
                 <col style="width:12.0%">
                 <col style="width:24.5%">
-            </colgroup>
 
+            </colgroup>
 
             <tr>
 
@@ -1213,20 +1587,16 @@
 
             </tr>
 
-
             <tr>
 
                 <td
                     colspan="5"
                     class="follow-title thick"
                 >
-
                     SEGUIMIENTO DE LA ATENCIÓN PSICOSOCIAL
-
                 </td>
 
             </tr>
-
 
             <tr>
 
@@ -1234,13 +1604,10 @@
                     colspan="5"
                     class="follow-subtitle thick"
                 >
-
                     Acciones implementadas para la atención psicosocial
-
                 </td>
 
             </tr>
-
 
             <tr class="follow-head">
 
@@ -1277,366 +1644,405 @@
 
             </tr>
 
-
-            <tr class="follow-row">
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 1 tipo de intervención"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 1 descripción"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 1 profesional"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 1 fecha"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 1 observaciones"
-                    ></textarea>
-                </td>
-
-            </tr>
-
-
-            <tr class="follow-row">
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 2 tipo de intervención"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 2 descripción"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 2 profesional"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 2 fecha"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 2 observaciones"
-                    ></textarea>
-                </td>
-
-            </tr>
-
-
-            <tr class="follow-row">
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 3 tipo de intervención"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 3 descripción"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 3 profesional"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 3 fecha"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 3 observaciones"
-                    ></textarea>
-                </td>
-
-            </tr>
-
-
-            <tr class="follow-row">
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 4 tipo de intervención"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 4 descripción"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 4 profesional"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 4 fecha"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 4 observaciones"
-                    ></textarea>
-                </td>
-
-            </tr>
-
-
-            <tr class="follow-row">
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 5 tipo de intervención"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 5 descripción"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 5 profesional"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 5 fecha"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 5 observaciones"
-                    ></textarea>
-                </td>
-
-            </tr>
-
-
-            <tr class="follow-row">
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 6 tipo de intervención"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 6 descripción"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 6 profesional"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 6 fecha"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 6 observaciones"
-                    ></textarea>
-                </td>
-
-            </tr>
-
-
-            <tr class="follow-row">
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 7 tipo de intervención"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 7 descripción"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 7 profesional"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 7 fecha"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 7 observaciones"
-                    ></textarea>
-                </td>
-
-            </tr>
-
-
-            <tr class="follow-row">
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 8 tipo de intervención"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 8 descripción"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 8 profesional"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 8 fecha"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 8 observaciones"
-                    ></textarea>
-                </td>
-
-            </tr>
-
-
-            <tr class="follow-row">
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 9 tipo de intervención"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 9 descripción"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 9 profesional"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 9 fecha"
-                    ></textarea>
-                </td>
-
-                <td>
-                    <textarea
-                        class="cell-textarea"
-                        aria-label="Seguimiento 9 observaciones"
-                    ></textarea>
-                </td>
-
-            </tr>
-
+            <tbody id="seguimientoBody">
+
+                <tr class="follow-row dynamic-follow-row">
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="tipo"
+                            aria-label="Seguimiento 1 tipo de intervención"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="descripcion"
+                            aria-label="Seguimiento 1 descripción"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="profesional"
+                            aria-label="Seguimiento 1 profesional"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="fecha"
+                            aria-label="Seguimiento 1 fecha"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="observaciones"
+                            aria-label="Seguimiento 1 observaciones"
+                        ></textarea>
+                    </td>
+
+                </tr>
+
+                <tr class="follow-row dynamic-follow-row">
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="tipo"
+                            aria-label="Seguimiento 2 tipo de intervención"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="descripcion"
+                            aria-label="Seguimiento 2 descripción"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="profesional"
+                            aria-label="Seguimiento 2 profesional"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="fecha"
+                            aria-label="Seguimiento 2 fecha"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="observaciones"
+                            aria-label="Seguimiento 2 observaciones"
+                        ></textarea>
+                    </td>
+
+                </tr>
+
+                <tr class="follow-row dynamic-follow-row">
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="tipo"
+                            aria-label="Seguimiento 3 tipo de intervención"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="descripcion"
+                            aria-label="Seguimiento 3 descripción"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="profesional"
+                            aria-label="Seguimiento 3 profesional"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="fecha"
+                            aria-label="Seguimiento 3 fecha"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="observaciones"
+                            aria-label="Seguimiento 3 observaciones"
+                        ></textarea>
+                    </td>
+
+                </tr>
+
+                <tr class="follow-row dynamic-follow-row">
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="tipo"
+                            aria-label="Seguimiento 4 tipo de intervención"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="descripcion"
+                            aria-label="Seguimiento 4 descripción"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="profesional"
+                            aria-label="Seguimiento 4 profesional"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="fecha"
+                            aria-label="Seguimiento 4 fecha"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="observaciones"
+                            aria-label="Seguimiento 4 observaciones"
+                        ></textarea>
+                    </td>
+
+                </tr>
+
+                <tr class="follow-row dynamic-follow-row">
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="tipo"
+                            aria-label="Seguimiento 5 tipo de intervención"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="descripcion"
+                            aria-label="Seguimiento 5 descripción"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="profesional"
+                            aria-label="Seguimiento 5 profesional"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="fecha"
+                            aria-label="Seguimiento 5 fecha"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="observaciones"
+                            aria-label="Seguimiento 5 observaciones"
+                        ></textarea>
+                    </td>
+
+                </tr>
+
+                <tr class="follow-row dynamic-follow-row">
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="tipo"
+                            aria-label="Seguimiento 6 tipo de intervención"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="descripcion"
+                            aria-label="Seguimiento 6 descripción"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="profesional"
+                            aria-label="Seguimiento 6 profesional"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="fecha"
+                            aria-label="Seguimiento 6 fecha"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="observaciones"
+                            aria-label="Seguimiento 6 observaciones"
+                        ></textarea>
+                    </td>
+
+                </tr>
+
+                <tr class="follow-row dynamic-follow-row">
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="tipo"
+                            aria-label="Seguimiento 7 tipo de intervención"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="descripcion"
+                            aria-label="Seguimiento 7 descripción"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="profesional"
+                            aria-label="Seguimiento 7 profesional"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="fecha"
+                            aria-label="Seguimiento 7 fecha"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="observaciones"
+                            aria-label="Seguimiento 7 observaciones"
+                        ></textarea>
+                    </td>
+
+                </tr>
+
+                <tr class="follow-row dynamic-follow-row">
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="tipo"
+                            aria-label="Seguimiento 8 tipo de intervención"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="descripcion"
+                            aria-label="Seguimiento 8 descripción"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="profesional"
+                            aria-label="Seguimiento 8 profesional"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="fecha"
+                            aria-label="Seguimiento 8 fecha"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="observaciones"
+                            aria-label="Seguimiento 8 observaciones"
+                        ></textarea>
+                    </td>
+
+                </tr>
+
+                <tr class="follow-row dynamic-follow-row">
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="tipo"
+                            aria-label="Seguimiento 9 tipo de intervención"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="descripcion"
+                            aria-label="Seguimiento 9 descripción"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="profesional"
+                            aria-label="Seguimiento 9 profesional"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="fecha"
+                            aria-label="Seguimiento 9 fecha"
+                        ></textarea>
+                    </td>
+
+                    <td>
+                        <textarea
+                            class="cell-textarea"
+                            data-dynamic-field="observaciones"
+                            aria-label="Seguimiento 9 observaciones"
+                        ></textarea>
+                    </td>
+
+                </tr>
+
+            </tbody>
 
             <tr>
 
@@ -1653,6 +2059,9 @@
 
         </table>
 
+
+
+
     </div>
 
 </section>
@@ -1660,10 +2069,6 @@
 
 </div>
 
-
-<!-- =========================
-     BORRADOR AUTOMÁTICO
-     ========================= -->
 
 <script>
 
@@ -1692,6 +2097,340 @@ function obtenerCampos() {
 }
 
 
+function crearFilaAccion(numero) {
+
+    const tr = document.createElement("tr");
+
+    tr.className =
+        "actions-row dynamic-action-row";
+
+    tr.innerHTML = `
+
+        <td>
+            <textarea
+                class="cell-textarea"
+                data-dynamic-field="accion"
+                aria-label="Acción ${numero}"
+            ></textarea>
+        </td>
+
+        <td>
+            <textarea
+                class="cell-textarea"
+                data-dynamic-field="profesional"
+                aria-label="Profesional acción ${numero}"
+            ></textarea>
+        </td>
+
+        <td>
+            <textarea
+                class="cell-textarea"
+                data-dynamic-field="tiempo"
+                aria-label="Tiempo acción ${numero}"
+            ></textarea>
+        </td>
+
+        <td>
+            <textarea
+                class="cell-textarea"
+                data-dynamic-field="observaciones"
+                aria-label="Observaciones acción ${numero}"
+            ></textarea>
+        </td>
+
+    `;
+
+    prepararCampoDinamico(tr);
+
+    return tr;
+
+}
+
+
+function crearFilaSeguimiento(numero) {
+
+    const tr = document.createElement("tr");
+
+    tr.className =
+        "follow-row dynamic-follow-row";
+
+    tr.innerHTML = `
+
+        <td>
+            <textarea
+                class="cell-textarea"
+                data-dynamic-field="tipo"
+                aria-label="Seguimiento ${numero} tipo de intervención"
+            ></textarea>
+        </td>
+
+        <td>
+            <textarea
+                class="cell-textarea"
+                data-dynamic-field="descripcion"
+                aria-label="Seguimiento ${numero} descripción"
+            ></textarea>
+        </td>
+
+        <td>
+            <textarea
+                class="cell-textarea"
+                data-dynamic-field="profesional"
+                aria-label="Seguimiento ${numero} profesional"
+            ></textarea>
+        </td>
+
+        <td>
+            <textarea
+                class="cell-textarea"
+                data-dynamic-field="fecha"
+                aria-label="Seguimiento ${numero} fecha"
+            ></textarea>
+        </td>
+
+        <td>
+            <textarea
+                class="cell-textarea"
+                data-dynamic-field="observaciones"
+                aria-label="Seguimiento ${numero} observaciones"
+            ></textarea>
+        </td>
+
+    `;
+
+    prepararCampoDinamico(tr);
+
+    return tr;
+
+}
+
+
+function agregarFilaAccion() {
+
+    const body =
+        document.getElementById("accionesBody");
+
+    if (!body) {
+        return;
+    }
+
+    const numero =
+        body.querySelectorAll(
+            ".dynamic-action-row"
+        ).length + 1;
+
+    const fila =
+        crearFilaAccion(numero);
+
+    body.appendChild(fila);
+
+    actualizarEstadoGuardado(
+        "Fila agregada"
+    );
+
+    guardarBorrador();
+
+    const campos =
+        fila.querySelectorAll("textarea");
+
+    if (campos.length > 0) {
+        campos[0].focus();
+    }
+
+}
+
+
+function agregarFilaSeguimiento() {
+
+    const body =
+        document.getElementById("seguimientoBody");
+
+    if (!body) {
+        return;
+    }
+
+    const numero =
+        body.querySelectorAll(
+            ".dynamic-follow-row"
+        ).length + 1;
+
+    const fila =
+        crearFilaSeguimiento(numero);
+
+    body.appendChild(fila);
+
+    actualizarEstadoGuardado(
+        "Fila agregada"
+    );
+
+    guardarBorrador();
+
+    const campos =
+        fila.querySelectorAll("textarea");
+
+    if (campos.length > 0) {
+        campos[0].focus();
+    }
+
+}
+
+
+function prepararCampoDinamico(fila) {
+
+    const campos =
+        fila.querySelectorAll("textarea");
+
+    campos.forEach((campo, indice) => {
+
+        campo.addEventListener(
+            "keydown",
+            function (evento) {
+
+                if (
+                    evento.key === "Enter" &&
+                    !evento.shiftKey
+                ) {
+
+                    const ultimoCampo =
+                        indice === campos.length - 1;
+
+                    const body =
+                        fila.parentElement;
+
+                    const ultimaFila =
+                        fila === body.lastElementChild;
+
+                    if (
+                        ultimoCampo &&
+                        ultimaFila
+                    ) {
+
+                        evento.preventDefault();
+
+                        if (
+                            fila.classList.contains(
+                                "dynamic-action-row"
+                            )
+                        ) {
+
+                            agregarFilaAccion();
+
+                        }
+
+                        else if (
+                            fila.classList.contains(
+                                "dynamic-follow-row"
+                            )
+                        ) {
+
+                            agregarFilaSeguimiento();
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+        campo.addEventListener(
+            "input",
+            guardarBorrador
+        );
+
+        campo.addEventListener(
+            "change",
+            guardarBorrador
+        );
+
+    });
+
+}
+
+
+function prepararFilasDinamicas() {
+
+    const filasAcciones =
+        document.querySelectorAll(
+            ".dynamic-action-row"
+        );
+
+    filasAcciones.forEach(
+        fila => prepararCampoDinamico(fila)
+    );
+
+
+    const filasSeguimiento =
+        document.querySelectorAll(
+            ".dynamic-follow-row"
+        );
+
+    filasSeguimiento.forEach(
+        fila => prepararCampoDinamico(fila)
+    );
+
+}
+
+
+function obtenerDatosFilas() {
+
+    const datos = {
+
+        acciones: [],
+
+        seguimiento: []
+
+    };
+
+
+    const filasAcciones =
+        document.querySelectorAll(
+            ".dynamic-action-row"
+        );
+
+    filasAcciones.forEach(fila => {
+
+        const campos =
+            fila.querySelectorAll(
+                "textarea"
+            );
+
+        datos.acciones.push(
+            Array.from(campos).map(
+                campo => campo.value
+            )
+        );
+
+    });
+
+
+    const filasSeguimiento =
+        document.querySelectorAll(
+            ".dynamic-follow-row"
+        );
+
+    filasSeguimiento.forEach(fila => {
+
+        const campos =
+            fila.querySelectorAll(
+                "textarea"
+            );
+
+        datos.seguimiento.push(
+            Array.from(campos).map(
+                campo => campo.value
+            )
+        );
+
+    });
+
+
+    return datos;
+
+}
+
+
 function guardarBorrador() {
 
     const campos =
@@ -1699,20 +2438,38 @@ function guardarBorrador() {
 
     const datos = {};
 
+
     campos.forEach((campo, index) => {
+
+        if (
+            campo.closest(
+                ".dynamic-action-row, .dynamic-follow-row"
+            )
+        ) {
+            return;
+        }
+
 
         if (campo.type === "checkbox") {
 
             datos[index] = {
+
                 tipo: "checkbox",
+
                 valor: campo.checked
+
             };
 
-        } else {
+        }
+
+        else {
 
             datos[index] = {
+
                 tipo: "texto",
+
                 valor: campo.value
+
             };
 
         }
@@ -1720,12 +2477,168 @@ function guardarBorrador() {
     });
 
 
+    const datosFilas =
+        obtenerDatosFilas();
+
+
+    const borrador = {
+
+        campos: datos,
+
+        filas: datosFilas
+
+    };
+
+
     localStorage.setItem(
         CLAVE_BORRADOR,
-        JSON.stringify(datos)
+        JSON.stringify(borrador)
     );
 
-    actualizarEstadoGuardado("Guardado");
+
+    actualizarEstadoGuardado(
+        "Guardado"
+    );
+
+}
+
+
+function cargarFilasDinamicas(datos) {
+
+    if (!datos) {
+        return;
+    }
+
+
+    const acciones =
+        datos.acciones || [];
+
+    const accionesBody =
+        document.getElementById(
+            "accionesBody"
+        );
+
+
+    if (accionesBody && acciones.length > 0) {
+
+        const filasExistentes =
+            accionesBody.querySelectorAll(
+                ".dynamic-action-row"
+            );
+
+
+        for (
+            let i = filasExistentes.length;
+            i < acciones.length;
+            i++
+        ) {
+
+            accionesBody.appendChild(
+                crearFilaAccion(i + 1)
+            );
+
+        }
+
+
+        const filas =
+            accionesBody.querySelectorAll(
+                ".dynamic-action-row"
+            );
+
+
+        filas.forEach(
+            (fila, indice) => {
+
+                if (!acciones[indice]) {
+                    return;
+                }
+
+                const campos =
+                    fila.querySelectorAll(
+                        "textarea"
+                    );
+
+                campos.forEach(
+                    (campo, posicion) => {
+
+                        campo.value =
+                            acciones[indice][posicion]
+                            || "";
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+    const seguimiento =
+        datos.seguimiento || [];
+
+    const seguimientoBody =
+        document.getElementById(
+            "seguimientoBody"
+        );
+
+
+    if (
+        seguimientoBody &&
+        seguimiento.length > 0
+    ) {
+
+        const filasExistentes =
+            seguimientoBody.querySelectorAll(
+                ".dynamic-follow-row"
+            );
+
+
+        for (
+            let i = filasExistentes.length;
+            i < seguimiento.length;
+            i++
+        ) {
+
+            seguimientoBody.appendChild(
+                crearFilaSeguimiento(i + 1)
+            );
+
+        }
+
+
+        const filas =
+            seguimientoBody.querySelectorAll(
+                ".dynamic-follow-row"
+            );
+
+
+        filas.forEach(
+            (fila, indice) => {
+
+                if (!seguimiento[indice]) {
+                    return;
+                }
+
+                const campos =
+                    fila.querySelectorAll(
+                        "textarea"
+                    );
+
+                campos.forEach(
+                    (campo, posicion) => {
+
+                        campo.value =
+                            seguimiento[indice][posicion]
+                            || "";
+
+                    }
+                );
+
+            }
+        );
+
+    }
 
 }
 
@@ -1737,6 +2650,7 @@ function cargarBorrador() {
             CLAVE_BORRADOR
         );
 
+
     if (!borrador) {
 
         actualizarEstadoGuardado(
@@ -1744,6 +2658,7 @@ function cargarBorrador() {
         );
 
         return;
+
     }
 
 
@@ -1752,30 +2667,99 @@ function cargarBorrador() {
         const datos =
             JSON.parse(borrador);
 
-        const campos =
-            obtenerCampos();
+
+        if (
+            datos &&
+            datos.campos
+        ) {
+
+            const campos =
+                obtenerCampos();
 
 
-        campos.forEach((campo, index) => {
+            campos.forEach(
+                (campo, index) => {
 
-            if (!datos[index]) {
-                return;
-            }
+                    if (
+                        campo.closest(
+                            ".dynamic-action-row, .dynamic-follow-row"
+                        )
+                    ) {
+                        return;
+                    }
 
 
-            if (campo.type === "checkbox") {
+                    if (
+                        !datos.campos[index]
+                    ) {
+                        return;
+                    }
 
-                campo.checked =
-                    datos[index].valor;
 
-            } else {
+                    if (
+                        campo.type === "checkbox"
+                    ) {
 
-                campo.value =
-                    datos[index].valor || "";
+                        campo.checked =
+                            datos.campos[index].valor;
 
-            }
+                    }
 
-        });
+                    else {
+
+                        campo.value =
+                            datos.campos[index].valor
+                            || "";
+
+                    }
+
+                }
+            );
+
+
+            cargarFilasDinamicas(
+                datos.filas
+            );
+
+        }
+
+        else {
+
+            const campos =
+                obtenerCampos();
+
+
+            campos.forEach(
+                (campo, index) => {
+
+                    if (
+                        !datos[index]
+                    ) {
+                        return;
+                    }
+
+
+                    if (
+                        campo.type === "checkbox"
+                    ) {
+
+                        campo.checked =
+                            datos[index].valor;
+
+                    }
+
+                    else {
+
+                        campo.value =
+                            datos[index].valor
+                            || "";
+
+                    }
+
+                }
+            );
+
+        }
 
 
         actualizarEstadoGuardado(
@@ -1783,12 +2767,15 @@ function cargarBorrador() {
         );
 
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
             "Error al cargar el borrador:",
             error
         );
+
 
         actualizarEstadoGuardado(
             "Error al cargar"
@@ -1818,17 +2805,75 @@ function borrarTodo() {
 
     campos.forEach(campo => {
 
-        if (campo.type === "checkbox") {
+        if (
+            campo.type === "checkbox"
+        ) {
 
             campo.checked = false;
 
-        } else {
+        }
+
+        else {
 
             campo.value = "";
 
         }
 
     });
+
+
+    const accionesBody =
+        document.getElementById(
+            "accionesBody"
+        );
+
+
+    if (accionesBody) {
+
+        const filas =
+            accionesBody.querySelectorAll(
+                ".dynamic-action-row"
+            );
+
+
+        filas.forEach(
+            (fila, index) => {
+
+                if (index >= 5) {
+                    fila.remove();
+                }
+
+            }
+        );
+
+    }
+
+
+    const seguimientoBody =
+        document.getElementById(
+            "seguimientoBody"
+        );
+
+
+    if (seguimientoBody) {
+
+        const filas =
+            seguimientoBody.querySelectorAll(
+                ".dynamic-follow-row"
+            );
+
+
+        filas.forEach(
+            (fila, index) => {
+
+                if (index >= 9) {
+                    fila.remove();
+                }
+
+            }
+        );
+
+    }
 
 
     localStorage.removeItem(
@@ -1864,12 +2909,10 @@ function guardarEImprimir() {
 }
 
 
-/* =========================
-   ZOOM
-   ========================= */
-
 const ZOOM_MINIMO = 0.80;
+
 const ZOOM_MAXIMO = 1.70;
+
 const ZOOM_PASO = 0.10;
 
 let zoomActual = 1;
@@ -1884,13 +2927,17 @@ function aplicarZoom() {
 
 
     const zoomLabel =
-        document.getElementById("zoomLabel");
+        document.getElementById(
+            "zoomLabel"
+        );
 
 
     if (zoomLabel) {
 
         zoomLabel.textContent =
-            Math.round(zoomActual * 100) + "%";
+            Math.round(
+                zoomActual * 100
+            ) + "%";
 
     }
 
@@ -1902,18 +2949,21 @@ function calcularZoomAutomatico() {
     const anchoDisponible =
         window.innerWidth - 80;
 
+
     const anchoA4 =
         793.7;
 
 
     let zoomCalculado =
-        (anchoDisponible * 0.92) /
+        (anchoDisponible * 0.92)
+        /
         anchoA4;
 
 
     zoomCalculado =
         Math.max(
             ZOOM_MINIMO,
+
             Math.min(
                 ZOOM_MAXIMO,
                 zoomCalculado
@@ -1938,10 +2988,14 @@ function calcularZoomAutomatico() {
 
 function aumentarZoom() {
 
-    zoomActual += ZOOM_PASO;
+    zoomActual +=
+        ZOOM_PASO;
 
 
-    if (zoomActual > ZOOM_MAXIMO) {
+    if (
+        zoomActual >
+        ZOOM_MAXIMO
+    ) {
 
         zoomActual =
             ZOOM_MAXIMO;
@@ -1962,10 +3016,14 @@ function aumentarZoom() {
 
 function disminuirZoom() {
 
-    zoomActual -= ZOOM_PASO;
+    zoomActual -=
+        ZOOM_PASO;
 
 
-    if (zoomActual < ZOOM_MINIMO) {
+    if (
+        zoomActual <
+        ZOOM_MINIMO
+    ) {
 
         zoomActual =
             ZOOM_MINIMO;
@@ -1991,27 +3049,37 @@ function restablecerZoom() {
 }
 
 
-/* =========================
-   INICIO
-   ========================= */
-
 document.addEventListener(
     "DOMContentLoaded",
     function () {
 
         cargarBorrador();
 
+        prepararFilasDinamicas();
+
 
         const campos =
-            obtenerCampos();
+            document.querySelectorAll(
+                ".page input, .page textarea"
+            );
 
 
         campos.forEach(campo => {
+
+            if (
+                campo.closest(
+                    ".dynamic-action-row, .dynamic-follow-row"
+                )
+            ) {
+                return;
+            }
+
 
             campo.addEventListener(
                 "input",
                 guardarBorrador
             );
+
 
             campo.addEventListener(
                 "change",
