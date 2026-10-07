@@ -1,0 +1,29 @@
+[90m= [39m[34;4mIlluminate\Database\Eloquent\Collection[39;24m {#8327
+    [34mall[39m: [
+      [34;4mApp\Models\Formulario[39;24m {#8322
+        [34mid[39m: [35m13[39m,
+        [34mnombre_formulario[39m: [32m"[39m[32mFICHA DE NOTIFICACIÓN DE ALERTA DECE[39m[32m"[39m,
+        [34mcreated_at[39m: [32m"[39m[32m2026-10-06 13:35:10[39m[32m"[39m,
+      },
+      [34;4mApp\Models\Formulario[39;24m {#8321
+        [34mid[39m: [35m12[39m,
+        [34mnombre_formulario[39m: [32m"[39m[32mFICHA DE NOTIFICACIÓN DE ALERTA DECE[39m[32m"[39m,
+        [34mcreated_at[39m: [32m"[39m[32m2026-10-06 13:29:58[39m[32m"[39m,
+      },
+      [34;4mApp\Models\Formulario[39;24m {#8324
+        [34mid[39m: [35m11[39m,
+        [34mnombre_formulario[39m: [32m"[39m[32mFICHA DE NOTIFICACIÓN DE ALERTA DECE[39m[32m"[39m,
+        [34mcreated_at[39m: [32m"[39m[32m2026-10-06 13:28:41[39m[32m"[39m,
+      },
+      [34;4mApp\Models\Formulario[39;24m {#8325
+        [34mid[39m: [35m10[39m,
+        [34mnombre_formulario[39m: [32m"[39m[32mFICHA DE NOTIFICACIÓN DE ALERTA DECE[39m[32m"[39m,
+        [34mcreated_at[39m: [32m"[39m[32m2026-10-06 13:28:34[39m[32m"[39m,
+      },
+      [34;4mApp\Models\Formulario[39;24m {#8326
+        [34mid[39m: [35m9[39m,
+        [34mnombre_formulario[39m: [32m"[39m[32mFICHA DE NOTIFICACIÓN DE ALERTA DECE[39m[32m"[39m,
+        [34mcreated_at[39m: [32m"[39m[32m2026-10-06 13:19:23[39m[32m"[39m,
+      },
+    ],
+  }

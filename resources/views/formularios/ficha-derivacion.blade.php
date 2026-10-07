@@ -878,6 +878,105 @@
         }
 
     }
+    .modal-borrar {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+}
+
+.modal-borrar.mostrar {
+    display: flex;
+}
+
+.modal-borrar-contenido {
+    width: min(420px, calc(100% - 40px));
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 28px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    animation: aparecerModalBorrar 0.2s ease-out;
+}
+
+.modal-borrar-icono {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: #fef2f2;
+    color: #b91c1c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.modal-borrar-contenido h3 {
+    margin: 0 0 10px;
+    color: #1f2937;
+    font-size: 20px;
+}
+
+.modal-borrar-contenido p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.modal-borrar-botones {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.modal-btn-cancelar,
+.modal-btn-confirmar {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.modal-btn-cancelar {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.modal-btn-confirmar {
+    background: #b91c1c;
+    color: #ffffff;
+}
+
+.modal-btn-cancelar:hover {
+    background: #e5e7eb;
+}
+
+.modal-btn-confirmar:hover {
+    background: #991b1b;
+}
+
+@keyframes aparecerModalBorrar {
+
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
 
 </style>
 
@@ -2100,29 +2199,29 @@ function cargarBorrador() {
 
 function borrarTodo() {
 
-    const confirmar = confirm(
+    const modal = document.getElementById('modalBorrarTodo');
 
-        '¿Está seguro de que desea borrar todos los datos ingresados en este formulario?'
-
-    );
-
-
-
-    if (!confirmar) {
-
-        return;
-
+    if (modal) {
+        modal.classList.add('mostrar');
     }
+}
 
+function cerrarModalBorrarTodo() {
 
+    const modal = document.getElementById('modalBorrarTodo');
+
+    if (modal) {
+        modal.classList.remove('mostrar');
+    }
+}
+
+function confirmarBorrarTodo() {
 
     const campos = obtenerCampos();
 
+    campos.forEach((campo) => {
 
-
-    campos.forEach(campo => {
-
-        if (campo.type === 'checkbox') {
+        if (campo.type === 'radio' || campo.type === 'checkbox') {
 
             campo.checked = false;
 
@@ -2134,18 +2233,7 @@ function borrarTodo() {
 
     });
 
-
-
-    localStorage.removeItem(CLAVE_BORRADOR);
-
-
-
-    actualizarEstadoGuardado('Sin datos guardados');
-
-
-
-    alert('Todos los datos del formulario fueron borrados.');
-
+    cerrarModalBorrarTodo();
 }
 
 
@@ -2170,7 +2258,94 @@ function guardarEImprimir() {
 
     guardarBorrador();
 
-    window.print();
+    const campos = obtenerCampos();
+
+    const datos = {};
+
+    campos.forEach(campo => {
+
+        if (!campo.name) {
+            return;
+        }
+
+        if (campo.type === 'checkbox') {
+
+            datos[campo.name] = {
+                tipo: 'checkbox',
+                valor: campo.checked
+            };
+
+        } else {
+
+            datos[campo.name] = {
+                tipo: 'texto',
+                valor: campo.value
+            };
+
+        }
+
+    });
+
+    fetch(
+        '{{ route('formularios.guardar-documento') }}',
+        {
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            },
+
+            body: JSON.stringify({
+
+                nombre_formulario:
+                    'FICHA DE DERIVACIÓN',
+
+                datos: datos
+
+            })
+        }
+    )
+    .then(async respuesta => {
+
+        const resultado =
+            await respuesta.json();
+
+        if (!respuesta.ok || !resultado.success) {
+
+            console.error(
+                'Error al guardar:',
+                resultado
+            );
+
+            alert(
+                'No se pudo guardar el formulario en el servidor.'
+            );
+
+            return;
+        }
+
+        console.log(
+            'Formulario guardado correctamente:',
+            resultado.formulario_id
+        );
+
+        window.print();
+
+    })
+    .catch(error => {
+
+        console.error(
+            'Error de conexión:',
+            error
+        );
+
+        alert(
+            'No se pudo guardar el formulario en el servidor.'
+        );
+
+    });
 
 }
 
@@ -2406,7 +2581,44 @@ window.addEventListener(
 
 </script>
 
+<div id="modalBorrarTodo" class="modal-borrar">
 
+    <div class="modal-borrar-contenido">
+
+        <div class="modal-borrar-icono">
+            !
+        </div>
+
+        <h3>¿Borrar información?</h3>
+
+        <p>
+            ¿Está seguro de que desea borrar toda la información
+            ingresada en el formulario?
+        </p>
+
+        <div class="modal-borrar-botones">
+
+            <button
+                type="button"
+                class="modal-btn-cancelar"
+                onclick="cerrarModalBorrarTodo()"
+            >
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                class="modal-btn-confirmar"
+                onclick="confirmarBorrarTodo()"
+            >
+                Borrar todo
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 </body>
 

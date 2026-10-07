@@ -13,6 +13,9 @@ class Formulario extends Model
     protected $fillable = [
         'nombre_formulario',
         'usuario_id',
+        'pdf_path',
+        'datos_path',
+        'ediciones',
     ];
 
     /**

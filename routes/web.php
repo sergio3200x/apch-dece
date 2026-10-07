@@ -23,26 +23,26 @@ Route::post('/logout', [AuthController::class, 'logout'])
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'active', 'role:admin'])->name('dashboard');
+})->middleware(['auth', 'active', 'role:coordinador'])->name('dashboard');
 
 Route::get('/usuarios', [UserController::class, 'index'])
-    ->middleware(['auth', 'active', 'role:admin'])
+    ->middleware(['auth', 'active', 'role:coordinador'])
     ->name('usuarios.index');
 
 Route::get('/usuarios/crear', [UserController::class, 'create'])
-    ->middleware(['auth', 'active', 'role:admin'])
+    ->middleware(['auth', 'active', 'role:coordinador'])
     ->name('usuarios.create');
 
 Route::post('/usuarios', [UserController::class, 'store'])
-    ->middleware(['auth', 'active', 'role:admin'])
+    ->middleware(['auth', 'active', 'role:coordinador'])
     ->name('usuarios.store');
 
 Route::post('/usuarios/{usuario}/desactivar', [UserController::class, 'desactivar'])
-    ->middleware(['auth', 'active', 'role:admin'])
+    ->middleware(['auth', 'active', 'role:coordinador'])
     ->name('usuarios.desactivar');
 
 Route::post('/usuarios/{usuario}/reactivar', [UserController::class, 'reactivar'])
-    ->middleware(['auth', 'active', 'role:admin'])
+    ->middleware(['auth', 'active', 'role:coordinador'])
     ->name('usuarios.reactivar');
 
 Route::get('/formularios', [FormularioController::class, 'index'])
@@ -55,14 +55,18 @@ Route::post('/formularios/registrar', [FormularioController::class, 'registrar']
 
 Route::get('/secretario/dashboard', function () {
     return view('secretario.dashboard');
-})->middleware(['auth', 'active', 'role:secretario'])->name('secretario.dashboard');
+})->middleware(['auth', 'active', 'role:analista'])->name('secretario.dashboard');
 
 Route::get('/formularios/registros', [FormularioController::class, 'registros'])
-    ->middleware(['auth', 'active', 'role:admin'])
+    ->middleware(['auth', 'active', 'role:coordinador'])
     ->name('formularios.registros');
 
+Route::post('/formularios/guardar-documento', [FormularioController::class, 'guardarDocumento'])
+    ->middleware(['auth', 'active'])
+    ->name('formularios.guardar-documento');
+
 Route::delete('/formularios/registros/{formulario}', [FormularioController::class, 'eliminar'])
-    ->middleware(['auth', 'active', 'role:admin'])
+    ->middleware(['auth', 'active', 'role:coordinador'])
     ->name('formularios.eliminar');
 
 Route::get('/formularios/entrevista-estudiantes', function () {
@@ -97,6 +101,8 @@ Route::get('/formularios/plan-atencion-psicosocial', function () {
     return view('formularios.plan-atencion-psicosocial');
 })->middleware(['auth', 'active'])->name('formularios.plan-atencion-psicosocial');
 
-Route::get('/cambiar-contrasena', [PasswordController::class, 'edit'])->name('password.edit');
+Route::get('/cambiar-contrasena', [PasswordController::class, 'edit'])
+    ->name('password.edit');
 
-Route::put('/cambiar-contrasena', [PasswordController::class, 'update'])->name('password.update');
+Route::put('/cambiar-contrasena', [PasswordController::class, 'update'])
+    ->name('password.update');

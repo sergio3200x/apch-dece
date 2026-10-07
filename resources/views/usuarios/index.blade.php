@@ -1697,72 +1697,69 @@
 
                                 <td>
 
-                                    <span class="username-badge">
+    <span class="username-badge">
+        {{ $usuario->username }}
+    </span>
 
-                                        {{ $usuario->username }}
-
-                                    </span>
-
-                                </td>
+</td>
 
 
-                                <!-- ROL -->
+<!-- ROL -->
 
-                                <td>
+<td>
 
-                                    @if ($usuario->role === 'admin')
+    @if ($usuario->role === 'coordinador')
 
-                                        <span class="role-badge">
+        <span class="role-badge">
 
-                                            <span class="role-dot"></span>
+            <span class="role-dot"></span>
 
-                                            Administrador
+            Coordinador/a
 
-                                        </span>
+        </span>
 
-                                    @else
+    @else
 
-                                        <span class="role-badge">
+        <span class="role-badge">
 
-                                            <span class="role-dot"></span>
+            <span class="role-dot"></span>
 
-                                            Secretario/a
+            Analista
 
-                                        </span>
+        </span>
 
-                                    @endif
+    @endif
 
-                                </td>
+</td>
 
 
-                                <!-- ESTADO -->
+<!-- ESTADO -->
 
-                                <td>
+<td>
 
-                                    @if ($usuario->status)
+    @if ($usuario->status)
 
-                                        <span class="status-badge status-active">
+        <span class="status-badge status-active">
 
-                                            <span class="status-dot-wrapper"></span>
+            <span class="status-dot-wrapper"></span>
 
-                                            Activo
+            Activo
 
-                                        </span>
+        </span>
 
-                                    @else
+    @else
 
-                                        <span class="status-badge status-inactive">
+        <span class="status-badge status-inactive">
 
-                                            <span class="status-dot"></span>
+            <span class="status-dot"></span>
 
-                                            Inactivo
+            Inactivo
 
-                                        </span>
+        </span>
 
-                                    @endif
+    @endif
 
-                                </td>
-
+</td>
 
                                 <!-- ACCIÓN -->
 

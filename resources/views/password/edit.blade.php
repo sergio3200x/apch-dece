@@ -446,24 +446,19 @@
 
         <div class="header-right">
 
-            <div class="user-info">
+           <div class="user-info">
 
-                <p class="user-name">
-                    {{ auth()->user()->name }}
-                </p>
+    <p class="user-name">
+        {{ auth()->user()->name }}
+    </p>
 
-                <p class="user-role">
-                    {{ auth()->user()->role === 'admin' ? 'Administrador' : 'Secretaría DECE' }}
-                </p>
+    <p class="user-role">
+        {{ auth()->user()->role === 'coordinador' ? 'Coordinador/a' : 'Analista' }}
+    </p>
 
-            </div>
+</div>
 
-            <a
-                href="{{ auth()->user()->role === 'admin' ? route('dashboard') : route('secretario.dashboard') }}"
-                class="back-button"
-            >
-                Volver
-            </a>
+
 
         </div>
 
@@ -596,12 +591,12 @@
 
                 <div class="actions">
 
-                    <a
-                        href="{{ auth()->user()->role === 'admin' ? route('dashboard') : route('secretario.dashboard') }}"
-                        class="cancel-button"
-                    >
-                        Cancelar
-                    </a>
+                   <a
+    href="{{ auth()->user()->role === 'coordinador' ? route('dashboard') : route('secretario.dashboard') }}"
+    class="cancel-button"
+>
+    Cancelar
+</a>
 
                     <button
                         type="submit"

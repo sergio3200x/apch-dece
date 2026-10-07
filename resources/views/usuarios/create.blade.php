@@ -1355,21 +1355,19 @@
 
                         <option value="">
                             Seleccione un rol
-                        </option>
-
                         <option
-                            value="admin"
-                            {{ old('role') === 'admin' ? 'selected' : '' }}
-                        >
-                            Administrador
-                        </option>
+    value="coordinador"
+    {{ old('role') === 'coordinador' ? 'selected' : '' }}
+>
+    Coordinador/a
+</option>
 
-                        <option
-                            value="secretario"
-                            {{ old('role') === 'secretario' ? 'selected' : '' }}
-                        >
-                            Secretario/a
-                        </option>
+<option
+    value="analista"
+    {{ old('role') === 'analista' ? 'selected' : '' }}
+>
+    Analista
+</option>
 
                     </select>
 
