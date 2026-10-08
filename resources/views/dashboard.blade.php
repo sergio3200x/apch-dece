@@ -103,26 +103,46 @@
         ========================================================= */
 
         .dashboard-header {
-            margin: 1rem 0.25rem 0;
+            position: relative;
+            width: 100%;
+            margin: 0;
             overflow: hidden;
-            border-radius: 12px;
-            background: #e2e8f0;
-            border: 2px solid #000000;
+            border-radius: 20px;
+            background: linear-gradient(115deg, #ffffff 0%, #ffffff 72%, #fff7f7 100%);
+            border: 0;
+            border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.07);
+        }
+
+        .dashboard-header::before {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 5px;
+            background: linear-gradient(180deg, #d34848, #8f0000);
+            content: "";
+        }
+
+        .dashboard-header::after {
+            position: absolute;
+            inset: auto 0 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8f0000, #d34848 50%, #8f0000);
+            content: "";
         }
 
         .header-container {
             width: 100%;
-            max-width: 1280px;
+            max-width: none;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 1.75rem;
         }
 
         .header-inner {
-            min-height: 88px;
+            min-height: 104px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 1.25rem;
+            gap: 1.5rem;
         }
 
         /* =========================================================
@@ -132,22 +152,22 @@
         .identity {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.125rem;
             min-width: 0;
         }
 
         .header-logo {
-            width: 64px;
-            height: 64px;
+            width: 80px;
+            height: 80px;
             flex-shrink: 0;
-            padding: 0.5rem;
-            border-radius: 16px;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
+            padding: 0.625rem;
+            border-radius: 20px;
+            background: #fff;
+            border: 1px solid #f1d5d5;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+            box-shadow: 0 5px 14px rgba(143, 0, 0, 0.08);
         }
 
         .header-logo img {
@@ -162,27 +182,27 @@
 
         .identity-label {
             margin: 0;
-            color: #c54848;
-            font-size: 0.75rem;
+            color: #a31616;
+            font-size: 0.6875rem;
             line-height: 1rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.18em;
+            letter-spacing: 0.16em;
         }
 
         .identity-title {
             margin: 0;
             color: #0f172a;
-            font-size: 1.25rem;
-            line-height: 1.75rem;
+            font-size: 1.1875rem;
+            line-height: 1.5rem;
             font-weight: 700;
             letter-spacing: -0.025em;
         }
 
         .identity-subtitle {
-            margin: 0.25rem 0 0;
+            margin: 0.2rem 0 0;
             color: #64748b;
-            font-size: 0.75rem;
+            font-size: 0.8125rem;
             line-height: 1rem;
         }
 
@@ -193,14 +213,17 @@
         .header-profile {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.625rem;
             flex-shrink: 0;
+            padding-left: 1.25rem;
+            border-left: 1px solid #e2e8f0;
         }
 
         .profile-info {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.625rem;
+            padding-right: 0.75rem;
         }
 
         .profile-text {
@@ -223,16 +246,16 @@
         }
 
         .profile-avatar {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             flex-shrink: 0;
-            border-radius: 12px;
-            background: #ffe7e7;
-            color: #ad2d2d;
+            border-radius: 14px;
+            background: #fff1f1;
+            color: #a31616;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid #ffcfcf;
+            border: 1px solid #f5cccc;
             font-weight: 700;
         }
 
@@ -241,13 +264,12 @@
         ========================================================= */
 
         .header-action {
-            width: 44px;
-            height: 44px;
+            min-height: 42px;
             flex-shrink: 0;
-            padding: 0;
+            padding: 0 0.875rem;
             border-radius: 12px;
             border: 1px solid #e2e8f0;
-            background: #ffffff;
+            background: #fff;
             color: #475569;
             display: flex;
             align-items: center;
@@ -255,15 +277,31 @@
             gap: 0.5rem;
             cursor: pointer;
             transition:
-                background-color 0.3s ease,
-                color 0.3s ease,
-                border-color 0.3s ease;
+                background-color 0.2s ease,
+                color 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
         }
 
         .header-action:hover {
-            background: #c83d3d;
-            color: #ffffff;
-            border-color: #c83d3d;
+            background: #fff5f5;
+            color: #9f1717;
+            border-color: #e8bcbc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(143, 0, 0, 0.08);
+        }
+
+        .header-action-logout {
+            background: #a31616;
+            color: #fff;
+            border-color: #a31616;
+        }
+
+        .header-action-logout:hover {
+            background: #7f1010;
+            color: #fff;
+            border-color: #7f1010;
         }
 
         .header-action svg {
@@ -273,12 +311,17 @@
 
         .header-action span {
             display: none;
-            font-size: 0.875rem;
+            font-size: 0.8125rem;
             font-weight: 600;
         }
 
         .logout-form {
             margin: 0;
+        }
+
+        .header-action:focus-visible {
+            outline: 3px solid rgba(163, 22, 22, 0.24);
+            outline-offset: 2px;
         }
 
         /* =========================================================
@@ -757,15 +800,6 @@
                 font-size: 0.625rem;
             }
 
-            .profile-info {
-                display: none;
-            }
-
-            .header-action {
-                width: 44px;
-                height: 44px;
-            }
-
             .welcome-content {
                 padding: 2.5rem;
             }
@@ -809,39 +843,99 @@
         @media (max-width: 639px) {
 
             .dashboard-header {
-                margin-top: 0.5rem;
+                width: 100%;
+                margin-top: 0;
+                border-radius: 18px;
             }
 
             .header-container {
-                padding-left: 1rem;
-                padding-right: 1rem;
+                padding: 0.875rem 0.875rem 0.75rem 1rem;
             }
 
             .header-inner {
-                gap: 0.5rem;
+                min-height: 0;
+                flex-wrap: wrap;
+                gap: 0.875rem;
             }
 
             .identity {
-                gap: 0.625rem;
+                width: 100%;
+                gap: 0.75rem;
             }
 
             .header-logo {
-                width: 50px;
-                height: 50px;
-                border-radius: 12px;
-                padding: 0.375rem;
+                width: 64px;
+                height: 64px;
+                border-radius: 16px;
+                padding: 0.5rem;
             }
 
-            .identity-subtitle {
-                display: none;
+            .header-profile {
+                width: 100%;
+                justify-content: flex-end;
+                gap: 0.5rem;
+                padding: 0.75rem 0 0;
+                border-top: 1px solid #eef0f3;
+                border-left: 0;
             }
 
             .identity-title {
-                font-size: 0.9rem;
+                font-size: 0.9375rem;
+                line-height: 1.25rem;
             }
 
             .identity-label {
-                font-size: 0.55rem;
+                font-size: 0.5625rem;
+                line-height: 0.875rem;
+            }
+
+            .identity-subtitle {
+                margin-top: 0.125rem;
+                font-size: 0.6875rem;
+                line-height: 0.875rem;
+            }
+
+            .profile-info {
+                margin-right: auto;
+                padding-right: 0.5rem;
+            }
+
+            .profile-text {
+                text-align: left;
+            }
+
+            .profile-name {
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-size: 0.75rem;
+            }
+
+            .profile-role {
+                font-size: 0.6875rem;
+            }
+
+            .profile-avatar {
+                width: 36px;
+                height: 36px;
+                border-radius: 12px;
+            }
+
+            .header-action {
+                width: 40px;
+                min-height: 40px;
+                padding: 0;
+                border-radius: 11px;
+            }
+
+            .header-action span {
+                display: none;
+            }
+
+            .header-action svg {
+                width: 18px;
+                height: 18px;
             }
 
             .main-container {
@@ -940,8 +1034,7 @@
         @media (min-width: 640px) {
 
             .header-action {
-                width: auto;
-                padding: 0 1rem;
+                padding: 0 0.875rem;
             }
 
             .header-action span {
@@ -1035,6 +1128,7 @@
                     <a
                         href="{{ route('password.edit') }}"
                         title="Cambiar contraseña"
+                        aria-label="Cambiar contraseña"
                         class="header-action"
                     >
 
@@ -1085,7 +1179,8 @@
 
                         <button
                             type="submit"
-                            class="header-action"
+                            class="header-action header-action-logout"
+                            aria-label="Cerrar sesión"
                         >
 
                             <svg

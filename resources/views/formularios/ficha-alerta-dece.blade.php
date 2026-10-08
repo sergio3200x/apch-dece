@@ -514,6 +514,7 @@
     }
 
 }
+@include('formularios.partials.toolbar-moderno')
 </style>
 </head>
 
@@ -524,14 +525,6 @@
      ===================================================== -->
 
 <div class="toolbar">
-
-    <button
-        type="button"
-        class="btn-volver"
-        onclick="volver()"
-    >
-        ↩ Volver
-    </button>
 
     <button
         type="button"
@@ -586,6 +579,13 @@
     >
         🖨 Guardar e imprimir
     </button>
+    <button
+    type="button"
+    class="btn-ver-formularios"
+    onclick="window.location.href='{{ route('formularios.mis-documentos', ['tipo' => 'ficha-alerta-dece']) }}'"
+>
+    📂 Mis formularios
+</button>
 
     <div
         class="estado-guardado"
@@ -967,76 +967,124 @@
        CARGAR BORRADOR
        ===================================================== */
 
-    function cargarBorrador() {
+   function cargarBorrador() {
 
-        const borrador =
-            localStorage.getItem(
-                CLAVE_BORRADOR
-            );
+    /* =================================================
+       MODO EDICIÓN
+       ================================================= */
 
+    const datosEditar = @json($datosEditar ?? null);
 
-        if (!borrador) {
+    if (datosEditar) {
 
-            return;
+        const campos = obtenerCampos();
 
-        }
+        campos.forEach(campo => {
 
+            if (
+                !campo.name ||
+                !datosEditar[campo.name]
+            ) {
+                return;
+            }
 
-        try {
+            if (
+                campo.type === 'checkbox' ||
+                campo.type === 'radio'
+            ) {
 
-            const datos =
-                JSON.parse(borrador);
+                campo.checked =
+                    datosEditar[campo.name].valor;
 
+            } else {
 
-            const campos =
-                obtenerCampos();
+                campo.value =
+                    datosEditar[campo.name].valor || '';
 
+            }
 
-            campos.forEach(campo => {
+        });
 
-                if (
-                    !campo.name ||
-                    !datos[campo.name]
-                ) {
+        actualizarEstadoGuardado(
+            'Formulario cargado para edición'
+        );
 
-                    return;
-
-                }
-
-
-                if (
-                    campo.type === 'checkbox' ||
-                    campo.type === 'radio'
-                ) {
-
-                    campo.checked =
-                        datos[campo.name].valor;
-
-                } else {
-
-                    campo.value =
-                        datos[campo.name].valor || '';
-
-                }
-
-            });
+        return;
+    }
 
 
-            actualizarEstadoGuardado(
-                'Borrador cargado'
-            );
+    /* =================================================
+       BORRADOR LOCAL NORMAL
+       ================================================= */
+
+    const borrador =
+        localStorage.getItem(
+            CLAVE_BORRADOR
+        );
 
 
-        } catch (error) {
+    if (!borrador) {
 
-            console.error(
-                'Error al cargar el borrador:',
-                error
-            );
-
-        }
+        return;
 
     }
+
+
+    try {
+
+        const datos =
+            JSON.parse(borrador);
+
+
+        const campos =
+            obtenerCampos();
+
+
+        campos.forEach(campo => {
+
+            if (
+                !campo.name ||
+                !datos[campo.name]
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                campo.type === 'checkbox' ||
+                campo.type === 'radio'
+            ) {
+
+                campo.checked =
+                    datos[campo.name].valor;
+
+            } else {
+
+                campo.value =
+                    datos[campo.name].valor || '';
+
+            }
+
+        });
+
+
+        actualizarEstadoGuardado(
+            'Borrador cargado'
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            'Error al cargar el borrador:',
+            error
+        );
+
+    }
+
+}
 
 
     /* =====================================================
@@ -1256,8 +1304,12 @@ function confirmarBorrarTodo() {
     });
 
     try {
-        const respuesta = await fetch('{{ route('formularios.guardar-documento') }}', {
-            method: 'POST',
+        const solicitud = fetch(
+            window.formularioEnEdicion
+                ? '{{ url('/formularios') }}/' + window.formularioEnEdicion.id + '/editar'
+                : '{{ route('formularios.guardar-documento') }}',
+            {
+            method: window.formularioEnEdicion ? 'PUT' : 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -1268,18 +1320,26 @@ function confirmarBorrarTodo() {
                 datos: datos
             })
         });
+        window.print();
+
+        const respuesta = await solicitud;
 
         const resultado = await respuesta.json();
 
-        if (!respuesta.ok) {
+        if (!respuesta.ok || !resultado.success) {
+            if (resultado.datos_guardados) {
+                console.error('El formulario se guardó sin PDF de respaldo:', resultado);
+                alert(resultado.message);
+
+                return;
+            }
+
             throw new Error(
                 resultado.message || 'No se pudo guardar el formulario.'
             );
         }
 
         console.log('Formulario guardado:', resultado);
-
-        window.print();
 
     } catch (error) {
         console.error('Error al guardar:', error);
@@ -1289,19 +1349,76 @@ function confirmarBorrarTodo() {
 }
 
 
+
+/* =====================================================
+   CARGAR DATOS DESDE EL SERVIDOR
+   ===================================================== */
+
+function cargarDatosServidor(datos) {
+
+    if (!datos) {
+        return;
+    }
+
+    const campos = obtenerCampos();
+
+    campos.forEach(campo => {
+
+        if (!campo.name) {
+            return;
+        }
+
+        if (
+            !Object.prototype.hasOwnProperty.call(
+                datos,
+                campo.name
+            )
+        ) {
+            return;
+        }
+
+        const valor = datos[campo.name];
+
+        if (
+            campo.type === 'checkbox' ||
+            campo.type === 'radio'
+        ) {
+
+            campo.checked = Boolean(valor);
+
+        } else {
+
+            campo.value = valor ?? '';
+
+        }
+
+    });
+
+}
+
+
+
     /* =====================================================
        INICIAR
        ===================================================== */
 
     document.addEventListener(
 
-        'DOMContentLoaded',
+    'DOMContentLoaded',
 
-        function () {
+    function () {
 
-            cargarBorrador();
+        cargarBorrador();
 
-            calcularZoomAutomatico();
+        @if(isset($datos))
+            cargarDatosServidor(@json($datos));
+        @endif
+
+        @if(isset($datosEditar))
+            cargarDatosServidor(@json($datosEditar));
+        @endif
+
+        calcularZoomAutomatico();
 
 
             const campos =
@@ -1336,6 +1453,7 @@ function confirmarBorrarTodo() {
         }
 
     );
+
 
 </script>
 <div id="modalBorrarTodo" class="modal-borrar">
@@ -1376,8 +1494,6 @@ function confirmarBorrarTodo() {
     </div>
 
 </div>
+@include('formularios.partials.modo-edicion')
 </body>
 </html>
-
-
-

@@ -542,6 +542,7 @@
     }
 
 }
+@include('formularios.partials.toolbar-moderno')
 </style>
 </head>
 
@@ -552,14 +553,6 @@
      ========================= -->
 
 <div class="toolbar">
-
-    <button
-        type="button"
-        class="btn-volver"
-        onclick="volver()"
-    >
-        ↩ Volver
-    </button>
 
     <button
         type="button"
@@ -613,6 +606,13 @@
         onclick="guardarEImprimir()"
     >
         🖨 Guardar e imprimir
+    </button>
+    <button
+        type="button"
+        class="btn-volver btn-ver-formularios"
+        onclick="window.location.href='{{ route('formularios.mis-documentos', ['tipo' => 'entrevista-docentes']) }}'"
+    >
+        📂 Mis formularios
     </button>
 
     <div
@@ -1341,6 +1341,10 @@ function guardarBorrador() {
 
 function cargarBorrador() {
 
+    if (window.formularioEnEdicion) {
+        return;
+    }
+
     const borrador =
         localStorage.getItem(
             CLAVE_BORRADOR
@@ -1466,10 +1470,12 @@ async function guardarEImprimir() {
 
     try {
 
-        const respuesta = await fetch(
-            '{{ route('formularios.guardar-documento') }}',
+        const solicitud = fetch(
+            window.formularioEnEdicion
+                ? '{{ url('/formularios') }}/' + window.formularioEnEdicion.id + '/editar'
+                : '{{ route('formularios.guardar-documento') }}',
             {
-                method: 'POST',
+                method: window.formularioEnEdicion ? 'PUT' : 'POST',
 
                 headers: {
                     'Content-Type': 'application/json',
@@ -1483,6 +1489,9 @@ async function guardarEImprimir() {
                 })
             }
         );
+        window.print();
+
+        const respuesta = await solicitud;
 
         const resultado = await respuesta.json();
 
@@ -1492,6 +1501,12 @@ async function guardarEImprimir() {
                 'Error al guardar:',
                 resultado
             );
+
+            if (resultado.datos_guardados) {
+                alert(resultado.message);
+
+                return;
+            }
 
             alert(
                 'No se pudo guardar el formulario en el servidor.'
@@ -1504,8 +1519,6 @@ async function guardarEImprimir() {
             'Formulario guardado correctamente:',
             resultado.formulario_id
         );
-
-        window.print();
 
     } catch (error) {
 
@@ -1736,6 +1749,6 @@ window.addEventListener(
     </div>
 
 </div>
+@include('formularios.partials.modo-edicion')
 </body>
 </html>
-

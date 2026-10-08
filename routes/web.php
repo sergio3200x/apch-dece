@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\FormularioController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -48,6 +48,26 @@ Route::post('/usuarios/{usuario}/reactivar', [UserController::class, 'reactivar'
 Route::get('/formularios', [FormularioController::class, 'index'])
     ->middleware(['auth', 'active'])
     ->name('formularios.index');
+
+Route::get('/formularios/mis-formularios/{nombre}', [FormularioController::class, 'misFormularios'])
+    ->middleware(['auth', 'active'])
+    ->name('formularios.mis-formularios');
+
+Route::get('/formularios/{tipo}/mis-documentos', [FormularioController::class, 'misDocumentos'])
+    ->middleware(['auth', 'active'])
+    ->name('formularios.mis-documentos');
+
+Route::get('/formularios/{formulario}/pdf', [FormularioController::class, 'verPdf'])
+    ->middleware(['auth', 'active'])
+    ->name('formularios.pdf');
+
+Route::get('/formularios/{formulario}/editar', [FormularioController::class, 'editar'])
+    ->middleware(['auth', 'active'])
+    ->name('formularios.editar');
+
+Route::put('/formularios/{formulario}/editar', [FormularioController::class, 'actualizar'])
+    ->middleware(['auth', 'active'])
+    ->name('formularios.actualizar');
 
 Route::post('/formularios/registrar', [FormularioController::class, 'registrar'])
     ->middleware(['auth', 'active'])

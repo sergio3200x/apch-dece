@@ -110,40 +110,65 @@
            ============================== */
 
         .page-header {
-            margin: 16px 4px 0;
-            border-radius: 12px;
-            background: #e2e8f0;
-            border: 2px solid #000;
+            position: relative;
+            width: 100%;
+            margin: 0;
             overflow: hidden;
+            border: 0;
+            border-bottom: 1px solid var(--slate-200);
+            border-radius: 20px;
+            background: linear-gradient(115deg, #fff 0%, #fff 72%, #fff7f7 100%);
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.07);
+        }
+
+        .page-header::before {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 5px;
+            background: linear-gradient(180deg, #d34848, #8f0000);
+            content: "";
+        }
+
+        .page-header::after {
+            position: absolute;
+            inset: auto 0 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8f0000, #d34848 50%, #8f0000);
+            content: "";
         }
 
         .header-inner {
             width: 100%;
-            max-width: 1280px;
+            max-width: none;
             margin: 0 auto;
             display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 20px 24px;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            min-height: 104px;
+            padding: 12px 28px;
         }
 
         .institution-brand {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 18px;
+            min-width: 0;
         }
 
         .brand-logo {
-            width: 64px;
-            height: 64px;
+            width: 80px;
+            height: 80px;
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 12px;
+            border: 1px solid #f1d5d5;
+            border-radius: 20px;
             background: #fff;
-            padding: 6px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+            padding: 9px;
+            box-shadow: 0 5px 14px rgba(143, 0, 0, 0.08);
         }
 
         .brand-logo img {
@@ -154,32 +179,35 @@
 
         .brand-label {
             margin: 0;
-            color: var(--apch-700);
-            font-size: 14px;
+            color: #a31616;
+            font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.025em;
+            letter-spacing: 0.16em;
         }
 
         .brand-title {
-            margin: 2px 0 0;
+            margin: 0;
             color: var(--slate-900);
-            font-size: 20px;
+            font-size: 19px;
             font-weight: 700;
             letter-spacing: -0.025em;
         }
 
         .brand-subtitle {
-            margin: 4px 0 0;
+            margin: 3px 0 0;
             color: var(--slate-500);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
         }
 
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            flex-shrink: 0;
+            padding-left: 20px;
+            border-left: 1px solid var(--slate-200);
         }
 
         .system-status {
@@ -230,21 +258,29 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            border: 2px solid var(--slate-200);
+            min-height: 42px;
+            border: 1px solid #a31616;
             border-radius: 12px;
-            background: #fff;
-            padding: 12px 16px;
-            color: var(--slate-700);
-            font-size: 14px;
-            font-weight: 700;
+            background: #a31616;
+            padding: 10px 13px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
         }
 
         .logout-button:hover {
-            border-color: var(--apch-700);
-            background: var(--apch-700);
+            border-color: #7f1010;
+            background: #7f1010;
             color: #fff;
+            box-shadow: 0 4px 10px rgba(143, 0, 0, 0.16);
+            transform: translateY(-1px);
+        }
+
+        .logout-button:focus-visible {
+            outline: 3px solid rgba(163, 22, 22, 0.24);
+            outline-offset: 2px;
         }
 
         .logout-button svg {
@@ -784,6 +820,119 @@
             height: 20px;
         }
 
+        .delete-confirmation {
+            width: min(440px, calc(100% - 32px));
+            max-width: none;
+            padding: 0;
+            overflow: hidden;
+            border: 1px solid var(--slate-200);
+            border-radius: 24px;
+            background: #fff;
+            color: var(--slate-800);
+            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24);
+        }
+
+        .delete-confirmation::backdrop {
+            background: rgba(15, 23, 42, 0.56);
+            backdrop-filter: blur(3px);
+        }
+
+        .delete-confirmation-content {
+            padding: 32px;
+            text-align: center;
+        }
+
+        .delete-confirmation-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #fecaca;
+            border-radius: 18px;
+            background: #fff1f1;
+            color: var(--apch-700);
+        }
+
+        .delete-confirmation-icon svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .delete-confirmation-title {
+            margin: 0;
+            color: var(--slate-900);
+            font-size: 21px;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .delete-confirmation-message {
+            margin: 10px 0 0;
+            color: var(--slate-500);
+            font-size: 15px;
+            line-height: 1.65;
+        }
+
+        .delete-confirmation-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 26px;
+        }
+
+        .delete-confirmation-button {
+            min-height: 44px;
+            padding: 0 18px;
+            border: 1px solid transparent;
+            border-radius: 12px;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+
+        .delete-confirmation-cancel {
+            border-color: var(--slate-200);
+            background: #fff;
+            color: var(--slate-700);
+        }
+
+        .delete-confirmation-cancel:hover {
+            background: var(--slate-50);
+            border-color: var(--slate-300);
+        }
+
+        .delete-confirmation-submit {
+            background: var(--apch-700);
+            color: #fff;
+        }
+
+        .delete-confirmation-submit:hover {
+            background: var(--apch-800);
+            transform: translateY(-1px);
+        }
+
+        .delete-confirmation-button:focus-visible {
+            outline: 3px solid rgba(179, 0, 0, 0.24);
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 480px) {
+            .delete-confirmation-content {
+                padding: 28px 22px;
+            }
+
+            .delete-confirmation-actions {
+                flex-direction: column-reverse;
+            }
+
+            .delete-confirmation-button {
+                width: 100%;
+            }
+        }
 
         /* ==============================
            TABLA VACÍA
@@ -969,14 +1118,8 @@
 
         @media (min-width: 640px) {
 
-            .header-inner {
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-            }
-
             .brand-title {
-                font-size: 24px;
+                font-size: 19px;
             }
 
             .system-status {
@@ -1040,8 +1183,8 @@
         @media (min-width: 1024px) {
 
             .header-inner {
-                padding-left: 40px;
-                padding-right: 40px;
+                padding-left: 32px;
+                padding-right: 32px;
             }
 
             .main-container {
@@ -1056,6 +1199,62 @@
             .footer-container {
                 padding-left: 40px;
                 padding-right: 40px;
+            }
+        }
+
+        @media (max-width: 639px) {
+
+            .page-header {
+                border-radius: 18px;
+            }
+
+            .header-inner {
+                flex-wrap: wrap;
+                gap: 12px;
+                min-height: 0;
+                padding: 14px 14px 12px 16px;
+            }
+
+            .institution-brand {
+                width: 100%;
+                gap: 12px;
+            }
+
+            .brand-logo {
+                width: 64px;
+                height: 64px;
+                padding: 8px;
+                border-radius: 16px;
+            }
+
+            .brand-label {
+                font-size: 9px;
+            }
+
+            .brand-title {
+                font-size: 15px;
+            }
+
+            .brand-subtitle {
+                margin-top: 3px;
+                font-size: 10px;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: flex-end;
+                padding: 10px 0 0;
+                border-top: 1px solid #eef0f3;
+                border-left: 0;
+            }
+
+            .logout-button {
+                width: 40px;
+                height: 40px;
+                min-height: 40px;
+                justify-content: center;
+                padding: 0;
+                font-size: 0;
             }
         }
 
@@ -1091,15 +1290,15 @@
                 <div>
 
                     <p class="brand-label">
-                        Unidad Educativa
+                        APCH · DECE
                     </p>
 
                     <h1 class="brand-title">
-                        "Ángel Polibio Chaves"
+                        Sistema de Formularios Digitales
                     </h1>
 
                     <p class="brand-subtitle">
-                        Sistema de Formularios Digitales
+                        Unidad Educativa "Ángel Polibio Chaves"
                     </p>
 
                 </div>
@@ -1138,6 +1337,7 @@
                     <button
                         type="submit"
                         class="logout-button"
+                        aria-label="Cerrar sesión"
                     >
 
                         <svg
@@ -1838,6 +2038,7 @@
                                     <form
                                         method="POST"
                                         action="{{ route('formularios.eliminar', $formulario) }}"
+                                        class="delete-form"
                                     >
 
                                         @csrf
@@ -2035,6 +2236,113 @@
 
     </footer>
 
+    <dialog
+        class="delete-confirmation"
+        aria-labelledby="delete-confirmation-title"
+        aria-describedby="delete-confirmation-message"
+    >
+
+        <div class="delete-confirmation-content">
+
+            <div class="delete-confirmation-icon" aria-hidden="true">
+
+                <svg
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.8"
+                        d="M12 9v3m0 4h.01M10.3 3.86L1.82 18a2 2 0 001.7 3h16.96a2 2 0 001.7-3L13.7 3.86a2 2 0 00-3.4 0z"
+                    />
+
+                </svg>
+
+            </div>
+
+            <h2 class="delete-confirmation-title" id="delete-confirmation-title">
+                ¿Eliminar este registro?
+            </h2>
+
+            <p class="delete-confirmation-message" id="delete-confirmation-message">
+                Esta acción eliminará el registro y sus documentos asociados. No se puede deshacer.
+            </p>
+
+            <div class="delete-confirmation-actions">
+
+                <button
+                    type="button"
+                    class="delete-confirmation-button delete-confirmation-cancel"
+                    data-delete-cancel
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="button"
+                    class="delete-confirmation-button delete-confirmation-submit"
+                    data-delete-confirm
+                >
+                    Sí, eliminar
+                </button>
+
+            </div>
+
+        </div>
+
+    </dialog>
+
+    <script>
+        const deleteConfirmation = document.querySelector('.delete-confirmation');
+        const cancelDeleteButton = deleteConfirmation.querySelector('[data-delete-cancel]');
+        const confirmDeleteButton = deleteConfirmation.querySelector('[data-delete-confirm]');
+        let pendingDeleteForm = null;
+
+        document.querySelectorAll('.delete-form').forEach((form) => {
+            form.addEventListener('submit', (event) => {
+                if (form.dataset.confirmed === 'true') {
+                    delete form.dataset.confirmed;
+
+                    return;
+                }
+
+                event.preventDefault();
+                pendingDeleteForm = form;
+                deleteConfirmation.showModal();
+            });
+        });
+
+        cancelDeleteButton.addEventListener('click', () => {
+            pendingDeleteForm = null;
+            deleteConfirmation.close();
+        });
+
+        deleteConfirmation.addEventListener('cancel', () => {
+            pendingDeleteForm = null;
+        });
+
+        confirmDeleteButton.addEventListener('click', () => {
+            if (!pendingDeleteForm) {
+                return;
+            }
+
+            const form = pendingDeleteForm;
+            pendingDeleteForm = null;
+            form.dataset.confirmed = 'true';
+            deleteConfirmation.close();
+            form.requestSubmit();
+        });
+
+        deleteConfirmation.addEventListener('click', (event) => {
+            if (event.target === deleteConfirmation) {
+                pendingDeleteForm = null;
+                deleteConfirmation.close();
+            }
+        });
+    </script>
 
 </body>
 

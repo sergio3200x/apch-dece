@@ -102,41 +102,65 @@
        ========================================================= */
 
     .site-header {
-        margin: 16px 4px 0;
-        border: 2px solid #000;
-        border-radius: 12px;
-        background: #e2e8f0;
+        position: relative;
+        width: 100%;
+        margin: 0;
         overflow: hidden;
+        border: 0;
+        border-bottom: 1px solid var(--slate-200);
+        border-radius: 20px;
+        background: linear-gradient(115deg, #fff 0%, #fff 72%, #fff7f7 100%);
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.07);
+    }
+
+    .site-header::before {
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 5px;
+        background: linear-gradient(180deg, #d34848, #8f0000);
+        content: "";
+    }
+
+    .site-header::after {
+        position: absolute;
+        inset: auto 0 0;
+        height: 4px;
+        background: linear-gradient(90deg, #8f0000, #d34848 50%, #8f0000);
+        content: "";
     }
 
     .header-inner {
         width: 100%;
-        max-width: 1280px;
+        max-width: none;
         margin: 0 auto;
         display: flex;
-        flex-direction: column;
-        gap: 20px;
-        padding: 20px 24px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        min-height: 104px;
+        padding: 12px 28px;
     }
 
     .institution-brand {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 18px;
         min-width: 0;
     }
 
     .institution-logo {
-        width: 64px;
-        height: 64px;
+        width: 80px;
+        height: 80px;
         flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 6px;
-        border-radius: 12px;
+        padding: 9px;
+        border: 1px solid #f1d5d5;
+        border-radius: 20px;
         background: #fff;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 5px 14px rgba(143, 0, 0, 0.08);
     }
 
     .institution-logo img {
@@ -151,27 +175,27 @@
 
     .institution-label {
         margin: 0;
-        color: var(--apch-700);
-        font-size: 14px;
+        color: #a31616;
+        font-size: 11px;
         line-height: 1.5;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.025em;
+        letter-spacing: 0.16em;
     }
 
     .institution-name {
-        margin: 2px 0 0;
+        margin: 0;
         color: var(--slate-900);
-        font-size: 20px;
+        font-size: 19px;
         line-height: 1.3;
         font-weight: 700;
         letter-spacing: -0.025em;
     }
 
     .system-name {
-        margin: 4px 0 0;
+        margin: 3px 0 0;
         color: var(--slate-500);
-        font-size: 14px;
+        font-size: 13px;
         line-height: 1.5;
         font-weight: 500;
     }
@@ -183,7 +207,10 @@
     .header-actions {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
+        flex-shrink: 0;
+        padding-left: 20px;
+        border-left: 1px solid var(--slate-200);
     }
 
     .system-status {
@@ -235,18 +262,21 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 12px 16px;
-        border: 2px solid var(--slate-200);
+        min-height: 42px;
+        padding: 10px 13px;
+        border: 1px solid #a31616;
         border-radius: 12px;
-        background: #fff;
-        color: var(--slate-700);
-        font-size: 14px;
-        font-weight: 700;
+        background: #a31616;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
         cursor: pointer;
         transition:
             border-color 0.2s ease,
             background-color 0.2s ease,
-            color 0.2s ease;
+            color 0.2s ease,
+            box-shadow 0.2s ease,
+            transform 0.2s ease;
     }
 
     .logout-button svg {
@@ -256,9 +286,16 @@
     }
 
     .logout-button:hover {
-        border-color: var(--apch-700);
-        background: var(--apch-700);
+        border-color: #7f1010;
+        background: #7f1010;
         color: #fff;
+        box-shadow: 0 4px 10px rgba(143, 0, 0, 0.16);
+        transform: translateY(-1px);
+    }
+
+    .logout-button:focus-visible {
+        outline: 3px solid rgba(163, 22, 22, 0.24);
+        outline-offset: 2px;
     }
 
     .logout-button:hover svg {
@@ -572,17 +609,6 @@
        ========================================================= */
 
     @media (min-width: 640px) {
-
-        .header-inner {
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .institution-name {
-            font-size: 24px;
-        }
-
         .system-status {
             display: flex;
         }
@@ -622,8 +648,8 @@
     @media (min-width: 1024px) {
 
         .header-inner {
-            padding-left: 40px;
-            padding-right: 40px;
+            padding-left: 32px;
+            padding-right: 32px;
         }
 
         .main-container {
@@ -634,18 +660,62 @@
 
     @media (max-width: 639px) {
 
+        .site-header {
+            border-radius: 18px;
+        }
+
+        .header-inner {
+            flex-wrap: wrap;
+            gap: 12px;
+            min-height: 0;
+            padding: 14px 14px 12px 16px;
+        }
+
+        .institution-brand {
+            width: 100%;
+            gap: 12px;
+        }
+
+        .institution-logo {
+            width: 64px;
+            height: 64px;
+            padding: 8px;
+            border-radius: 16px;
+        }
+
+        .institution-label {
+            font-size: 9px;
+        }
+
+        .institution-name {
+            font-size: 15px;
+            line-height: 1.3;
+        }
+
+        .system-name {
+            margin-top: 3px;
+            font-size: 10px;
+        }
+
         .header-actions {
             width: 100%;
             justify-content: flex-end;
+            padding: 10px 0 0;
+            border-top: 1px solid #eef0f3;
+            border-left: 0;
         }
 
         .logout-form {
-            width: 100%;
+            width: auto;
         }
 
         .logout-button {
-            width: 100%;
+            width: 40px;
+            height: 40px;
+            min-height: 40px;
             justify-content: center;
+            padding: 0;
+            font-size: 0;
         }
 
         .page-title {
@@ -704,15 +774,15 @@
             <div class="institution-info">
 
                 <p class="institution-label">
-                    Unidad Educativa
+                    APCH · DECE
                 </p>
 
                 <h1 class="institution-name">
-                    "Ángel Polibio Chaves"
+                    Sistema de Formularios Digitales
                 </h1>
 
                 <p class="system-name">
-                    Sistema de Formularios Digitales
+                    Unidad Educativa "Ángel Polibio Chaves"
                 </p>
 
             </div>
@@ -754,6 +824,7 @@
                 <button
                     type="submit"
                     class="logout-button"
+                    aria-label="Cerrar sesión"
                 >
 
                     <svg

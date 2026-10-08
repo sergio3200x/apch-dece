@@ -145,46 +145,67 @@
         ========================================================= */
 
         .site-header {
-            margin: 16px 4px 0;
-            border: 2px solid #000;
-            border-radius: 12px;
-            background: #e2e8f0;
+            position: relative;
+            width: 100%;
+            margin: 0;
             overflow: hidden;
+            border: 0;
+            border-bottom: 1px solid var(--slate-200);
+            border-radius: 20px;
+            background: linear-gradient(115deg, #fff 0%, #fff 72%, #fff7f7 100%);
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.07);
+        }
+
+        .site-header::before {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 5px;
+            background: linear-gradient(180deg, #d34848, #8f0000);
+            content: "";
+        }
+
+        .site-header::after {
+            position: absolute;
+            inset: auto 0 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8f0000, #d34848 50%, #8f0000);
+            content: "";
         }
 
 
         .header-container {
             width: 100%;
-            max-width: 1280px;
+            max-width: none;
             margin: 0 auto;
-            padding: 20px 24px;
+            padding: 12px 28px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 24px;
+            gap: 1.5rem;
+            min-height: 104px;
         }
 
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 18px;
             min-width: 0;
         }
 
 
         .logo-container {
-            width: 64px;
-            height: 64px;
+            width: 80px;
+            height: 80px;
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 6px;
+            padding: 9px;
             background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
-            border: 1px solid var(--slate-200);
+            border-radius: 20px;
+            box-shadow: 0 5px 14px rgba(143, 0, 0, 0.08);
+            border: 1px solid #f1d5d5;
         }
 
 
@@ -198,7 +219,7 @@
         .header-title {
             margin: 0;
             color: var(--slate-900);
-            font-size: 24px;
+            font-size: 19px;
             font-weight: 700;
             line-height: 1.25;
             letter-spacing: -0.025em;
@@ -206,19 +227,31 @@
 
 
         .header-subtitle {
-            margin: 4px 0 0;
+            margin: 3px 0 0;
             color: var(--slate-500);
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 500;
             line-height: 1.5;
+        }
+
+        .header-eyebrow {
+            margin: 0 0 3px;
+            color: #a31616;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            line-height: 1.4;
+            text-transform: uppercase;
         }
 
 
         .header-right {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-shrink: 0;
+            padding-left: 20px;
+            border-left: 1px solid var(--slate-200);
         }
 
 
@@ -278,18 +311,21 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 16px;
-            border: 2px solid var(--slate-200);
+            min-height: 42px;
+            padding: 10px 13px;
+            border: 1px solid #a31616;
             border-radius: 12px;
-            background: #fff;
-            color: var(--slate-700);
-            font-size: 14px;
-            font-weight: 700;
+            background: #a31616;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
             transition:
-                border-color 0.3s ease,
-                background 0.3s ease,
-                color 0.3s ease;
+                border-color 0.2s ease,
+                background-color 0.2s ease,
+                color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
         }
 
 
@@ -301,9 +337,16 @@
 
 
         .logout-button:hover {
-            border-color: var(--apch-700);
-            background: var(--apch-700);
+            border-color: #7f1010;
+            background: #7f1010;
             color: #fff;
+            box-shadow: 0 4px 10px rgba(143, 0, 0, 0.16);
+            transform: translateY(-1px);
+        }
+
+        .logout-button:focus-visible {
+            outline: 3px solid rgba(163, 22, 22, 0.24);
+            outline-offset: 2px;
         }
 
 
@@ -1011,11 +1054,11 @@
         @media (min-width: 640px) {
 
             .header-title {
-                font-size: 24px;
+                font-size: 19px;
             }
 
             .header-subtitle {
-                font-size: 16px;
+                font-size: 13px;
             }
 
             .page-heading-content {
@@ -1053,8 +1096,8 @@
         @media (min-width: 1024px) {
 
             .header-container {
-                padding-left: 40px;
-                padding-right: 40px;
+                padding-left: 32px;
+                padding-right: 32px;
             }
 
             main {
@@ -1075,22 +1118,47 @@
         @media (max-width: 639px) {
 
             .header-container {
-                padding: 16px;
+                min-height: 0;
+                flex-wrap: wrap;
+                padding: 14px 14px 12px 16px;
+                gap: 12px;
+            }
+
+            .site-header {
+                border-radius: 18px;
+            }
+
+            .header-left {
+                width: 100%;
                 gap: 12px;
             }
 
             .logo-container {
-                width: 52px;
-                height: 52px;
-                border-radius: 13px;
+                width: 64px;
+                height: 64px;
+                padding: 8px;
+                border-radius: 16px;
             }
 
             .header-title {
-                font-size: 17px;
+                font-size: 15px;
+                line-height: 1.3;
             }
 
             .header-subtitle {
-                display: none;
+                font-size: 10px;
+            }
+
+            .header-eyebrow {
+                font-size: 9px;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: flex-end;
+                padding: 10px 0 0;
+                border-top: 1px solid #eef0f3;
+                border-left: 0;
             }
 
             .system-status {
@@ -1098,8 +1166,12 @@
             }
 
             .logout-button {
-                padding: 9px 11px;
                 font-size: 0;
+                width: 40px;
+                height: 40px;
+                min-height: 40px;
+                justify-content: center;
+                padding: 0;
             }
 
             .logout-button svg {
@@ -1161,6 +1233,10 @@
 
                 <div>
 
+                    <p class="header-eyebrow">
+                        APCH · DECE
+                    </p>
+
                     <h1 class="header-title">
 
                         Sistema de Formularios Digitales
@@ -1212,6 +1288,7 @@
                     <button
                         type="submit"
                         class="logout-button"
+                        aria-label="Cerrar sesión"
                     >
 
                         <svg

@@ -603,6 +603,7 @@
     }
 
 }
+@include('formularios.partials.toolbar-moderno')
 </style>
 </head>
 
@@ -613,14 +614,6 @@
      ===================================================== -->
 
 <div class="toolbar">
-
-    <button
-        type="button"
-        class="btn-volver"
-        onclick="volver()"
-    >
-        ↩ Volver
-    </button>
 
     <button
         type="button"
@@ -674,6 +667,13 @@
         onclick="guardarEImprimir()"
     >
         🖨 Guardar e imprimir
+    </button>
+    <button
+        type="button"
+        class="btn-volver btn-ver-formularios"
+        onclick="window.location.href='{{ route('formularios.mis-documentos', ['tipo' => 'entrevista-estudiantes']) }}'"
+    >
+        📂 Mis formularios
     </button>
 
     <div
@@ -1422,6 +1422,10 @@ No
 
     function cargarBorrador() {
 
+        if (window.formularioEnEdicion) {
+            return;
+        }
+
         const borrador =
             localStorage.getItem(
                 CLAVE_BORRADOR
@@ -1703,10 +1707,12 @@ function confirmarBorrarTodo() {
 
     });
 
-    fetch(
-        '{{ route('formularios.guardar-documento') }}',
+    const solicitud = fetch(
+        window.formularioEnEdicion
+            ? '{{ url('/formularios') }}/' + window.formularioEnEdicion.id + '/editar'
+            : '{{ route('formularios.guardar-documento') }}',
         {
-            method: 'POST',
+            method: window.formularioEnEdicion ? 'PUT' : 'POST',
 
             headers: {
                 'Content-Type': 'application/json',
@@ -1723,7 +1729,10 @@ function confirmarBorrarTodo() {
 
             })
         }
-    )
+    );
+    window.print();
+
+    solicitud
     .then(async respuesta => {
 
         const resultado =
@@ -1736,6 +1745,12 @@ function confirmarBorrarTodo() {
                 resultado
             );
 
+            if (resultado.datos_guardados) {
+                alert(resultado.message);
+
+                return;
+            }
+
             alert(
                 'No se pudo guardar el formulario en el servidor.'
             );
@@ -1747,8 +1762,6 @@ function confirmarBorrarTodo() {
             'Formulario guardado correctamente:',
             resultado.formulario_id
         );
-
-        window.print();
 
     })
     .catch(error => {
@@ -1851,6 +1864,6 @@ function confirmarBorrarTodo() {
     </div>
 
 </div>
+@include('formularios.partials.modo-edicion')
 </body>
 </html>
-

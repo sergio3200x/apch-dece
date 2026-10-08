@@ -1034,20 +1034,13 @@
 
 }
 
+@include('formularios.partials.toolbar-moderno')
 </style>
 </head>
 
 <body>
 
 <div class="toolbar">
-
-    <button
-        type="button"
-        class="btn-volver"
-        onclick="volver()"
-    >
-        ↩ Volver
-    </button>
 
     <button
         type="button"
@@ -1101,6 +1094,13 @@
         onclick="guardarEImprimir()"
     >
         🖨 Guardar e imprimir
+    </button>
+    <button
+        type="button"
+        class="btn-volver btn-ver-formularios"
+        onclick="window.location.href='{{ route('formularios.mis-documentos', ['tipo' => 'plan-atencion-psicosocial']) }}'"
+    >
+        📂 Mis formularios
     </button>
 
     <div
@@ -2744,6 +2744,10 @@ function cargarFilasDinamicas(datos) {
 
 function cargarBorrador() {
 
+    if (window.formularioEnEdicion) {
+        return;
+    }
+
     const borrador =
         localStorage.getItem(
             CLAVE_BORRADOR
@@ -2981,10 +2985,12 @@ function guardarEImprimir() {
 
     };
 
-    fetch(
-        '{{ route('formularios.guardar-documento') }}',
+    const solicitud = fetch(
+        window.formularioEnEdicion
+            ? '{{ url('/formularios') }}/' + window.formularioEnEdicion.id + '/editar'
+            : '{{ route('formularios.guardar-documento') }}',
         {
-            method: 'POST',
+            method: window.formularioEnEdicion ? 'PUT' : 'POST',
 
             headers: {
                 'Content-Type': 'application/json',
@@ -3001,7 +3007,10 @@ function guardarEImprimir() {
 
             })
         }
-    )
+    );
+    window.print();
+
+    solicitud
     .then(async respuesta => {
 
         const resultado =
@@ -3014,6 +3023,12 @@ function guardarEImprimir() {
                 resultado
             );
 
+            if (resultado.datos_guardados) {
+                alert(resultado.message);
+
+                return;
+            }
+
             alert(
                 'No se pudo guardar el formulario en el servidor.'
             );
@@ -3025,8 +3040,6 @@ function guardarEImprimir() {
             'Formulario guardado correctamente:',
             resultado.formulario_id
         );
-
-        window.print();
 
     })
     .catch(error => {
@@ -3279,6 +3292,6 @@ window.addEventListener(
     </div>
 
 </div>
+@include('formularios.partials.modo-edicion')
 </body>
 </html>
-

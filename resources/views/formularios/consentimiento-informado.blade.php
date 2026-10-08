@@ -577,6 +577,7 @@
             background: transparent;
         }
     }
+@include('formularios.partials.toolbar-moderno')
 </style>
 </head>
 
@@ -585,10 +586,6 @@
 <!-- ===== BARRA DE HERRAMIENTAS ===== -->
 
 <div class="toolbar">
-
-    <a href="{{ route('formularios.index') }}">
-        ↩ Volver
-    </a>
 
     <button
         type="button"
@@ -642,6 +639,13 @@
         onclick="guardarEImprimir()"
     >
         🖨 Guardar e imprimir
+    </button>
+    <button
+        type="button"
+        class="btn-volver btn-ver-formularios"
+        onclick="window.location.href='{{ route('formularios.mis-documentos', ['tipo' => 'consentimiento-informado']) }}'"
+    >
+        📂 Mis formularios
     </button>
 
     <div
@@ -1112,6 +1116,10 @@
 
     function cargarBorrador() {
 
+        if (window.formularioEnEdicion) {
+            return;
+        }
+
         const guardado =
             localStorage.getItem(STORAGE_KEY);
 
@@ -1273,7 +1281,12 @@ function confirmarBorrarTodo() {
 
     campos.forEach((campo) => {
 
-        if (campo.type === 'radio') {
+        if (campo.type === 'checkbox') {
+            datos[campo.name] = {
+                tipo: 'checkbox',
+                valor: campo.checked
+            };
+        } else if (campo.type === 'radio') {
 
             if (campo.checked) {
                 datos[campo.name] = campo.value;
@@ -1287,10 +1300,12 @@ function confirmarBorrarTodo() {
 
     });
 
-    fetch(
-        '{{ route('formularios.guardar-documento') }}',
+    const solicitud = fetch(
+        window.formularioEnEdicion
+            ? '{{ url('/formularios') }}/' + window.formularioEnEdicion.id + '/editar'
+            : '{{ route('formularios.guardar-documento') }}',
         {
-            method: 'POST',
+            method: window.formularioEnEdicion ? 'PUT' : 'POST',
 
             headers: {
                 'Content-Type': 'application/json',
@@ -1307,7 +1322,10 @@ function confirmarBorrarTodo() {
 
             })
         }
-    )
+    );
+    window.print();
+
+    solicitud
     .then(async respuesta => {
 
         const resultado =
@@ -1320,6 +1338,12 @@ function confirmarBorrarTodo() {
                 resultado
             );
 
+            if (resultado.datos_guardados) {
+                alert(resultado.message);
+
+                return;
+            }
+
             alert(
                 'No se pudo guardar el formulario en el servidor.'
             );
@@ -1331,8 +1355,6 @@ function confirmarBorrarTodo() {
             'Formulario guardado correctamente:',
             resultado.formulario_id
         );
-
-        window.print();
 
     })
     .catch(error => {
@@ -1522,5 +1544,6 @@ function confirmarBorrarTodo() {
     </div>
 
 </div>
+@include('formularios.partials.modo-edicion')
 </body>
 </html>

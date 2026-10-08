@@ -130,18 +130,38 @@
     ========================================== */
 
     .page-header {
-        margin: 16px 4px 0;
-        border-radius: 12px;
-        background: #e2e8f0;
-        border: 2px solid #000;
+        position: relative;
+        width: 100%;
+        margin: 0;
         overflow: hidden;
+        border-radius: 20px;
+        background: linear-gradient(115deg, #fff 0%, #fff 72%, #fff7f7 100%);
+        border: 0;
+        border-bottom: 1px solid #e2e8f0;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.07);
+    }
+
+    .page-header::before {
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 5px;
+        background: linear-gradient(180deg, #d34848, #8f0000);
+        content: "";
+    }
+
+    .page-header::after {
+        position: absolute;
+        inset: auto 0 0;
+        height: 4px;
+        background: linear-gradient(90deg, #8f0000, #d34848 50%, #8f0000);
+        content: "";
     }
 
     .header-container {
         width: 100%;
-        max-width: 1280px;
+        max-width: none;
         margin: 0 auto;
-        padding: 20px 20px;
+        padding: 18px 28px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -151,27 +171,27 @@
     .brand-section {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 18px;
         min-width: 0;
     }
 
     .brand-logo {
-        width: 56px;
-        height: 56px;
+        width: 80px;
+        height: 80px;
         flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 12px;
+        border-radius: 20px;
         background: #fff;
-        border: 1px solid #e2e8f0;
-        padding: 6px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f1d5d5;
+        padding: 9px;
+        box-shadow: 0 5px 14px rgba(143, 0, 0, 0.08);
         transition: transform 0.3s ease;
     }
 
     .brand-logo:hover {
-        transform: scale(1.05);
+        transform: translateY(-1px);
     }
 
     .brand-logo img {
@@ -187,25 +207,37 @@
     .brand-title {
         margin: 0;
         color: #0f172a;
-        font-size: 16px;
+        font-size: 19px;
         font-weight: 700;
         letter-spacing: -0.025em;
         line-height: 1.3;
     }
 
     .brand-subtitle {
-        margin: 4px 0 0;
+        margin: 5px 0 0;
         color: #64748b;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 500;
         line-height: 1.4;
+    }
+
+    .brand-eyebrow {
+        margin: 0 0 3px;
+        color: #a31616;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        line-height: 1.4;
+        text-transform: uppercase;
     }
 
     .header-actions {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
         flex-shrink: 0;
+        padding-left: 20px;
+        border-left: 1px solid #e2e8f0;
     }
 
     .system-status {
@@ -249,17 +281,20 @@
     .user-info {
         display: none;
         align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        border-radius: 8px;
-        background: #fff;
-        border: 1px solid #e2e8f0;
+        gap: 10px;
+        padding: 8px 12px 8px 8px;
+        border-radius: 13px;
+        background: #f8fafc;
+        border: 1px solid #e8edf3;
     }
 
     .user-info svg {
-        width: 16px;
-        height: 16px;
-        color: var(--apch-700);
+        width: 32px;
+        height: 32px;
+        padding: 7px;
+        border-radius: 10px;
+        background: #fff1f1;
+        color: #a31616;
         flex-shrink: 0;
     }
 
@@ -275,13 +310,14 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 10px 12px;
-        border-radius: 8px;
+        min-height: 42px;
+        padding: 10px 13px;
+        border-radius: 12px;
         background: #fff;
         font-size: 12px;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
     }
 
     .header-action {
@@ -290,10 +326,11 @@
     }
 
     .header-action:hover {
-        background: var(--apch-700);
-        border-color: var(--apch-700);
-        color: #fff;
-        box-shadow: 0 4px 10px rgba(179, 0, 0, 0.15);
+        background: #fff5f5;
+        border-color: #e8bcbc;
+        color: #9f1717;
+        box-shadow: 0 4px 10px rgba(143, 0, 0, 0.08);
+        transform: translateY(-1px);
     }
 
     .logout-form {
@@ -301,14 +338,17 @@
     }
 
     .logout-button {
-        border: 1px solid var(--apch-700);
-        color: var(--apch-700);
+        border: 1px solid #a31616;
+        background: #a31616;
+        color: #fff;
     }
 
     .logout-button:hover {
-        background: var(--apch-700);
+        background: #7f1010;
+        border-color: #7f1010;
         color: #fff;
-        box-shadow: 0 4px 10px rgba(179, 0, 0, 0.15);
+        box-shadow: 0 4px 10px rgba(143, 0, 0, 0.16);
+        transform: translateY(-1px);
     }
 
     .header-action svg,
@@ -324,6 +364,12 @@
 
     .logout-button:hover svg {
         transform: translateX(2px);
+    }
+
+    .header-action:focus-visible,
+    .logout-button:focus-visible {
+        outline: 3px solid rgba(163, 22, 22, 0.24);
+        outline-offset: 2px;
     }
 
     /* =========================================
@@ -731,23 +777,10 @@
             padding-right: 32px;
         }
 
-        .brand-logo {
-            width: 64px;
-            height: 64px;
-        }
-
-        .brand-title {
-            font-size: 18px;
-        }
-
-        .brand-subtitle {
-            font-size: 12px;
-        }
-
         .header-action,
         .logout-button {
-            padding-left: 16px;
-            padding-right: 16px;
+            padding-left: 13px;
+            padding-right: 13px;
         }
 
         .user-info {
@@ -883,15 +916,44 @@
 
     @media (max-width: 639px) {
         .header-container {
-            overflow-x: auto;
+            flex-wrap: wrap;
+            padding: 14px 14px 12px 16px;
+            gap: 12px;
         }
 
         .brand-section {
-            min-width: max-content;
+            width: 100%;
+            min-width: 0;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            padding: 8px;
+        }
+
+        .brand-title {
+            font-size: 15px;
+        }
+
+        .brand-subtitle {
+            margin-top: 3px;
+            font-size: 10px;
+        }
+
+        .brand-eyebrow {
+            font-size: 9px;
         }
 
         .header-actions {
-            min-width: max-content;
+            width: 100%;
+            justify-content: flex-end;
+            gap: 8px;
+            padding: 10px 0 0;
+            border-top: 1px solid #eef0f3;
+            border-left: 0;
         }
 
         .header-action span {
@@ -900,6 +962,24 @@
 
         .logout-button span {
             display: none;
+        }
+
+        .header-action,
+        .logout-button {
+            width: 40px;
+            min-height: 40px;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .header-actions .system-status {
+            margin-right: auto;
+        }
+
+        .page-header {
+            width: 100%;
+            margin-top: 0;
+            border-radius: 18px;
         }
     }
 </style>
@@ -928,6 +1008,10 @@
             </div>
 
             <div class="brand-text">
+
+                <p class="brand-eyebrow">
+                    APCH · DECE
+                </p>
 
                 <h1 class="brand-title">
                     Sistema de Formularios Digitales
@@ -994,6 +1078,7 @@
             <a
                 href="{{ route('password.edit') }}"
                 title="Cambiar contraseña"
+                aria-label="Cambiar contraseña"
                 class="header-action"
             >
 
@@ -1044,6 +1129,7 @@
                 <button
                     type="submit"
                     class="logout-button"
+                    aria-label="Cerrar sesión"
                 >
 
                     <svg
