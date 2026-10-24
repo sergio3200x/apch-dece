@@ -30,16 +30,17 @@ beforeEach(function () {
     });
 });
 
-it('stores the submitted form data and creates its PDF backup after responding', function () {
+it('stores the submitted form data and creates its PDF after responding', function () {
     Storage::fake('local');
 
     $usuario = User::create([
-        'name' => 'Coordinador de prueba',
+        'name' => 'Jessica Carrasco',
         'username' => 'coordinador-prueba',
         'password' => 'password',
         'role' => 'coordinador',
         'status' => true,
     ]);
+    Storage::disk('local')->makeDirectory('Jessica Carrasco/Documentos DECE');
 
     Process::fake(function (PendingProcess $process) {
         $comando = $process->command;
@@ -60,6 +61,7 @@ it('stores the submitted form data and creates its PDF backup after responding',
 
     $respuesta = $this->actingAs($usuario)->postJson(route('formularios.guardar-documento'), [
         'nombre_formulario' => 'FICHA DE NOTIFICACIÓN DE ALERTA DECE',
+        'carpeta' => 'Documentos DECE',
         'datos' => [
             'estudiante_nombre' => [
                 'tipo' => 'texto',
@@ -79,6 +81,10 @@ it('stores the submitted form data and creates its PDF backup after responding',
     ]);
     Storage::disk('local')->assertMissing('formularios/'.$formulario->id.'/formulario.html');
 
+    expect($formulario->datos_path)
+        ->toBe('Jessica Carrasco/Documentos DECE/FICHA DE NOTIFICACIÓN DE ALERTA DECE/ficha-de-notificacion-de-alerta-dece-'.$formulario->id.'.json');
+    expect($formulario->pdf_path)
+        ->toBe('Jessica Carrasco/Documentos DECE/FICHA DE NOTIFICACIÓN DE ALERTA DECE/ficha-de-notificacion-de-alerta-dece-'.$formulario->id.'.pdf');
     expect(json_decode(Storage::disk('local')->get($formulario->datos_path), true))
         ->toBe([
             'estudiante_nombre' => [
@@ -91,6 +97,115 @@ it('stores the submitted form data and creates its PDF backup after responding',
     );
 });
 
+it('stores JSON and PDF directly in the selected personal folder under the form name', function () {
+    Storage::fake('local');
+
+    $usuario = User::create([
+        'name' => 'Analista de prueba',
+        'username' => 'analista-prueba',
+        'password' => 'password',
+        'role' => 'analista',
+        'status' => true,
+    ]);
+    $rutaCarpeta = 'Analista de prueba/Informes';
+    Storage::disk('local')->makeDirectory($rutaCarpeta);
+
+    Process::fake(function (PendingProcess $process) {
+        $comando = $process->command;
+        file_put_contents($comando[3], "%PDF-1.4\nPDF de prueba\n");
+
+        return Process::result('PDF generado');
+    });
+
+    $respuesta = $this->actingAs($usuario)->postJson(route('formularios.guardar-documento'), [
+        'nombre_formulario' => 'FICHA DE NOTIFICACIÓN DE ALERTA DECE',
+        'carpeta' => 'Informes',
+        'datos' => [
+            'estudiante_nombre' => [
+                'tipo' => 'texto',
+                'valor' => 'Estudiante Ejemplo',
+            ],
+        ],
+    ]);
+
+    $respuesta->assertOk()
+        ->assertJsonPath('success', true);
+
+    $formulario = Formulario::query()->sole();
+    $nombreArchivo = 'ficha-de-notificacion-de-alerta-dece-'.$formulario->id;
+    $rutaFormulario = $rutaCarpeta.'/FICHA DE NOTIFICACIÓN DE ALERTA DECE';
+    $rutaJson = $rutaFormulario.'/'.$nombreArchivo.'.json';
+    $rutaPdf = $rutaFormulario.'/'.$nombreArchivo.'.pdf';
+
+    expect($formulario->datos_path)->toBe($rutaJson)
+        ->and($formulario->pdf_path)->toBe($rutaPdf)
+        ->and(json_decode(Storage::disk('local')->get($rutaJson), true))
+        ->toBe([
+            'estudiante_nombre' => [
+                'tipo' => 'texto',
+                'valor' => 'Estudiante Ejemplo',
+            ],
+        ]);
+
+    expect(Storage::disk('local')->get($rutaPdf))->toContain('PDF de prueba');
+    Storage::disk('local')->assertMissing('formularios/'.$formulario->id.'/datos.json');
+    Storage::disk('local')->assertMissing('formularios/'.$formulario->id.'/documento.pdf');
+    expect(Storage::disk('local')->directoryExists('formularios/'.$formulario->id))->toBeFalse();
+});
+
+it('does not allow saving a form into another users folder', function () {
+    Storage::fake('local');
+
+    $usuario = User::create([
+        'name' => 'Analista de prueba',
+        'username' => 'analista-prueba',
+        'password' => 'password',
+        'role' => 'analista',
+        'status' => true,
+    ]);
+    $otroUsuario = User::create([
+        'name' => 'Otro analista',
+        'username' => 'otro-analista',
+        'password' => 'password',
+        'role' => 'analista',
+        'status' => true,
+    ]);
+    Storage::disk('local')->makeDirectory('Otro analista/Privada');
+
+    $this->actingAs($usuario)
+        ->postJson(route('formularios.guardar-documento'), [
+            'nombre_formulario' => 'FICHA DE NOTIFICACIÓN DE ALERTA DECE',
+            'carpeta' => 'Privada',
+            'datos' => ['campo' => 'dato'],
+        ])
+        ->assertUnprocessable()
+        ->assertJsonPath('success', false);
+
+    expect(Formulario::query()->count())->toBe(0);
+});
+
+it('requires a folder before saving a form', function () {
+    Storage::fake('local');
+
+    $usuario = User::create([
+        'name' => 'Analista de prueba',
+        'username' => 'analista-prueba',
+        'password' => 'password',
+        'role' => 'analista',
+        'status' => true,
+    ]);
+
+    $this->actingAs($usuario)
+        ->postJson(route('formularios.guardar-documento'), [
+            'nombre_formulario' => 'FICHA DE NOTIFICACIÓN DE ALERTA DECE',
+            'datos' => ['campo' => 'dato'],
+        ])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('carpeta');
+
+    expect(Formulario::query()->count())->toBe(0);
+});
+
 it('returns a successful save and preserves form data when PDF generation fails', function () {
     Storage::fake('local');
 
@@ -101,11 +216,13 @@ it('returns a successful save and preserves form data when PDF generation fails'
         'role' => 'coordinador',
         'status' => true,
     ]);
+    Storage::disk('local')->makeDirectory('Coordinador de prueba/Pruebas');
 
     Process::fake(fn () => Process::result('', 'Falló Puppeteer', 1));
 
     $respuesta = $this->actingAs($usuario)->postJson(route('formularios.guardar-documento'), [
         'nombre_formulario' => 'FICHA DE NOTIFICACIÓN DE ALERTA DECE',
+        'carpeta' => 'Pruebas',
         'datos' => [
             'estudiante_nombre' => [
                 'tipo' => 'texto',
@@ -119,14 +236,13 @@ it('returns a successful save and preserves form data when PDF generation fails'
 
     $formulario = Formulario::query()->sole();
 
-    expect($formulario->datos_path)->toBe('formularios/'.$formulario->id.'/datos.json')
+    expect($formulario->datos_path)->toBe(
+        'Coordinador de prueba/Pruebas/FICHA DE NOTIFICACIÓN DE ALERTA DECE/ficha-de-notificacion-de-alerta-dece-'.$formulario->id.'.json'
+    )
         ->and($formulario->pdf_path)->toBeNull();
 
     Storage::disk('local')->assertExists($formulario->datos_path);
-    Storage::disk('local')->assertMissing([
-        'formularios/'.$formulario->id.'/documento.pdf',
-        'formularios/'.$formulario->id.'/formulario.html',
-    ]);
+    Storage::disk('local')->assertMissing($formulario->pdf_path ?? 'formularios/'.$formulario->id.'/documento.pdf');
 
     expect(json_decode(Storage::disk('local')->get($formulario->datos_path), true))
         ->toBe([
@@ -147,11 +263,13 @@ it('keeps the saved form when the renderer exits without creating a PDF', functi
         'role' => 'coordinador',
         'status' => true,
     ]);
+    Storage::disk('local')->makeDirectory('Coordinador de prueba/Pruebas');
 
     Process::fake(fn () => Process::result());
 
     $respuesta = $this->actingAs($usuario)->postJson(route('formularios.guardar-documento'), [
         'nombre_formulario' => 'FICHA DE NOTIFICACIÓN DE ALERTA DECE',
+        'carpeta' => 'Pruebas',
         'datos' => [
             'estudiante_nombre' => [
                 'tipo' => 'texto',
@@ -166,7 +284,7 @@ it('keeps the saved form when the renderer exits without creating a PDF', functi
     $formulario = Formulario::query()->sole();
 
     Storage::disk('local')->assertExists($formulario->datos_path);
-    Storage::disk('local')->assertMissing('formularios/'.$formulario->id.'/documento.pdf');
+    Storage::disk('local')->assertMissing($formulario->pdf_path ?? 'formularios/'.$formulario->id.'/documento.pdf');
 });
 
 it('lists only the current user forms matching the selected form type', function () {
@@ -188,6 +306,7 @@ it('lists only the current user forms matching the selected form type', function
     $formularioPropio = Formulario::create([
         'nombre_formulario' => 'FICHA DE NOTIFICACIÓN DE ALERTA DECE',
         'usuario_id' => $usuario->id,
+        'datos_path' => 'Analista de prueba/Archivo anual/FICHA DE NOTIFICACIÓN DE ALERTA DECE/ficha-de-notificacion-de-alerta-dece-1.json',
         'ediciones' => 0,
     ]);
     $formularioDeOtroUsuario = Formulario::create([
@@ -211,8 +330,41 @@ it('lists only the current user forms matching the selected form type', function
         ->assertDontSee('APCH · DECE')
         ->assertSee('FICHA DE NOTIFICACIÓN DE ALERTA DECE')
         ->assertSee('class="record-id">#'.$formularioPropio->id.'</td>', false)
+        ->assertSee('<th scope="col">Identificador</th>', false)
+        ->assertSee('<td class="record-identifier">Archivo anual</td>', false)
         ->assertDontSee('class="record-id">#'.$formularioDeOtroUsuario->id.'</td>', false)
         ->assertDontSee('class="record-id">#'.$otroTipoPropio->id.'</td>', false);
+});
+
+it('shows each form folder in the coordinator registration table', function () {
+    $coordinador = User::create([
+        'name' => 'Coordinador',
+        'username' => 'coordinador',
+        'password' => 'password',
+        'role' => 'coordinador',
+        'status' => true,
+    ]);
+    $usuario = User::create([
+        'name' => 'Analista de prueba',
+        'username' => 'analista-prueba',
+        'password' => 'password',
+        'role' => 'analista',
+        'status' => true,
+    ]);
+    $formulario = Formulario::create([
+        'nombre_formulario' => 'FICHA DE OBSERVACIÓN',
+        'usuario_id' => $usuario->id,
+        'datos_path' => 'Analista de prueba/Carpeta propia/FICHA DE OBSERVACIÓN/ficha-observacion-1.json',
+        'ediciones' => 0,
+    ]);
+
+    $this->actingAs($coordinador)
+        ->get(route('formularios.registros'))
+        ->assertOk()
+        ->assertSee('Identificador')
+        ->assertSee('class="folder-identifier"', false)
+        ->assertSee('Carpeta propia')
+        ->assertSee('#'.$formulario->id);
 });
 
 it('returns not found for an unsupported form type in the personal list', function () {
@@ -400,6 +552,65 @@ it('allows one owner edit, updates the original JSON and regenerates its PDF', f
         ->toBe([
             ['index' => 0, 'value' => 'Dato actualizado'],
         ]);
+});
+
+it('edits the JSON and PDF in the selected folder without creating internal copies', function () {
+    Storage::fake('local');
+
+    $usuario = User::create([
+        'name' => 'Analista de prueba',
+        'username' => 'analista-prueba',
+        'password' => 'password',
+        'role' => 'analista',
+        'status' => true,
+    ]);
+
+    $formulario = Formulario::create([
+        'nombre_formulario' => 'ENTREVISTA DOCENTES',
+        'usuario_id' => $usuario->id,
+        'ediciones' => 0,
+    ]);
+    $rutaFormulario = 'Analista de prueba/Informes/ENTREVISTA DOCENTES';
+    $nombreArchivo = 'entrevista-docentes-'.$formulario->id;
+    $formulario->update([
+        'datos_path' => $rutaFormulario.'/'.$nombreArchivo.'.json',
+        'pdf_path' => $rutaFormulario.'/'.$nombreArchivo.'.pdf',
+    ]);
+    $formulario->refresh();
+
+    Storage::disk('local')->put($formulario->datos_path, json_encode([
+        ['index' => 0, 'value' => 'Dato original'],
+    ]));
+    Storage::disk('local')->put($formulario->pdf_path, "%PDF-1.4\nPDF anterior\n");
+
+    Process::fake(function (PendingProcess $process) {
+        $comando = $process->command;
+        expect(file_get_contents($comando[2]))->toContain('Dato actualizado');
+        file_put_contents($comando[3], "%PDF-1.4\nPDF actualizado\n");
+
+        return Process::result('PDF actualizado');
+    });
+
+    $this->actingAs($usuario)
+        ->putJson(route('formularios.actualizar', $formulario), [
+            'datos' => [
+                ['index' => 0, 'value' => 'Dato actualizado'],
+            ],
+        ])
+        ->assertOk()
+        ->assertJsonPath('success', true);
+
+    $formulario->refresh();
+    expect($formulario->ediciones)->toBe(1)
+        ->and(json_decode(Storage::disk('local')->get($formulario->datos_path), true))
+        ->toBe([
+            ['index' => 0, 'value' => 'Dato actualizado'],
+        ])
+        ->and(Storage::disk('local')->get($formulario->pdf_path))
+        ->toContain('PDF actualizado');
+
+    Storage::disk('local')->assertMissing('formularios/'.$formulario->id.'/datos.json');
+    Storage::disk('local')->assertMissing('formularios/'.$formulario->id.'/documento.pdf');
 });
 
 it('does not allow another user to view or edit a saved form', function () {

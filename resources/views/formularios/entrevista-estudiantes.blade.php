@@ -615,6 +615,8 @@
 
 <div class="toolbar">
 
+    @include('formularios.partials.selector-carpeta')
+
     <button
         type="button"
         class="btn-borrar"
@@ -1725,6 +1727,7 @@ function confirmarBorrarTodo() {
                 nombre_formulario:
                     'ENTREVISTA ESTUDIANTES',
 
+                carpeta: document.getElementById('carpetaDestino')?.value || null,
                 datos: datos
 
             })

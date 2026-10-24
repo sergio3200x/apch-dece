@@ -1899,6 +1899,10 @@
                             </th>
 
                             <th>
+                                Identificador
+                            </th>
+
+                            <th>
                                 Usuario
                             </th>
 
@@ -1938,6 +1942,12 @@
                                         #{{ $formulario->id }}
                                     </span>
 
+                                </td>
+
+                                <!-- IDENTIFICADOR -->
+
+                                <td class="folder-identifier">
+                                    {{ $formulario->identificador }}
                                 </td>
 
 
@@ -2080,7 +2090,7 @@
                             <tr>
 
                                 <td
-                                    colspan="6"
+                                    colspan="7"
                                     class="empty-cell"
                                 >
 

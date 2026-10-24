@@ -49,6 +49,10 @@ Route::get('/formularios', [FormularioController::class, 'index'])
     ->middleware(['auth', 'active'])
     ->name('formularios.index');
 
+Route::post('/formularios/carpetas', [FormularioController::class, 'crearCarpeta'])
+    ->middleware(['auth', 'active'])
+    ->name('formularios.carpetas.store');
+
 Route::get('/formularios/mis-formularios/{nombre}', [FormularioController::class, 'misFormularios'])
     ->middleware(['auth', 'active'])
     ->name('formularios.mis-formularios');
@@ -89,40 +93,42 @@ Route::delete('/formularios/registros/{formulario}', [FormularioController::clas
     ->middleware(['auth', 'active', 'role:coordinador'])
     ->name('formularios.eliminar');
 
-Route::get('/formularios/entrevista-estudiantes', function () {
-    return view('formularios.entrevista-estudiantes');
+Route::get('/formularios/entrevista-estudiantes', function (FormularioController $controller) {
+    return $controller->plantilla('entrevista-estudiantes');
 })->middleware(['auth', 'active'])->name('formularios.entrevista-estudiantes');
 
-Route::get('/formularios/ficha-observacion', function () {
-    return view('formularios.ficha-observacion');
+Route::get('/formularios/ficha-observacion', function (FormularioController $controller) {
+    return $controller->plantilla('ficha-observacion');
 })->middleware(['auth', 'active'])->name('formularios.ficha-observacion');
 
-Route::get('/formularios/ficha-derivacion', function () {
-    return view('formularios.ficha-derivacion');
+Route::get('/formularios/ficha-derivacion', function (FormularioController $controller) {
+    return $controller->plantilla('ficha-derivacion');
 })->middleware(['auth', 'active'])->name('formularios.ficha-derivacion');
 
-Route::get('/formularios/entrevista-representantes', function () {
-    return view('formularios.entrevista-representantes');
+Route::get('/formularios/entrevista-representantes', function (FormularioController $controller) {
+    return $controller->plantilla('entrevista-representantes');
 })->middleware(['auth', 'active'])->name('formularios.entrevista-representantes');
 
-Route::get('/formularios/entrevista-docentes', function () {
-    return view('formularios.entrevista-docentes');
+Route::get('/formularios/entrevista-docentes', function (FormularioController $controller) {
+    return $controller->plantilla('entrevista-docentes');
 })->middleware(['auth', 'active'])->name('formularios.entrevista-docentes');
 
-Route::get('/formularios/consentimiento-informado', function () {
-    return view('formularios.consentimiento-informado');
+Route::get('/formularios/consentimiento-informado', function (FormularioController $controller) {
+    return $controller->plantilla('consentimiento-informado');
 })->middleware(['auth', 'active'])->name('formularios.consentimiento-informado');
 
-Route::get('/formularios/ficha-alerta-dece', function () {
-    return view('formularios.ficha-alerta-dece');
+Route::get('/formularios/ficha-alerta-dece', function (FormularioController $controller) {
+    return $controller->plantilla('ficha-alerta-dece');
 })->middleware(['auth', 'active'])->name('formularios.ficha-alerta-dece');
 
-Route::get('/formularios/plan-atencion-psicosocial', function () {
-    return view('formularios.plan-atencion-psicosocial');
+Route::get('/formularios/plan-atencion-psicosocial', function (FormularioController $controller) {
+    return $controller->plantilla('plan-atencion-psicosocial');
 })->middleware(['auth', 'active'])->name('formularios.plan-atencion-psicosocial');
 
 Route::get('/cambiar-contrasena', [PasswordController::class, 'edit'])
+    ->middleware(['auth', 'active'])
     ->name('password.edit');
 
 Route::put('/cambiar-contrasena', [PasswordController::class, 'update'])
+    ->middleware(['auth', 'active'])
     ->name('password.update');

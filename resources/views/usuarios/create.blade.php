@@ -138,14 +138,39 @@
        ========================================================= */
 
     .site-header {
-        margin: 16px 4px 0;
-        border: 2px solid #000;
-        border-radius: 12px;
-        background: #e2e8f0;
+        position: relative;
+        margin: 16px 16px 0;
+        border: 1px solid var(--slate-200);
+        border-radius: 22px;
+        background: #fff;
         overflow: hidden;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .site-header::before {
+        position: absolute;
+        top: 20px;
+        bottom: 20px;
+        left: 0;
+        width: 5px;
+        border-radius: 0 5px 5px 0;
+        background: #bd5a5a;
+        content: "";
+    }
+
+    .site-header::after {
+        position: absolute;
+        right: 24px;
+        bottom: 0;
+        left: 24px;
+        height: 2px;
+        background: #bd5a5a;
+        content: "";
     }
 
     .header-inner {
+        position: relative;
+        z-index: 1;
         width: 100%;
         max-width: 1280px;
         margin: 0 auto;
@@ -306,7 +331,35 @@
        ========================================================= */
 
     .page-heading {
+        position: relative;
         margin-bottom: 32px;
+        padding: 24px 26px 26px;
+        overflow: hidden;
+        border: 1px solid var(--slate-200);
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+    }
+
+    .page-heading::before {
+        position: absolute;
+        top: 18px;
+        bottom: 18px;
+        left: 0;
+        width: 4px;
+        border-radius: 0 4px 4px 0;
+        background: #bd5a5a;
+        content: "";
+    }
+
+    .page-heading::after {
+        position: absolute;
+        right: 22px;
+        bottom: 0;
+        left: 22px;
+        height: 2px;
+        background: #e6b4b4;
+        content: "";
     }
 
     .heading-row {
@@ -811,6 +864,11 @@
             flex-wrap: wrap;
         }
 
+        .site-header::after {
+            right: 18px;
+            left: 18px;
+        }
+
         .header-actions {
             width: 100%;
             justify-content: flex-end;
@@ -828,6 +886,15 @@
         .main-container {
             padding-top: 32px;
             padding-bottom: 32px;
+        }
+
+        .page-heading {
+            padding: 20px 20px 22px;
+        }
+
+        .page-heading::after {
+            right: 16px;
+            left: 16px;
         }
 
         .page-title {

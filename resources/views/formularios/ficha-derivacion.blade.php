@@ -991,7 +991,7 @@
 
 <div class="toolbar">
 
-
+    @include('formularios.partials.selector-carpeta')
 
     <button type="button" class="btn-borrar" onclick="borrarTodo()">
 
@@ -2309,6 +2309,7 @@ function guardarEImprimir() {
                 nombre_formulario:
                     'FICHA DE DERIVACIÓN',
 
+                carpeta: document.getElementById('carpetaDestino')?.value || null,
                 datos: datos
 
             })

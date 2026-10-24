@@ -661,6 +661,9 @@
      BARRA DE HERRAMIENTAS
      ========================================================= -->
 <div class="toolbar">
+
+    @include('formularios.partials.selector-carpeta')
+
     <button type="button" class="btn-borrar" onclick="borrarTodo()">
         🗑 Borrar todo
     </button>
@@ -1853,6 +1856,7 @@ function guardarEImprimir() {
                 nombre_formulario:
                     'ENTREVISTA REPRESENTANTES',
 
+                carpeta: document.getElementById('carpetaDestino')?.value || null,
                 datos: datos
 
             })

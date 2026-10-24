@@ -32,7 +32,104 @@ class FormularioController extends Controller
 
     public function index()
     {
-        return view('formularios.index');
+        return view('formularios.index', [
+            'carpetas' => $this->listarCarpetasUsuario(),
+        ]);
+    }
+
+    public function crearCarpeta(Request $request)
+    {
+        $datos = $request->validate([
+            'nombre' => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[\pL\pN][\pL\pN _()-]*$/u',
+            ],
+        ], [
+            'nombre.regex' => 'El nombre solo puede contener letras, números, espacios, guiones, guiones bajos y paréntesis.',
+        ]);
+
+        $disk = Storage::disk('local');
+        $nombreCarpeta = $datos['nombre'];
+        $rutaCarpeta = $this->rutaCarpetaUsuario($nombreCarpeta);
+
+        if (in_array($nombreCarpeta, $this->listarCarpetasUsuario(), true)) {
+            return back()
+                ->withErrors(['nombre' => 'Ya existe una carpeta con ese nombre.'])
+                ->withInput();
+        }
+
+        if (! $disk->makeDirectory($rutaCarpeta)) {
+            Log::error('No se pudo crear una carpeta de formularios.', [
+                'ruta_carpeta' => $rutaCarpeta,
+                'usuario_id' => auth()->id(),
+            ]);
+
+            return back()
+                ->withErrors(['carpeta' => 'No se pudo crear la carpeta. Inténtelo nuevamente.'])
+                ->withInput();
+        }
+
+        return redirect()
+            ->route('formularios.index')
+            ->with('success', 'La carpeta se creó correctamente.');
+    }
+
+    private function listarCarpetasUsuario(): array
+    {
+        $disk = Storage::disk('local');
+        $rutasBase = [
+            $this->rutaBaseUsuario(),
+            'usuarios/'.auth()->id(),
+        ];
+        $carpetas = [];
+
+        foreach ($rutasBase as $rutaBase) {
+            if (! $disk->directoryExists($rutaBase)) {
+                continue;
+            }
+
+            $carpetas = array_merge(
+                $carpetas,
+                array_map(
+                    static fn (string $ruta): string => basename($ruta),
+                    $disk->directories($rutaBase)
+                )
+            );
+        }
+
+        $carpetas = array_values(array_unique($carpetas));
+        sort($carpetas, SORT_NATURAL | SORT_FLAG_CASE);
+
+        return $carpetas;
+    }
+
+    private function rutaCarpetaUsuario(string $nombreCarpeta): string
+    {
+        return $this->rutaBaseUsuario().'/'.$nombreCarpeta;
+    }
+
+    private function rutaBaseUsuario(?User $usuario = null): string
+    {
+        $usuario ??= auth()->user();
+        abort_if(! $usuario, 500, 'No se pudo determinar el usuario para guardar sus carpetas.');
+
+        $nombreUsuario = preg_replace('/[^\pL\pN _().-]/u', ' ', $usuario->name);
+        $nombreUsuario = trim(preg_replace('/\s+/u', ' ', $nombreUsuario), ' .');
+
+        abort_if($nombreUsuario === '', 500, 'No se pudo determinar el nombre del usuario para guardar sus carpetas.');
+
+        return $nombreUsuario;
+    }
+
+    public function plantilla(string $vistaFormulario)
+    {
+        abort_unless(in_array($vistaFormulario, self::MAPA_FORMULARIOS, true), 404);
+
+        return view('formularios.'.$vistaFormulario, [
+            'carpetas' => $this->listarCarpetasUsuario(),
+        ]);
     }
 
     public function misFormularios($nombre)
@@ -97,11 +194,53 @@ class FormularioController extends Controller
             ->orderByDesc('id')
             ->paginate(20);
 
+        $formularios->getCollection()->each(function (Formulario $formulario) use ($tipoSeleccionado): void {
+            $formulario->setAttribute(
+                'identificador',
+                $this->identificadorCarpeta($formulario, $tipoSeleccionado['nombre'])
+            );
+        });
+
         return view('formularios.mis-documentos', [
             'formularios' => $formularios,
             'nombreFormulario' => $tipoSeleccionado['nombre'],
             'rutaFormulario' => $tipoSeleccionado['ruta'],
         ]);
+    }
+
+    private function identificadorCarpeta(Formulario $formulario, string $nombreFormulario): string
+    {
+        if (! $formulario->datos_path) {
+            return '—';
+        }
+
+        $segmentos = explode('/', trim($formulario->datos_path, '/'));
+
+        if (
+            count($segmentos) >= 4 &&
+            $segmentos[0] === 'usuarios' &&
+            (int) ($segmentos[1] ?? 0) === $formulario->usuario_id
+        ) {
+            $indiceFormulario = array_search($nombreFormulario, $segmentos, true);
+
+            return is_int($indiceFormulario) && $indiceFormulario >= 3
+                ? $segmentos[$indiceFormulario - 1]
+                : $segmentos[2];
+        }
+
+        $usuario = $formulario->usuario_id === auth()->id()
+            ? auth()->user()
+            : $formulario->usuario;
+
+        if (! $usuario || $segmentos[0] !== $this->rutaBaseUsuario($usuario)) {
+            return '—';
+        }
+
+        $indiceFormulario = array_search($nombreFormulario, $segmentos, true);
+
+        return is_int($indiceFormulario) && $indiceFormulario >= 2
+            ? $segmentos[$indiceFormulario - 1]
+            : (count($segmentos) >= 3 ? $segmentos[count($segmentos) - 2] : '—');
     }
 
     public function verPdf(Formulario $formulario)
@@ -182,12 +321,14 @@ class FormularioController extends Controller
         $datosPath = $formulario->datos_path;
 
         abort_unless($datosPath, 404, 'Los datos del formulario no existen.');
+        $pdfPath = $this->rutaPdfFormulario($formulario);
 
         $datosJson = json_encode(
             $datosValidados['datos'],
             JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR
         );
-        $archivoTemporal = 'formularios/'.$formulario->id.'/datos-'.Str::uuid().'.tmp';
+        $archivoTemporal = dirname($datosPath).'/datos-'.Str::uuid().'.tmp';
+        $datosOriginales = $disk->get($datosPath);
 
         $errorAlGuardar = null;
         $formularioActualizado = DB::transaction(function () use ($formulario, $datosJson, $archivoTemporal, $datosPath, $disk, &$errorAlGuardar): ?Formulario {
@@ -212,7 +353,6 @@ class FormularioController extends Controller
 
             $registro->update([
                 'ediciones' => 1,
-                'pdf_path' => null,
             ]);
 
             return $registro;
@@ -228,14 +368,16 @@ class FormularioController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'No se pudo guardar la edición del formulario.',
+                'datos_guardados' => false,
+                'message' => $errorAlGuardar ?? 'No se pudo guardar la edición del formulario.',
             ], 500);
         }
 
         $this->programarGeneracionPdf(
             $formularioActualizado,
             $datosValidados['datos'],
-            $vistaFormulario
+            $vistaFormulario,
+            $pdfPath
         );
 
         return response()->json([
@@ -281,6 +423,13 @@ class FormularioController extends Controller
             ->orderBy('created_at', $orden)
             ->get();
 
+        $formularios->each(function (Formulario $formulario): void {
+            $formulario->setAttribute(
+                'identificador',
+                $this->identificadorCarpeta($formulario, $formulario->nombre_formulario)
+            );
+        });
+
         $usuarios = User::orderBy('name')->get();
 
         $formulariosDisponibles = [
@@ -306,9 +455,27 @@ class FormularioController extends Controller
 
     public function eliminar(Formulario $formulario)
     {
-        $carpeta = 'formularios/'.$formulario->id;
+        $disk = Storage::disk('local');
+        $rutasPermitidas = [
+            'formularios/'.$formulario->id.'/',
+            'usuarios/'.$formulario->usuario_id.'/',
+        ];
 
-        Storage::disk('local')->deleteDirectory($carpeta);
+        if ($formulario->usuario) {
+            $rutasPermitidas[] = $this->rutaBaseUsuario($formulario->usuario).'/';
+        }
+
+        foreach ([$formulario->datos_path, $formulario->pdf_path] as $rutaArchivo) {
+            if (
+                is_string($rutaArchivo) &&
+                ! str_contains($rutaArchivo, '..') &&
+                Str::startsWith($rutaArchivo, $rutasPermitidas)
+            ) {
+                $disk->delete($rutaArchivo);
+            }
+        }
+
+        $disk->deleteDirectory('formularios/'.$formulario->id);
 
         $formulario->delete();
 
@@ -330,7 +497,38 @@ class FormularioController extends Controller
                 Rule::in(array_keys(self::MAPA_FORMULARIOS)),
             ],
             'datos' => ['required', 'array'],
+            'carpeta' => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[\pL\pN][\pL\pN _()-]*$/u',
+            ],
         ]);
+
+        $nombreCarpeta = $datos['carpeta'];
+        $disk = Storage::disk('local');
+        $carpetasDisponibles = $this->listarCarpetasUsuario();
+
+        if (! in_array($nombreCarpeta, $carpetasDisponibles, true)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'La carpeta seleccionada no existe en su espacio. Elija una carpeta creada por usted.',
+            ], 422);
+        }
+
+        $rutaDestino = $this->rutaCarpetaUsuario($nombreCarpeta);
+
+        if (! $disk->makeDirectory($rutaDestino)) {
+            Log::error('No se pudo preparar la carpeta seleccionada para guardar el formulario.', [
+                'ruta_destino' => $rutaDestino,
+                'usuario_id' => auth()->id(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'No se pudo preparar la carpeta seleccionada.',
+            ], 500);
+        }
 
         $formulario = Formulario::create([
             'nombre_formulario' => $datos['nombre_formulario'],
@@ -338,16 +536,33 @@ class FormularioController extends Controller
             'ediciones' => 0,
         ]);
 
-        $disk = Storage::disk('local');
-        $carpeta = 'formularios/'.$formulario->id;
-        $datosPath = $carpeta.'/datos.json';
+        $carpetaFormulario = $rutaDestino.'/'.$datos['nombre_formulario'];
+        $nombreArchivo = Str::slug($formulario->nombre_formulario).'-'.$formulario->id;
+        $datosPath = $carpetaFormulario.'/'.$nombreArchivo.'.json';
+        $pdfPath = $carpetaFormulario.'/'.$nombreArchivo.'.pdf';
+        $datosJson = json_encode($datos['datos'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+
+        if (! $disk->makeDirectory($carpetaFormulario)) {
+            $formulario->delete();
+
+            Log::error('No se pudo crear la carpeta de almacenamiento del formulario.', [
+                'formulario_id' => $formulario->id,
+                'ruta_destino' => $carpetaFormulario,
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'No se pudo preparar la carpeta para guardar el formulario.',
+            ], 500);
+        }
+
         $jsonGuardado = $disk->put(
             $datosPath,
-            json_encode($datos['datos'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR)
+            $datosJson
         );
 
         if (! $jsonGuardado) {
-            $disk->deleteDirectory($carpeta);
+            $disk->delete($datosPath);
             $formulario->delete();
 
             Log::error('No se pudieron guardar los datos del formulario.', [
@@ -367,7 +582,8 @@ class FormularioController extends Controller
         $this->programarGeneracionPdf(
             $formulario,
             $datos['datos'],
-            self::MAPA_FORMULARIOS[$datos['nombre_formulario']]
+            self::MAPA_FORMULARIOS[$datos['nombre_formulario']],
+            $pdfPath
         );
 
         return response()->json([
@@ -377,18 +593,34 @@ class FormularioController extends Controller
         ]);
     }
 
-    private function programarGeneracionPdf(Formulario $formulario, array $datos, string $vistaFormulario): void
+    private function rutaPdfFormulario(Formulario $formulario): string
+    {
+        if ($formulario->pdf_path) {
+            return $formulario->pdf_path;
+        }
+
+        $carpetaDatos = dirname($formulario->datos_path);
+        $nombreArchivo = Str::slug($formulario->nombre_formulario).'-'.$formulario->id.'.pdf';
+
+        return (
+            Str::startsWith($formulario->datos_path, $this->rutaBaseUsuario($formulario->usuario).'/') ||
+            Str::startsWith($formulario->datos_path, 'usuarios/'.$formulario->usuario_id.'/')
+        )
+            ? $carpetaDatos.'/'.$nombreArchivo
+            : 'formularios/'.$formulario->id.'/documento.pdf';
+    }
+
+    private function programarGeneracionPdf(Formulario $formulario, array $datos, string $vistaFormulario, string $pdfPathRelativo): void
     {
         $disk = Storage::disk('local');
         $carpeta = 'formularios/'.$formulario->id;
         $htmlPathRelativo = $carpeta.'/formulario.html';
-        $pdfPathRelativo = $carpeta.'/documento.pdf';
         $pdfTemporalRelativo = $carpeta.'/documento-'.Str::uuid().'.tmp.pdf';
         $htmlPath = $disk->path($htmlPathRelativo);
         $pdfTemporal = $disk->path($pdfTemporalRelativo);
         $script = base_path('scripts/generar-pdf.cjs');
 
-        defer(function () use ($datos, $vistaFormulario, $disk, $formulario, $htmlPathRelativo, $pdfPathRelativo, $pdfTemporalRelativo, $htmlPath, $pdfTemporal, $script): void {
+        defer(function () use ($datos, $vistaFormulario, $disk, $formulario, $carpeta, $htmlPathRelativo, $pdfPathRelativo, $pdfTemporalRelativo, $htmlPath, $pdfTemporal, $script): void {
             try {
                 $html = view('formularios.'.$vistaFormulario)->render();
 
@@ -465,6 +697,15 @@ class FormularioController extends Controller
             } finally {
                 $disk->delete($htmlPathRelativo);
                 $disk->delete($pdfTemporalRelativo);
+
+                if (
+                    ! Str::startsWith($pdfPathRelativo, $carpeta.'/') &&
+                    $disk->directoryExists($carpeta) &&
+                    $disk->files($carpeta) === [] &&
+                    $disk->directories($carpeta) === []
+                ) {
+                    $disk->deleteDirectory($carpeta);
+                }
             }
         });
     }

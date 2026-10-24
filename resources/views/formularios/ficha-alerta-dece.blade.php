@@ -526,6 +526,8 @@
 
 <div class="toolbar">
 
+    @include('formularios.partials.selector-carpeta')
+
     <button
         type="button"
         class="btn-borrar"
@@ -1317,6 +1319,7 @@ function confirmarBorrarTodo() {
             },
             body: JSON.stringify({
                 nombre_formulario: 'FICHA DE NOTIFICACIÓN DE ALERTA DECE',
+                carpeta: document.getElementById('carpetaDestino')?.value || null,
                 datos: datos
             })
         });

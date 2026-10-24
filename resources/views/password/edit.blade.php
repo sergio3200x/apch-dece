@@ -25,14 +25,39 @@
     }
 
     .header {
+        position: relative;
         margin: 16px 16px 0;
-        background: #e2e8f0;
-        border: 2px solid #000;
-        border-radius: 24px;
+        background: #fff;
+        border: 1px solid #dbe3ec;
+        border-radius: 22px;
         overflow: hidden;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, .06);
+    }
+
+    .header::before {
+        position: absolute;
+        top: 20px;
+        bottom: 20px;
+        left: 0;
+        width: 5px;
+        border-radius: 0 5px 5px 0;
+        background: #bd5a5a;
+        content: "";
+    }
+
+    .header::after {
+        position: absolute;
+        right: 24px;
+        bottom: 0;
+        left: 24px;
+        height: 2px;
+        background: #bd5a5a;
+        content: "";
     }
 
     .header-inner {
+        position: relative;
+        z-index: 1;
         max-width: 1280px;
         margin: 0 auto;
         padding: 20px 32px;
@@ -134,7 +159,35 @@
     }
 
     .page-heading {
+        position: relative;
         margin-bottom: 28px;
+        padding: 24px 26px 26px;
+        overflow: hidden;
+        border: 1px solid #dbe3ec;
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, .04);
+    }
+
+    .page-heading::before {
+        position: absolute;
+        top: 18px;
+        bottom: 18px;
+        left: 0;
+        width: 4px;
+        border-radius: 0 4px 4px 0;
+        background: #bd5a5a;
+        content: "";
+    }
+
+    .page-heading::after {
+        position: absolute;
+        right: 22px;
+        bottom: 0;
+        left: 22px;
+        height: 2px;
+        background: #e6b4b4;
+        content: "";
     }
 
     .badge {
@@ -344,6 +397,11 @@
             align-items: stretch;
         }
 
+        .header::after {
+            right: 18px;
+            left: 18px;
+        }
+
         .header-right {
             justify-content: space-between;
         }
@@ -354,6 +412,15 @@
 
         main {
             padding: 32px 14px 48px;
+        }
+
+        .page-heading {
+            padding: 20px 20px 22px;
+        }
+
+        .page-heading::after {
+            right: 16px;
+            left: 16px;
         }
 
         h1 {

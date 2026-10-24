@@ -1042,6 +1042,8 @@
 
 <div class="toolbar">
 
+    @include('formularios.partials.selector-carpeta')
+
     <button
         type="button"
         class="btn-borrar"
@@ -3003,6 +3005,7 @@ function guardarEImprimir() {
                 nombre_formulario:
                     'PLAN DE ATENCIÓN PSICOSOCIAL Y SEGUIMIENTO',
 
+                carpeta: document.getElementById('carpetaDestino')?.value || null,
                 datos: datosFormulario
 
             })

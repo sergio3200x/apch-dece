@@ -587,6 +587,8 @@
 
 <div class="toolbar">
 
+    @include('formularios.partials.selector-carpeta')
+
     <button
         type="button"
         onclick="borrarTodo()"
@@ -1318,6 +1320,7 @@ function confirmarBorrarTodo() {
                 nombre_formulario:
                     'CONSENTIMIENTO INFORMADO',
 
+                carpeta: document.getElementById('carpetaDestino')?.value || null,
                 datos: datos
 
             })

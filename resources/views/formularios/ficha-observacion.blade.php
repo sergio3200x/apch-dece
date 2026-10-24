@@ -950,7 +950,7 @@
 
 <div class="toolbar">
 
-
+    @include('formularios.partials.selector-carpeta')
 
     <button
 
@@ -2651,6 +2651,7 @@ function guardarEImprimir() {
                 nombre_formulario:
                     'FICHA DE OBSERVACIÓN',
 
+                carpeta: document.getElementById('carpetaDestino')?.value || null,
                 datos: datos
 
             })

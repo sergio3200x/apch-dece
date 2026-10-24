@@ -170,6 +170,11 @@
             font-weight: 700;
         }
 
+        .record-identifier {
+            color: #64748b;
+            white-space: nowrap;
+        }
+
         .record-name {
             min-width: 220px;
             color: #0f172a;
@@ -320,6 +325,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">ID</th>
+                                <th scope="col">Identificador</th>
                                 <th scope="col">Nombre formulario</th>
                                 <th scope="col">Fecha</th>
                                 <th scope="col">Hora</th>
@@ -331,6 +337,7 @@
                             @foreach ($formularios as $formulario)
                                 <tr>
                                     <td class="record-id">#{{ $formulario->id }}</td>
+                                    <td class="record-identifier">{{ $formulario->identificador }}</td>
                                     <td class="record-name">{{ $nombreFormulario }}</td>
                                     <td>{{ $formulario->created_at->format('d/m/Y') }}</td>
                                     <td>{{ $formulario->created_at->format('H:i') }}</td>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class PasswordController extends Controller
@@ -29,6 +30,9 @@ class PasswordController extends Controller
 
         $user->password = Hash::make($request->password);
         $user->save();
+
+        Auth::logoutOtherDevices($request->password);
+        $request->session()->regenerate();
 
         return back()->with('success', 'Tu contraseña ha sido cambiada correctamente.');
     }

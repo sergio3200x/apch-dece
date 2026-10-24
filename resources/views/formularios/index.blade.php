@@ -410,6 +410,119 @@
         font-weight: 600;
     }
 
+    .folder-panel {
+        margin-bottom: 28px;
+        padding: 24px;
+        border: 1px solid var(--slate-200);
+        border-left: 5px solid #bd5a5a;
+        border-radius: 18px;
+        background: #fff;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+    }
+
+    .folder-panel-title {
+        margin: 0;
+        color: var(--slate-900);
+        font-size: 20px;
+        line-height: 1.4;
+        font-weight: 700;
+    }
+
+    .folder-panel-description {
+        margin: 6px 0 18px;
+        color: var(--slate-500);
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .folder-form {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .folder-field {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .folder-label {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--slate-700);
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .folder-input {
+        width: 100%;
+        min-height: 46px;
+        padding: 10px 14px;
+        border: 1px solid var(--slate-300);
+        border-radius: 10px;
+        outline: none;
+        background: #fff;
+        color: var(--slate-900);
+        font-size: 15px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .folder-input:focus {
+        border-color: #bd5a5a;
+        box-shadow: 0 0 0 3px rgba(189, 90, 90, 0.12);
+    }
+
+    .folder-help,
+    .folder-error {
+        margin: 6px 0 0;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .folder-help {
+        color: var(--slate-500);
+    }
+
+    .folder-error {
+        color: #b91c1c;
+    }
+
+    .folder-submit {
+        min-height: 46px;
+        margin-top: 25px;
+        padding: 10px 18px;
+        border: 1px solid #a31616;
+        border-radius: 10px;
+        background: #a31616;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .folder-submit:hover {
+        border-color: #800000;
+        background: #800000;
+    }
+
+    .folder-notice {
+        margin-bottom: 20px;
+        padding: 13px 16px;
+        border: 1px solid #bbf7d0;
+        border-radius: 12px;
+        background: #f0fdf4;
+        color: #166534;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .folder-failure {
+        border-color: #fecaca;
+        background: #fef2f2;
+        color: #b91c1c;
+    }
+
     /* =========================================================
        GRID DE FORMULARIOS
        ========================================================= */
@@ -726,6 +839,23 @@
             padding: 24px;
         }
 
+        .folder-panel {
+            padding: 20px;
+        }
+
+        .folder-form {
+            flex-direction: column;
+        }
+
+        .folder-field,
+        .folder-submit {
+            width: 100%;
+        }
+
+        .folder-submit {
+            margin-top: 0;
+        }
+
         .form-card {
             padding: 24px;
         }
@@ -914,6 +1044,52 @@
 
         </div>
 
+    </section>
+
+    @if (session('success'))
+        <div class="folder-notice" role="status">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if ($errors->has('carpeta'))
+        <div class="folder-notice folder-failure" role="alert">
+            {{ $errors->first('carpeta') }}
+        </div>
+    @endif
+
+    <section class="folder-panel" aria-labelledby="folder-panel-title">
+        <h3 class="folder-panel-title" id="folder-panel-title">Crear carpeta</h3>
+        <p class="folder-panel-description">
+            Cree una carpeta en el almacenamiento privado para organizar documentos.
+        </p>
+
+        <form method="POST" action="{{ route('formularios.carpetas.store') }}" class="folder-form">
+            @csrf
+
+            <div class="folder-field">
+                <label for="nombre" class="folder-label">Nombre de la carpeta</label>
+                <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    class="folder-input"
+                    value="{{ old('nombre') }}"
+                    maxlength="100"
+                    required
+                    autocomplete="off"
+                    aria-describedby="folder-help @error('nombre') folder-error @enderror"
+                >
+                <p class="folder-help" id="folder-help">
+                    Se guardará en su espacio privado dentro de storage/app/private. Se permiten letras, números, espacios, guiones, guiones bajos y paréntesis.
+                </p>
+                @error('nombre')
+                    <p class="folder-error" id="folder-error">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <button type="submit" class="folder-submit">Crear carpeta</button>
+        </form>
     </section>
 
 

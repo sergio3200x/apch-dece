@@ -554,6 +554,8 @@
 
 <div class="toolbar">
 
+    @include('formularios.partials.selector-carpeta')
+
     <button
         type="button"
         class="btn-borrar"
@@ -1485,6 +1487,7 @@ async function guardarEImprimir() {
 
                 body: JSON.stringify({
                     nombre_formulario: 'ENTREVISTA DOCENTES',
+                    carpeta: document.getElementById('carpetaDestino')?.value || null,
                     datos: datos
                 })
             }
