@@ -653,6 +653,12 @@
     }
 
 }
+.page,
+.page * {
+    font-family: "Times New Roman", Times, serif !important;
+}
+
+@include('formularios.partials.encabezado-institucional-estilos')
 @include('formularios.partials.toolbar-moderno')
 </style>
 </head>
@@ -717,18 +723,7 @@
 <div class="documento">
 <!-- ==================== PÁGINA 1 ==================== -->
 <div class="page">
-    <div class="header">
-        <div class="header-logo">
-            <img src="{{ asset('images/logo-apch.png') }}" alt="Logo institucional">
-        </div>
-        <div class="header-text">
-            <div class="l1">UNIDAD EDUCATIVA</div>
-            <div class="l2">“ANGEL POLIBIO CHAVES”</div>
-            <div class="l3">San Miguel - Provincia Bolívar - Ecuador</div>
-            <div class="l4">DEPARTAMENTO DE CONSEJERÍA ESTUDIANTIL</div>
-        </div>
-    </div>
-    <hr class="header-rule">
+    @include('formularios.partials.encabezado-institucional')
     <div class="form-title">
         ENTREVISTA SEMIESTRUCTURADA PARA REPRESENTANTE
     </div>

@@ -9,7 +9,7 @@
 
     @page {
         size: A4;
-        margin: 0;
+        margin: 10mm 8mm;
     }
 
     * {
@@ -891,9 +891,9 @@
         }
 
         .page {
-            width: 210mm;
+            width: auto;
 
-            min-height: 297mm;
+            min-height: 0;
             height: auto;
 
             margin: 0;
@@ -918,6 +918,7 @@
 
         .form-box {
             overflow: visible;
+            min-height: 0;
         }
 
         .signature-box {
@@ -1034,6 +1035,13 @@
 
 }
 
+@include('formularios.partials.encabezado-institucional-estilos')
+
+.page,
+.page * {
+    font-family: "Times New Roman", Times, serif !important;
+}
+
 @include('formularios.partials.toolbar-moderno')
 </style>
 </head>
@@ -1125,34 +1133,7 @@
 
 <section class="page" id="paginaPrincipal">
 
-    <header class="institution-header">
-
-        <img
-            src="{{ asset('images/logo-apch.png') }}"
-            alt="Logo institucional"
-        >
-
-        <div class="institution-text">
-
-            <div class="line1">
-                UNIDAD EDUCATIVA
-            </div>
-
-            <div class="line2">
-                “ANGEL POLIBIO CHAVES”
-            </div>
-
-            <div class="line3">
-                San Miguel - Provincia Bolívar - Ecuador
-            </div>
-
-            <div class="line4">
-                DEPARTAMENTO DE CONSEJERIA ESTUDIANTIL
-            </div>
-
-        </div>
-
-    </header>
+    @include('formularios.partials.encabezado-institucional')
 
 
     <div class="form-box page1-box">
@@ -1519,42 +1500,6 @@
 
                 </tr>
 
-                <tr class="actions-row dynamic-action-row">
-
-                    <td>
-                        <textarea
-                            class="cell-textarea"
-                            data-dynamic-field="accion"
-                            aria-label="Acción 5"
-                        ></textarea>
-                    </td>
-
-                    <td>
-                        <textarea
-                            class="cell-textarea"
-                            data-dynamic-field="profesional"
-                            aria-label="Profesional acción 5"
-                        ></textarea>
-                    </td>
-
-                    <td>
-                        <textarea
-                            class="cell-textarea"
-                            data-dynamic-field="tiempo"
-                            aria-label="Tiempo acción 5"
-                        ></textarea>
-                    </td>
-
-                    <td>
-                        <textarea
-                            class="cell-textarea"
-                            data-dynamic-field="observaciones"
-                            aria-label="Observaciones acción 5"
-                        ></textarea>
-                    </td>
-
-                </tr>
-
             </tbody>
 
         </table>
@@ -1636,33 +1581,7 @@
 
 <section class="page" id="paginaSeguimiento">
 
-    <header class="institution-header">
-
-        <img
-            src="{{ asset('images/logo-apch.png') }}"
-            alt="Logo institucional"
-        >
-
-        <div class="institution-text">
-
-            <div class="line1">
-                UNIDAD EDUCATIVA
-            </div>
-
-            <div class="line2">
-                “ANGEL POLIBIO CHAVES”
-            </div>
-
-            <div class="line3">
-                San Miguel - Provincia Bolívar - Ecuador
-            </div>
-            <div class="line4">
-                DEPARTAMENTO DE CONSEJERIA ESTUDIANTIL
-            </div>
-
-        </div>
-
-    </header>
+    @include('formularios.partials.encabezado-institucional')
 
 
     <div class="form-box page2-box">
@@ -2099,50 +2018,6 @@
 
                 </tr>
 
-                <tr class="follow-row dynamic-follow-row">
-
-                    <td>
-                        <textarea
-                            class="cell-textarea"
-                            data-dynamic-field="tipo"
-                            aria-label="Seguimiento 9 tipo de intervención"
-                        ></textarea>
-                    </td>
-
-                    <td>
-                        <textarea
-                            class="cell-textarea"
-                            data-dynamic-field="descripcion"
-                            aria-label="Seguimiento 9 descripción"
-                        ></textarea>
-                    </td>
-
-                    <td>
-                        <textarea
-                            class="cell-textarea"
-                            data-dynamic-field="profesional"
-                            aria-label="Seguimiento 9 profesional"
-                        ></textarea>
-                    </td>
-
-                    <td>
-                        <textarea
-                            class="cell-textarea"
-                            data-dynamic-field="fecha"
-                            aria-label="Seguimiento 9 fecha"
-                        ></textarea>
-                    </td>
-
-                    <td>
-                        <textarea
-                            class="cell-textarea"
-                            data-dynamic-field="observaciones"
-                            aria-label="Seguimiento 9 observaciones"
-                        ></textarea>
-                    </td>
-
-                </tr>
-
             </tbody>
 
             <tr>
@@ -2176,6 +2051,16 @@
 const CLAVE_BORRADOR =
     "apch_plan_atencion_psicosocial_borrador";
 
+const FILAS_ACCION_INICIALES =
+    document.querySelectorAll(
+        "#accionesBody .dynamic-action-row"
+    ).length;
+
+const FILAS_SEGUIMIENTO_INICIALES =
+    document.querySelectorAll(
+        "#seguimientoBody .dynamic-follow-row"
+    ).length;
+
 
 function actualizarEstadoGuardado(texto) {
 
@@ -2195,6 +2080,33 @@ function obtenerCampos() {
         ".page input, .page textarea"
     );
 
+}
+
+function restaurarFilasDinamicasIniciales() {
+    const grupos = [
+        {
+            id: "accionesBody",
+            selector: ".dynamic-action-row",
+            cantidadInicial: FILAS_ACCION_INICIALES
+        },
+        {
+            id: "seguimientoBody",
+            selector: ".dynamic-follow-row",
+            cantidadInicial: FILAS_SEGUIMIENTO_INICIALES
+        }
+    ];
+
+    grupos.forEach(grupo => {
+        const body = document.getElementById(grupo.id);
+
+        if (!body) {
+            return;
+        }
+
+        Array.from(body.querySelectorAll(grupo.selector))
+            .slice(grupo.cantidadInicial)
+            .forEach(fila => fila.remove());
+    });
 }
 
 
@@ -2910,6 +2822,7 @@ function cerrarModalBorrarTodo() {
 }
 
 function confirmarBorrarTodo() {
+    restaurarFilasDinamicasIniciales();
 
     const campos = obtenerCampos();
 
@@ -2926,6 +2839,12 @@ function confirmarBorrarTodo() {
         }
 
     });
+
+    guardarBorrador();
+
+    actualizarEstadoGuardado(
+        "Formulario restablecido"
+    );
 
     cerrarModalBorrarTodo();
 }

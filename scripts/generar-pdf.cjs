@@ -223,6 +223,12 @@ async function generarPDF() {
             'print'
         );
 
+        await page.evaluate(() => {
+            if (typeof window.prepararHistoriaParaImpresion === 'function') {
+                window.prepararHistoriaParaImpresion();
+            }
+        });
+
         /*
         |--------------------------------------------------------------------------
         | Generar PDF

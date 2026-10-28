@@ -455,29 +455,10 @@ class FormularioController extends Controller
 
     public function eliminar(Formulario $formulario)
     {
-        $disk = Storage::disk('local');
-        $rutasPermitidas = [
-            'formularios/'.$formulario->id.'/',
-            'usuarios/'.$formulario->usuario_id.'/',
-        ];
-
-        if ($formulario->usuario) {
-            $rutasPermitidas[] = $this->rutaBaseUsuario($formulario->usuario).'/';
-        }
-
-        foreach ([$formulario->datos_path, $formulario->pdf_path] as $rutaArchivo) {
-            if (
-                is_string($rutaArchivo) &&
-                ! str_contains($rutaArchivo, '..') &&
-                Str::startsWith($rutaArchivo, $rutasPermitidas)
-            ) {
-                $disk->delete($rutaArchivo);
-            }
-        }
-
-        $disk->deleteDirectory('formularios/'.$formulario->id);
-
-        $formulario->delete();
+        DB::transaction(function () use ($formulario): void {
+            $formulario->limpiarArchivos();
+            $formulario->delete();
+        });
 
         return redirect()
             ->route('formularios.registros')

@@ -405,7 +405,7 @@ it('opens a personal list for every supported form type', function (string $tipo
     'plan de atención psicosocial' => ['plan-atencion-psicosocial', 'PLAN DE ATENCIÓN PSICOSOCIAL Y SEGUIMIENTO'],
 ]);
 
-it('styles only the toolbar and removes its back button on all form templates', function (string $rutaFormulario) {
+it('renders the shared institutional header and toolbar on all form templates', function (string $rutaFormulario) {
     $usuario = User::create([
         'name' => 'Analista de prueba',
         'username' => 'analista-prueba',
@@ -420,6 +420,12 @@ it('styles only the toolbar and removes its back button on all form templates', 
         ->getContent();
 
     expect($contenido)
+        ->toContain('class="dece-header"')
+        ->toContain('src="'.asset('images/logo-apch.png').'"')
+        ->toContain('UNIDAD EDUCATIVA')
+        ->toContain('&ldquo;ANGEL POLIBIO CHAVES&rdquo;')
+        ->toContain('San Miguel - Provincia Bolívar - Ecuador')
+        ->toContain('DEPARTAMENTO DE CONSEJERIA ESTUDIANTIL')
         ->toContain('.toolbar::after')
         ->toContain('border-left: 5px solid #a31616')
         ->toContain('border-radius: 16px')
@@ -427,6 +433,9 @@ it('styles only the toolbar and removes its back button on all form templates', 
         ->toContain('🖨 Guardar e imprimir')
         ->toContain('📂 Mis formularios')
         ->not->toContain('↩ Volver');
+
+    expect(substr_count($contenido, 'class="dece-header"'))
+        ->toBe($rutaFormulario === 'formularios.plan-atencion-psicosocial' ? 2 : 1);
 })->with([
     'entrevista estudiantes' => ['formularios.entrevista-estudiantes'],
     'ficha observacion' => ['formularios.ficha-observacion'],
@@ -437,6 +446,89 @@ it('styles only the toolbar and removes its back button on all form templates', 
     'alerta dece' => ['formularios.ficha-alerta-dece'],
     'plan de atencion' => ['formularios.plan-atencion-psicosocial'],
 ]);
+
+it('keeps four initial action rows and eight follow-up rows with printable page margins', function () {
+    $usuario = User::create([
+        'name' => 'Analista de prueba',
+        'username' => 'analista-prueba',
+        'password' => 'password',
+        'role' => 'analista',
+        'status' => true,
+    ]);
+
+    $contenido = $this->actingAs($usuario)
+        ->get(route('formularios.plan-atencion-psicosocial'))
+        ->assertOk()
+        ->getContent();
+
+    expect($contenido)
+        ->toContain('margin: 10mm 8mm')
+        ->toContain('padding-top: 32.8mm')
+        ->toContain('min-height: 0;')
+        ->toContain('page-break-after: always');
+
+    expect(substr_count($contenido, 'class="actions-row dynamic-action-row"'))
+        ->toBe(4);
+
+    expect(substr_count($contenido, 'class="follow-row dynamic-follow-row"'))
+        ->toBe(8);
+});
+
+it('allows the derivation history field to grow and flow across printed pages', function () {
+    $usuario = User::create([
+        'name' => 'Analista de prueba',
+        'username' => 'analista-prueba',
+        'password' => 'password',
+        'role' => 'analista',
+        'status' => true,
+    ]);
+
+    $contenido = $this->actingAs($usuario)
+        ->get(route('formularios.ficha-derivacion'))
+        ->assertOk()
+        ->getContent();
+
+    expect($contenido)
+        ->toContain('<tr class="historia-row">')
+        ->toContain('class="textarea-historia"')
+        ->toContain('max-height: none')
+        ->toContain('campo.style.height = \'auto\'')
+        ->toContain('Math.max(55, campo.scrollHeight)')
+        ->toContain('window.addEventListener(\'beforeprint\', function ()')
+        ->toContain('prepararHistoriaParaImpresion();')
+        ->toContain('.historia-row')
+        ->toContain('table.form tr.historia-row')
+        ->toContain('break-inside: auto');
+});
+
+it('resets the history field after clearing and gives printed pages clean margins', function () {
+    $usuario = User::create([
+        'name' => 'Analista de prueba',
+        'username' => 'analista-prueba',
+        'password' => 'password',
+        'role' => 'analista',
+        'status' => true,
+    ]);
+
+    $contenido = $this->actingAs($usuario)
+        ->get(route('formularios.ficha-derivacion'))
+        ->assertOk()
+        ->getContent();
+
+    preg_match('/function confirmarBorrarTodo\(\)\s*\{(.*?)\n\}/s', $contenido, $confirmacionBorrado);
+
+    expect($confirmacionBorrado[1] ?? '')
+        ->toContain('ajustarAlturaHistoria();')
+        ->toContain('guardarBorrador();');
+
+    expect($contenido)
+        ->toContain('margin: 10mm 8mm')
+        ->toContain('width: auto')
+        ->toContain('min-height: 0')
+        ->toContain('class="textarea-historia-impresion"')
+        ->toContain('table.form tr.historia-row')
+        ->toContain('window.prepararHistoriaParaImpresion = prepararHistoriaParaImpresion;');
+});
 
 it('requires authentication to view personal form lists', function () {
     $this->get(route('formularios.mis-documentos', ['tipo' => 'ficha-alerta-dece']))
@@ -727,6 +819,81 @@ it('shows PDF and edit actions only when each record is eligible', function () {
         ->assertSee('Edición utilizada')
         ->assertSee('#'.$disponible->id)
         ->assertSee('#'.$editado->id);
+});
+
+it('removes the associated files and form folder when a coordinator deletes a record', function () {
+    Storage::fake('local');
+
+    $usuario = User::create([
+        'name' => 'Jessica Carrasco',
+        'username' => 'jessica',
+        'password' => 'password',
+        'role' => 'coordinador',
+        'status' => true,
+    ]);
+
+    $rutaFormulario = 'Jessica Carrasco/Documentos DECE/FICHA DE NOTIFICACIÓN DE ALERTA DECE';
+    $datosPath = $rutaFormulario.'/ficha-de-notificacion-de-alerta-dece-1.json';
+    $pdfPath = $rutaFormulario.'/ficha-de-notificacion-de-alerta-dece-1.pdf';
+
+    Storage::disk('local')->makeDirectory($rutaFormulario);
+    Storage::disk('local')->put($datosPath, json_encode(['campo' => 'valor'], JSON_PRETTY_PRINT));
+    Storage::disk('local')->put($pdfPath, '%PDF-1.4\nPDF de prueba\n');
+
+    $formulario = Formulario::create([
+        'nombre_formulario' => 'FICHA DE NOTIFICACIÓN DE ALERTA DECE',
+        'usuario_id' => $usuario->id,
+        'datos_path' => $datosPath,
+        'pdf_path' => $pdfPath,
+        'ediciones' => 0,
+    ]);
+
+    $this->actingAs($usuario)
+        ->delete(route('formularios.eliminar', $formulario))
+        ->assertRedirect(route('formularios.registros'))
+        ->assertSessionHas('success');
+
+    $this->assertDatabaseMissing('formularios', ['id' => $formulario->id]);
+    Storage::disk('local')->assertMissing($datosPath);
+    Storage::disk('local')->assertMissing($pdfPath);
+    Storage::disk('local')->assertMissing($rutaFormulario);
+});
+
+it('removes files and subfolders from old records in the cleanup command', function () {
+    Storage::fake('local');
+
+    $usuario = User::create([
+        'name' => 'Analista de prueba',
+        'username' => 'analista-prueba',
+        'password' => 'password',
+        'role' => 'analista',
+        'status' => true,
+    ]);
+
+    $rutaFormulario = 'Analista de prueba/Historial/FICHA DE OBSERVACIÓN';
+    $datosPath = $rutaFormulario.'/ficha-observacion-1.json';
+    $pdfPath = $rutaFormulario.'/ficha-observacion-1.pdf';
+
+    Storage::disk('local')->makeDirectory($rutaFormulario);
+    Storage::disk('local')->put($datosPath, json_encode(['dato' => 'viejo']));
+    Storage::disk('local')->put($pdfPath, '%PDF-1.4\nViejo\n');
+
+    $formulario = Formulario::create([
+        'nombre_formulario' => 'FICHA DE OBSERVACIÓN',
+        'usuario_id' => $usuario->id,
+        'datos_path' => $datosPath,
+        'pdf_path' => $pdfPath,
+        'ediciones' => 0,
+    ]);
+    $formulario->forceFill(['created_at' => now()->subYears(3)])->saveQuietly();
+
+    $this->artisan('formularios:eliminar-antiguos')
+        ->assertSuccessful();
+
+    $this->assertDatabaseMissing('formularios', ['id' => $formulario->id]);
+    Storage::disk('local')->assertMissing($datosPath);
+    Storage::disk('local')->assertMissing($pdfPath);
+    Storage::disk('local')->assertMissing($rutaFormulario);
 });
 
 it('places the requested representative interview section at the end of the first page', function () {

@@ -577,6 +577,13 @@
             background: transparent;
         }
     }
+@include('formularios.partials.encabezado-institucional-estilos')
+
+.page,
+.page * {
+    font-family: "Times New Roman", Times, serif !important;
+}
+
 @include('formularios.partials.toolbar-moderno')
 </style>
 </head>
@@ -667,41 +674,7 @@
 
     <!-- ===== ENCABEZADO ===== -->
 
-    <div class="header">
-
-        <div class="header-logo">
-
-            <img
-                src="{{ asset('images/logo-apch.png') }}"
-                alt="Logo institucional"
-            >
-
-        </div>
-
-        <div class="header-text">
-
-            <div class="l1">
-                UNIDAD EDUCATIVA
-            </div>
-
-            <div class="l2">
-                &ldquo;ANGEL POLIBIO CHAVES&rdquo;
-            </div>
-
-            <div class="l3">
-                San Miguel - Provincia Bol&iacute;var - Ecuador
-            </div>
-
-            <div class="l4">
-                DEPARTAMENTO DE CONSEJER&Iacute;A ESTUDIANTIL
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <hr class="header-rule">
+    @include('formularios.partials.encabezado-institucional')
 
 
     <!-- ===== CAJA PRINCIPAL ===== -->

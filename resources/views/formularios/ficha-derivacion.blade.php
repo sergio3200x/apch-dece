@@ -25,7 +25,7 @@
 
         size: A4;
 
-        margin: 0;
+        margin: 10mm 8mm;
 
     }
 
@@ -672,6 +672,12 @@
 
     }
 
+    .textarea-historia-impresion {
+
+        display: none;
+
+    }
+
 
 
     textarea:focus {
@@ -782,6 +788,13 @@
 
     }
 
+    .historia-row {
+
+        break-inside: avoid;
+
+        page-break-inside: avoid;
+
+    }
 
 
     /* El contenido puede aumentar la altura del documento; nunca se crea
@@ -807,8 +820,16 @@
         page-break-inside: auto;
     }
 
-    table.form tr,
+    table.form tr {
+
+        break-inside: avoid;
+
+        page-break-inside: avoid;
+
+    }
+
     table.form td {
+
         break-inside: auto;
         page-break-inside: auto;
     }
@@ -849,15 +870,15 @@
 
         .page {
 
-            width: 200mm;
+            width: auto;
 
-            min-height: 297mm;
+            min-height: 0;
 
             height: auto;
 
             margin: 0;
 
-            padding: 7mm 8mm 5mm 8mm;
+            padding: 0 5mm;
 
             box-shadow: none;
 
@@ -865,15 +886,35 @@
 
             zoom: 1 !important;
 
-            page-break-after: always;
+            page-break-after: auto;
+
+            break-after: auto;
 
         }
 
+        table.form tr.historia-row {
 
+            break-inside: auto;
 
-        .page:last-child {
+            page-break-inside: auto;
 
-            page-break-after: auto;
+        }
+
+        .textarea-historia {
+
+            display: none !important;
+
+        }
+
+        .textarea-historia-impresion {
+
+            display: block;
+
+            min-height: 55px;
+
+            white-space: pre-wrap;
+
+            overflow-wrap: anywhere;
 
         }
 
@@ -978,6 +1019,12 @@
 
 }
 
+.page,
+.page * {
+    font-family: "Times New Roman", Times, serif !important;
+}
+
+@include('formularios.partials.encabezado-institucional-estilos')
 @include('formularios.partials.toolbar-moderno')
 </style>
 
@@ -1105,33 +1152,7 @@
 
 
 
-    <div class="header">
-
-        <div class="header-logo">
-
-            <img src="{{ asset('images/logo-apch.png') }}" alt="Logo institucional">
-
-        </div>
-
-
-
-        <div class="header-text">
-
-            <div class="line1">UNIDAD EDUCATIVA</div>
-
-            <div class="line2">“ANGEL POLIBIO CHAVES”</div>
-
-            <div class="line3">San Miguel - Provincia Bolívar - Ecuador</div>
-
-            <div class="line4">DEPARTAMENTO DE CONSEJERIA ESTUDIANTIL</div>
-
-        </div>
-
-    </div>
-
-
-
-    <div class="header-rule"></div>
+    @include('formularios.partials.encabezado-institucional')
 
 
 
@@ -1725,7 +1746,7 @@
 
 
 
-        <tr>
+        <tr class="historia-row">
 
             <td colspan="14" class="historia-cell">
 
@@ -1744,6 +1765,8 @@
 
 
                 <textarea name="historia_situacion" class="textarea-historia"></textarea>
+
+                <div class="textarea-historia-impresion" aria-hidden="true"></div>
 
             </td>
 
@@ -2088,7 +2111,6 @@ function guardarBorrador() {
 /* ===== Ajuste automático de Historia de la situación actual ===== */
 
 function ajustarAlturaHistoria() {
-
     const campo = document.querySelector('.textarea-historia');
 
     if (!campo) {
@@ -2097,22 +2119,26 @@ function ajustarAlturaHistoria() {
 
     }
 
+    campo.style.height = 'auto';
 
-
-    /* Primero se reduce para poder recalcular correctamente cuando
-       el usuario borra contenido. */
-
-    campo.style.height = '55px';
-
-
-
-    const alturaNecesaria = campo.scrollHeight;
-
-
-
-    campo.style.height = Math.max(55, alturaNecesaria) + 'px';
-
+    campo.style.height = Math.max(55, campo.scrollHeight) + 'px';
 }
+
+function prepararHistoriaParaImpresion() {
+    const campo = document.querySelector('.textarea-historia');
+    const vistaImpresion = document.querySelector('.textarea-historia-impresion');
+
+    if (campo && vistaImpresion) {
+        vistaImpresion.textContent = campo.value;
+    }
+}
+
+window.prepararHistoriaParaImpresion = prepararHistoriaParaImpresion;
+
+window.addEventListener('beforeprint', function () {
+    ajustarAlturaHistoria();
+    prepararHistoriaParaImpresion();
+});
 
 
 
@@ -2237,6 +2263,10 @@ function confirmarBorrarTodo() {
         }
 
     });
+
+    ajustarAlturaHistoria();
+    prepararHistoriaParaImpresion();
+    guardarBorrador();
 
     cerrarModalBorrarTodo();
 }
